@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/09 21:51:42 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/09/10 00:03:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*get_command(char *command, char **paths);
-bool	is_interactive_mode(void);
 int		ft_isprint(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);

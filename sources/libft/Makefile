@@ -46,7 +46,6 @@ OBJS = 			ft_isdigit.o				\
 				ft_find_paths.o				\
 				ft_get_command.o			\
 				ft_free_strs.o				\
-				ft_is_interactive_mode.o	\
 				ft_delete_newline.o			\
 
 OBJS_BONUS =	ft_lstnew.o					\

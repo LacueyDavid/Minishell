@@ -14,3 +14,11 @@ stdin: |
   echo toto
 stdout: |
   toto
+---
+name: Exec echo toto > output.txt
+cmd: ./minishell
+stdin: |
+  echo fichierbienremplis > output.txt
+  cat output.txt
+stdout: |
+  fichierbienremplis

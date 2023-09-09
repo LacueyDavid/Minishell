@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/09 23:23:49 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/09/10 00:02:36 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,14 @@
 #include "execution.h"
 #include "get_next_line.h"
 
+static bool is_interactive_mode(void)
+{
+	return (isatty(STDIN_FILENO));
+}
+
 static void	interactive_mode(void)
 {
-	char *input;
+	char	*input;
 
 	while(true)
 	{
@@ -36,7 +41,7 @@ static void	interactive_mode(void)
 
 static void	non_interactive_mode(void)
 {
-	char *input;
+	char	*input;
 
 	while(true)
 	{

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/09 23:21:32 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/09/09 23:49:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <sys/wait.h>
 #include "libft.h"
 
-extern char **environ;
+extern char	**environ;
 
-void exec_command(char *input)
+void	exec_command(char *input)
 {
 	char	**argv;
 	pid_t	pid1;
