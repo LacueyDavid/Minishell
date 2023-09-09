@@ -1,0 +1,9 @@
+name: do nothing if stdin is empty
+cmd: ./minishell
+---
+name: exec /usr/bin/echo toto
+cmd: ./minishell
+stdin: |
+  /usr/bin/echo toto
+stdout: |
+  toto

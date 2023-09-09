@@ -1,0 +1,8 @@
+/usr/bin/echo toto
+echo toto
+echo toto | wc -l
+echo toto | grep o | wc -w
+echo ok > outfile
+echo ok >> outfile
+< infile grep ok
+<< EOF							#(dont update the history)
