@@ -20,5 +20,6 @@ cmd: ./minishell
 stdin: |
   echo fichierbienremplis > output.txt
   cat output.txt
+  rm output.txt
 stdout: |
   fichierbienremplis
