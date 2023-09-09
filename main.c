@@ -22,11 +22,15 @@ static void exec_command(char *input)
 {
 	char	**argv;
 	pid_t	pid1;
+	char	**paths;
+	char	*command;
 
 	argv = ft_split(input, ' ');
+	paths = find_paths(environ);
+	command = get_command(argv[0], paths);
 	pid1 = fork();
 	if (pid1 == 0)
-		execve(argv[0], argv, environ);
+		execve(command, argv, environ);
 	waitpid(pid1, NULL, 0);
 }
 
@@ -51,12 +55,11 @@ void	non_interactive_mode(void)
 
 	while(true)
 	{
-		printf("%p\n", input);
 		input = get_next_line(STDIN_FILENO);
-		printf("%p\n", input);
 		if (!input)
 			break;
-		printf("%p\n", input);
+		size_t input_size = ft_strlen(input);
+		input[input_size - 1] = '\0';
 		add_history(input);
 		exec_command(input);
 		free(input);

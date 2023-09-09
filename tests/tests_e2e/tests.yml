@@ -7,3 +7,10 @@ stdin: |
   /usr/bin/echo toto
 stdout: |
   toto
+---
+name: exec echo toto
+cmd: ./minishell
+stdin: |
+  echo toto
+stdout: |
+  toto
