@@ -6,13 +6,15 @@
 #    By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/09/09 23:26:19 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/09/10 21:20:16 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fPIC
+
+LDFLAGS = $(LIBFT) -lreadline
 
 CPPFLAGS = 	-I sources/libft/					\
 			-I sources/get_next_line/			\
@@ -28,21 +30,34 @@ OBJS =												\
 				$(addprefix execution/,				\
 				execution.o							\
 												)	\
-												)	\
+				$(addprefix lexing/,				\
+				lexer.o								\
+				token_list.o						\
+												))	\
 				$(addprefix get_next_line/,			\
 				get_next_line.o						\
-				get_next_line_utils.o)			)	\
+				get_next_line_utils.o			))	\
 													\
+
+TEST_OBJS =												\
+														\
+				sources/minishell/lexing/test_lexer.o	\
+														\
 
 NAME = minishell
 LIBFT = sources/libft/libft.a
 LIBFTPATH = sources/libft/
 
+$(LIBFT):
+	$(MAKE) -C $(LIBFTPATH)
+
+libft: $(LIBFT)
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFTPATH)
-	$(CC) -o $(NAME) $^ -lreadline $(LIBFT)
+	$(CC) -o $(NAME) $^ $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJS) $(OBJS_BONUS)
@@ -51,10 +66,19 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 	$(MAKE) fclean -C $(LIBFTPATH)
+	$(RM) libtest.so
 
 re: fclean all
 
-check: all
+check_func: all
 	pharaoh tests/tests_e2e/
 
-.PHONY: all clean fclean re check
+check_unit: libtest.so
+	cgreen-runner $^
+
+check: check_unit check_func
+
+libtest.so: $(TEST_OBJS) $(OBJS) $(LIBFT)
+	$(CC) -shared -o $@ $^ $(LDFLAGS)
+
+.PHONY: all clean fclean re libft check check_func check_unit

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/10 00:03:19 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/09/10 21:15:52 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_strs_to_ints(int *array, char **argv);
 void	ft_bubble_sort(int *array, size_t size);
 void	ft_swap(int *a, int *b);
 void	print_str(char *str);
+void	*ft_realloc(void *ptr, size_t size);
 
 typedef struct s_list
 {
