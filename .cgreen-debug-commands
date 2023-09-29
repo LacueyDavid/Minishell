@@ -1,0 +1,2 @@
+break lexer__recognizes_multiple_tokens
+run libtest.so lexer:recognizes_multiple_tokens

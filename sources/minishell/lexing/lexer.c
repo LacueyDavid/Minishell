@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:32:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/29 20:36:41 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/09/30 00:32:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool tokenize_splited_input(t_token_list *token_list, char **splited_inpu
 		token.value = ft_strdup(*splited_input);
 		if (!token.value)
 		{
-			free(token_list);
+			destroy_token_list(token_list);
 			return (false);
 		}
 		add_token(token_list, token);
