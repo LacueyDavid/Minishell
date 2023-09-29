@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/10 21:15:52 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/09/29 19:16:11 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdbool.h>
 
+char	**ft_strtok(char *str, char *charset);
 char	**find_paths(char **envp);
 char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
@@ -63,6 +64,13 @@ void	ft_bubble_sort(int *array, size_t size);
 void	ft_swap(int *a, int *b);
 void	print_str(char *str);
 void	*ft_realloc(void *ptr, size_t size);
+// STRTOK
+char	**ft_strtok(char *str_to_tokenise, char *separators);
+size_t	current_token_len(char *str_to_tokenize, char *separators);
+size_t	count_tokens(char *str_to_tokenize, char *separators);
+void	free_all(char **tokens);
+bool	is_separators(char current_char, char *separators);
+bool	extract_token_malloc_fail(char **tokens, size_t tokens_index);
 
 typedef struct s_list
 {

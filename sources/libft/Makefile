@@ -48,6 +48,8 @@ OBJS = 			ft_isdigit.o				\
 				ft_free_strs.o				\
 				ft_delete_newline.o			\
 				ft_realloc.o				\
+				ft_strtok.o					\
+				ft_strtok_utils.o			\
 
 OBJS_BONUS =	ft_lstnew.o					\
 				ft_lstsize.o				\

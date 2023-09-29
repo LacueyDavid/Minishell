@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 21:12:18 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/10 21:18:16 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/09/29 20:41:50 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@
 
 void destroy_token_list(t_token_list *token_list)
 {
-	free(token_list->tokens[0].value);
+	size_t index;
+
+	index = 0;
+	while (index < token_list->size)
+	{
+		free(token_list->tokens[index].value);
+		index++;
+	}
 	free(token_list->tokens);
 	free(token_list);
 }
@@ -30,9 +37,7 @@ static void resize_token_list(t_token_list *token_list)
 		token_list->capacity *= 2;
 	test_realloc = ft_realloc(token_list->tokens, token_list->capacity);
 	if (!test_realloc)
-	{
 		exit(1);
-	}
 	token_list->tokens = test_realloc;
 }
 
@@ -43,7 +48,7 @@ void add_token(t_token_list *token_list, t_token token)
 	token_list->tokens[token_list->size++] = token;
 }
 
-t_token_list *create_token_list(void)
+t_token_list *init_token_list(void)
 {
 	t_token_list *token_list;
 
