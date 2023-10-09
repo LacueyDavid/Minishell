@@ -6,7 +6,7 @@
 #    By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/09/29 19:26:02 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/09 08:17:10 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,12 +48,12 @@ NAME = minishell
 LIBFT = sources/libft/libft.a
 LIBFTPATH = sources/libft/
 
+all: $(NAME)
+
 $(LIBFT):
 	$(MAKE) -C $(LIBFTPATH)
 
 libft: $(LIBFT)
-
-all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFTPATH)
@@ -71,7 +71,7 @@ fclean: clean
 re: fclean all
 
 check_func: all
-	pharaoh tests/tests_e2e/
+	pharaoh tests_e2e/
 
 check_unit: libtest.so
 	cgreen-runner $^
