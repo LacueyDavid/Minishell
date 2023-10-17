@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+         #
+#    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/17 03:56:52 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/18 01:53:43 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ CPPFLAGS = 	-I sources/libft/					\
 			-I sources/minishell/				\
 			-I sources/minishell/lexing/		\
 			-I sources/minishell/execution/		\
+			-I sources/minishell/parsing/		\
 
 OBJS =												\
 													\
@@ -44,6 +45,7 @@ TEST_OBJS =												\
 														\
 				sources/minishell/lexing/test_lexer.o	\
 				sources/minishell/execution/test_exec.o	\
+				sources/minishell/parsing/test_parsing.o\
 														\
 
 NAME = minishell
