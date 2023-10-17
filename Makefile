@@ -6,7 +6,7 @@
 #    By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/17 01:48:09 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/17 03:56:52 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ LDFLAGS = $(LIBFT) -lreadline
 CPPFLAGS = 	-I sources/libft/					\
 			-I sources/get_next_line/			\
 			-I sources/minishell/				\
+			-I sources/minishell/lexing/		\
 			-I sources/minishell/execution/		\
 
 OBJS =												\

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:23:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/02 19:13:24 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/17 03:42:44 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 typedef enum e_token_type
 {
 	WORD,
-	O_REDIRECTION
+	O_REDIRECTION,
+	SIMPLE_COMMAND
 }   e_token_type;
 
 typedef struct token
