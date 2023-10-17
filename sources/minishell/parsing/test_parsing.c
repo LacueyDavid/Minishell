@@ -11,6 +11,7 @@ BeforeEach(exec_full_command) {}
 
 AfterEach(exec_full_command) {}
 
-Ensure(exec_full_command, can_exec_echo_toto)
+Ensure(parse_full_command, can_parse_echo_toto)
 {
+
 }
