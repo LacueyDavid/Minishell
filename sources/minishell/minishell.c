@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/10 00:02:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/17 01:47:23 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	interactive_mode(void)
 		if (!input)
 			break;
 		add_history(input);
-		exec_command(input);
+		// exec_full_command(input);
 		free(input);
 	}
 }
@@ -49,7 +49,7 @@ static void	non_interactive_mode(void)
 		if (!input)
 			break;
 		delete_newline(&input);
-		exec_command(input);
+		// exec_full_command(input);
 		free(input);
 	}
 }

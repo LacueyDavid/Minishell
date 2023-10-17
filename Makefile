@@ -6,7 +6,7 @@
 #    By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/09 08:17:10 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/17 01:48:09 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ OBJS =												\
 TEST_OBJS =												\
 														\
 				sources/minishell/lexing/test_lexer.o	\
+				sources/minishell/execution/test_exec.o	\
 														\
 
 NAME = minishell
