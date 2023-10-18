@@ -6,12 +6,14 @@
 #include "unistd.h"
 #include "fcntl.h"
 #include "execution.h"
+#include "parsing.h"
+#include "libft.h"
 
-Describe(exec_full_command);
+Describe(parse_full_command);
 
-BeforeEach(exec_full_command) {}
+BeforeEach(parse_full_command) {}
 
-AfterEach(exec_full_command) {}
+AfterEach(parse_full_command) {}
 
 Ensure(parse_full_command, can_parse_echo_toto)
 {
@@ -33,7 +35,10 @@ Ensure(parse_full_command, can_parse_echo_toto)
 
 	//THEN (alors)
 	assert_that(output->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(output->value, is_equal_to_string("echo toto"));
+	assert_that(output->value[0], is_equal_to_string("echo"));
+	assert_that(output->value[1], is_equal_to_string("toto"));
 	assert_that(output->left, is_equal_to(NULL));
 	assert_that(output->right, is_equal_to(NULL));
+
+	free_strs(output->value);
 }

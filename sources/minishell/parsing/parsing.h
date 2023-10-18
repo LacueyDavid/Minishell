@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/18 02:00:56 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/18 03:25:58 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 typedef struct s_node
 {
 	e_token_type	type;
-	char			*value;
+	char			**value;
 	struct s_node	*left;
 	struct s_node	*right;
 }	t_node;
+
+t_node	*parsing(t_token_list *token_list);
 
 #endif

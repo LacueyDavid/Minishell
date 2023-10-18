@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/18 01:53:43 by jdenis           ###   ########.fr        #
+#    Updated: 2023/10/18 03:11:44 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,14 @@ OBJS =												\
 				$(addprefix execution/,				\
 				execution.o							\
 												)	\
+				$(addprefix parsing/,				\
+				parsing.o						)	\
+													\
 				$(addprefix lexing/,				\
 				lexer.o								\
 				token_list.o						\
 												))	\
+													\
 				$(addprefix get_next_line/,			\
 				get_next_line.o						\
 				get_next_line_utils.o			))	\

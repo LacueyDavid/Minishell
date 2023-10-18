@@ -5,6 +5,7 @@
 #include "unistd.h"
 #include "fcntl.h"
 #include "get_next_line.h"
+#include "libft.h"
 
 const char *default_output_file = "test.txt";
 
@@ -34,7 +35,10 @@ Ensure(exec_full_command, can_exec_echo_toto)
     //GIVEN (etant donné etat initial)
     t_node *node = malloc(sizeof(t_node));
 	node->type = SIMPLE_COMMAND;
-	node->value = "echo toto";
+	node->value = malloc(sizeof(char *) * 3);
+	node->value[0] = "echo";
+	node->value[1] = "toto";
+	node->value[2] = NULL;
 	node->left = NULL;
 	node->right = NULL;
     //WHEN (quand)
@@ -47,9 +51,10 @@ Ensure(exec_full_command, can_exec_echo_toto)
 	//THEN (alors
     assert_that(buffer, is_equal_to_string("toto\n"));
     fclose(file);
-	free(node);
 	unlink(output_file);
 
+	free_strs(node->value);
+	free(node);
     restore_stdout(default_output_file);
 }
 
@@ -61,7 +66,11 @@ Ensure(exec_full_command, exec_echo_toto_with_option)
     //GIVEN (etant donné etat initial)
     t_node *node = malloc(sizeof(t_node));
 	node->type = SIMPLE_COMMAND;
-	node->value = "echo -n toto";
+	node->value = malloc(sizeof(char *) * 4);
+	node->value[0] = "echo";
+	node->value[1] = "-n";
+	node->value[2] = "toto";
+	node->value[3] = NULL;
 	node->left = NULL;
 	node->right = NULL;
     //WHEN (quand)
@@ -75,9 +84,10 @@ Ensure(exec_full_command, exec_echo_toto_with_option)
 	//THEN (alors)
     assert_that(buffer, is_equal_to_string("toto"));
     fclose(file);
-	free(node);
 	unlink(output_file);
 
+	free_strs(node->value);
+	free(node);
     restore_stdout(default_output_file);
 }
 
@@ -88,13 +98,18 @@ Ensure(exec_full_command, exec_echo_toto_with_redirection)
 
 	t_node *node_left = malloc(sizeof(t_node));
 	node_left->type = SIMPLE_COMMAND;
-	node_left->value = "echo toto";
+	node_left->value = malloc(sizeof(char *) * 3);
+	node_left->value[0] = "echo";
+	node_left->value[1] = "toto";
+	node_left->value[2] = NULL;
 	node_left->left = NULL;
 	node_left->right = NULL;
 
 	t_node *node_right = malloc(sizeof(t_node));
 	node_right->type = WORD;
-	node_right->value = output_file;
+	node_right->value = malloc(sizeof(char *) * 2);
+	node_right->value[0] = output_file;
+	node_right->value[1] = NULL;
 	node_right->left = NULL;
 	node_right->right = NULL;
 
@@ -111,6 +126,8 @@ Ensure(exec_full_command, exec_echo_toto_with_redirection)
 	assert_that(get_next_line(fd), is_equal_to_string("toto\n"));
 	unlink(output_file);
 	close(fd);
+	free_strs(node_left->value);
+	free_strs(node_right->value);
 	free(node);
 	free(node_left);
 	free(node_right);
