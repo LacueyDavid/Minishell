@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:02:36 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/07/25 16:02:38 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/21 01:32:41 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_strs(char **strs)
 {
-	int		index;
+	size_t index;
 
 	index = 0;
 	while (strs[index])
