@@ -29,7 +29,7 @@ t_node	*parsing(t_token_list *token_list)
 	node->value = malloc(sizeof(char *) * (token_list->size + 1));
 	if (!node->value)
 		return (NULL);
-	while (token_list->size < index)
+	while (index < token_list->size)
 	{
 		node->value[index] = ft_strdup(token_list->tokens[index].value);
 		index++;
