@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/18 03:11:44 by jdenis           ###   ########.fr        #
+#    Updated: 2023/10/21 02:03:50 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $^ $(LDFLAGS)
 
 clean:
-	$(RM) $(OBJS) $(OBJS_BONUS)
+	$(RM) $(OBJS) $(OBJS_BONUS) $(TEST_OBJS)
 	$(MAKE) clean -C $(LIBFTPATH)
 
 fclean: clean
