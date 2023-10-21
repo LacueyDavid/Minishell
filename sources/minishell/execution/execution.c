@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/18 04:55:51 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/21 05:46:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 
 extern char	**environ;
 
-void	exec_simple_command(char **value)
+void	exec_simple_command(char **values)
 {
 	pid_t	pid1;
 	char	**paths;
 	char	*command;
 
 	paths = find_paths(environ);
-	command = get_command(value[0], paths);
+	command = get_command(values[0], paths);
 	pid1 = fork();
 	if (pid1 == 0)
-		execve(command, value, environ);
+		execve(command, values, environ);
 	waitpid(pid1, NULL, 0);
 }
 
@@ -36,8 +36,8 @@ void	redirection_output(t_node *node)
 {
 	int	fd;
 
-	fd = open(node->right->value[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	dup2(fd, 1);
+	fd = open(node->right->values[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	dup2(fd, STDOUT_FILENO);
 	close(fd);
 }
 
@@ -49,5 +49,5 @@ void	exec_full_command(t_node *node)
 		exec_full_command(node->left);
 	}
 	else if (node->type == SIMPLE_COMMAND)
-		exec_simple_command(node->value);
+		exec_simple_command(node->values);
 }

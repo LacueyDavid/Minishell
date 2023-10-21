@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/17 01:47:23 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/21 05:35:44 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "libft.h"
-#include "execution.h"
 #include "get_next_line.h"
+#include "lexer.h"
+#include "parsing.h"
+#include "execution.h"
 
 static bool is_interactive_mode(void)
 {
@@ -26,7 +28,9 @@ static bool is_interactive_mode(void)
 
 static void	interactive_mode(void)
 {
-	char	*input;
+	char			*input;
+	t_token_list	*token_list;
+	t_node			*tree;
 
 	while(true)
 	{
@@ -34,14 +38,20 @@ static void	interactive_mode(void)
 		if (!input)
 			break;
 		add_history(input);
-		// exec_full_command(input);
+		token_list = lexer(input);
+		tree = parsing(token_list);
+		exec_full_command(tree);
 		free(input);
+		destroy_token_list(token_list);
+		clear_tree(tree);
 	}
 }
 
 static void	non_interactive_mode(void)
 {
-	char	*input;
+	char			*input;
+	t_token_list	*token_list;
+	t_node			*tree;
 
 	while(true)
 	{
@@ -49,8 +59,12 @@ static void	non_interactive_mode(void)
 		if (!input)
 			break;
 		delete_newline(&input);
-		// exec_full_command(input);
+		token_list = lexer(input);
+		tree = parsing(token_list);
+		exec_full_command(tree);
 		free(input);
+		destroy_token_list(token_list);
+		clear_tree(tree);
 	}
 }
 

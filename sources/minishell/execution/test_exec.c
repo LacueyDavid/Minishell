@@ -21,10 +21,10 @@ Ensure(exec_full_command, can_exec_echo_toto)
 	//GIVEN (etant donné etat initial)
 	t_node *node = malloc(sizeof(t_node));
 	node->type = SIMPLE_COMMAND;
-	node->value = malloc(sizeof(char *) * 3);
-	node->value[0] = ft_strdup("echo");
-	node->value[1] = ft_strdup("toto");
-	node->value[2] = NULL;
+	node->values = malloc(sizeof(char *) * 3);
+	node->values[0] = ft_strdup("echo");
+	node->values[1] = ft_strdup("toto");
+	node->values[2] = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	//WHEN (quand)
@@ -41,7 +41,7 @@ Ensure(exec_full_command, can_exec_echo_toto)
 	close(fd);
 	unlink(output_file);
 
-	free_strs(node->value);
+	free_strs(node->values);
 	free(node);
 	free(line);
 	fclose(file);
@@ -55,11 +55,11 @@ Ensure(exec_full_command, can_exec_echo_toto_with_option)
 	//GIVEN (etant donné etat initial)
 	t_node *node = malloc(sizeof(t_node));
 	node->type = SIMPLE_COMMAND;
-	node->value = malloc(sizeof(char *) * 4);
-	node->value[0] = ft_strdup("echo");
-	node->value[1] = ft_strdup("-n");
-	node->value[2] = ft_strdup("toto");
-	node->value[3] = NULL;
+	node->values = malloc(sizeof(char *) * 4);
+	node->values[0] = ft_strdup("echo");
+	node->values[1] = ft_strdup("-n");
+	node->values[2] = ft_strdup("toto");
+	node->values[3] = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	//WHEN (quand)
@@ -76,7 +76,7 @@ Ensure(exec_full_command, can_exec_echo_toto_with_option)
 	close(fd);
 	unlink(output_file);
 
-	free_strs(node->value);
+	free_strs(node->values);
 	free(node);
 	free(line);
 	fclose(file);
@@ -90,17 +90,17 @@ Ensure(exec_full_command, can_exec_echo_toto_with_redirection)
 	//GIVEN (etant donné etat initial)
 	t_node *left = malloc(sizeof(t_node));
 	left->type = SIMPLE_COMMAND;
-	left->value = malloc(sizeof(char *) * 4);
-	left->value[0] = ft_strdup("echo");
-	left->value[1] = ft_strdup("-n");
-	left->value[2] = ft_strdup("toto");
-	left->value[3] = NULL;
+	left->values = malloc(sizeof(char *) * 4);
+	left->values[0] = ft_strdup("echo");
+	left->values[1] = ft_strdup("-n");
+	left->values[2] = ft_strdup("toto");
+	left->values[3] = NULL;
 
 	t_node *right = malloc(sizeof(t_node));
 	right->type = SIMPLE_COMMAND;
-	right->value = malloc(sizeof(char *) * 2);
-	right->value[0] = ft_strdup(output_file);
-	right->value[1] = NULL;
+	right->values = malloc(sizeof(char *) * 2);
+	right->values[0] = ft_strdup(output_file);
+	right->values[1] = NULL;
 
 	t_node *head = malloc(sizeof(t_node));
 	head->type = O_REDIRECTION;
@@ -117,9 +117,9 @@ Ensure(exec_full_command, can_exec_echo_toto_with_redirection)
 	close(fd);
 	unlink(output_file);
 
-	free_strs(left->value);
+	free_strs(left->values);
 	free(left);
-	free_strs(right->value);
+	free_strs(right->values);
 	free(right);
 	free(head);
 	free(line);
