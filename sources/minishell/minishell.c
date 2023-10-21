@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/21 05:35:44 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/21 06:29:43 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "lexer.h"
 #include "parsing.h"
 #include "execution.h"
+#include <sys/wait.h>
 
 static bool is_interactive_mode(void)
 {
@@ -31,16 +32,17 @@ static void	interactive_mode(void)
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
+	pid_t			pid1;
 
 	while(true)
 	{
 		input = readline("Wesh: ");
 		if (!input)
 			break;
-		add_history(input);
 		token_list = lexer(input);
 		tree = parsing(token_list);
-		exec_full_command(tree);
+		execution(tree);
+		add_history(input);
 		free(input);
 		destroy_token_list(token_list);
 		clear_tree(tree);
@@ -52,6 +54,7 @@ static void	non_interactive_mode(void)
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
+	pid_t			pid1;
 
 	while(true)
 	{
@@ -61,7 +64,7 @@ static void	non_interactive_mode(void)
 		delete_newline(&input);
 		token_list = lexer(input);
 		tree = parsing(token_list);
-		exec_full_command(tree);
+		execution(tree);
 		free(input);
 		destroy_token_list(token_list);
 		clear_tree(tree);
