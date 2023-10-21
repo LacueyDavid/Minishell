@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/21 06:29:43 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/21 06:32:18 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #include "lexer.h"
 #include "parsing.h"
 #include "execution.h"
-#include <sys/wait.h>
 
 static bool is_interactive_mode(void)
 {
@@ -32,7 +31,6 @@ static void	interactive_mode(void)
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
-	pid_t			pid1;
 
 	while(true)
 	{
@@ -54,7 +52,6 @@ static void	non_interactive_mode(void)
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
-	pid_t			pid1;
 
 	while(true)
 	{

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/21 06:29:22 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/21 06:32:16 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "execution.h"
 #include "fcntl.h"
+#include <sys/wait.h>
 
 extern char	**environ;
 
@@ -49,6 +50,8 @@ void	exec_full_command(t_node *node)
 
 void	execution(t_node *tree)
 {
+		pid_t	pid1;
+
 		pid1 = fork();
 		if (pid1 == 0)
 			exec_full_command(tree);

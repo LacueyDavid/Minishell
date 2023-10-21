@@ -7,13 +7,13 @@
 #include "get_next_line.h"
 #include "libft.h"
 
-Describe(exec_full_command);
+Describe(execution);
 
-BeforeEach(exec_full_command) {}
+BeforeEach(execution) {}
 
-AfterEach(exec_full_command) {}
+AfterEach(execution) {}
 
-Ensure(exec_full_command, can_exec_echo_toto)
+Ensure(execution, can_exec_echo_toto)
 {
 	const char *output_file = "test.txt";
 	char *line;
@@ -32,7 +32,7 @@ Ensure(exec_full_command, can_exec_echo_toto)
 	// dup2(fd, STDOUT_FILENO);
 	FILE *file = fopen(output_file, "w");
 	freopen(output_file, "w", stdout);
-	exec_full_command(node);
+	execution(node);
 
 	//THEN (alors)
 	int fd = open(output_file, O_RDONLY);
@@ -47,7 +47,7 @@ Ensure(exec_full_command, can_exec_echo_toto)
 	fclose(file);
 }
 
-Ensure(exec_full_command, can_exec_echo_toto_with_option)
+Ensure(execution, can_exec_echo_toto_with_option)
 {
 	const char *output_file = "test.txt";
 	char *line;
@@ -67,7 +67,7 @@ Ensure(exec_full_command, can_exec_echo_toto_with_option)
 	// dup2(fd, STDOUT_FILENO);
 	FILE *file = fopen(output_file, "w");
 	freopen(output_file, "w", stdout);
-	exec_full_command(node);
+	execution(node);
 
 	//THEN (alors)
 	int fd = open(output_file, O_RDONLY);
@@ -82,7 +82,7 @@ Ensure(exec_full_command, can_exec_echo_toto_with_option)
 	fclose(file);
 }
 
-Ensure(exec_full_command, can_exec_echo_toto_with_redirection)
+Ensure(execution, can_exec_echo_toto_with_redirection)
 {
 	const char *output_file = "outfile.txt";
 	char *line;
@@ -108,7 +108,7 @@ Ensure(exec_full_command, can_exec_echo_toto_with_redirection)
 	head->right = right;
 
 	//WHEN (quand)
-	exec_full_command(head);
+	execution(head);
 
 	//THEN (alors)
 	int fd = open(output_file, O_RDONLY);
