@@ -28,11 +28,14 @@ Ensure(exec_full_command, can_exec_echo_toto)
 	node->left = NULL;
 	node->right = NULL;
 	//WHEN (quand)
-	int fd = open(output_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	dup2(fd, STDOUT_FILENO);
+	// int fd = open(output_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	// dup2(fd, STDOUT_FILENO);
+	FILE *file = fopen(output_file, "w");
+	freopen(output_file, "w", stdout);
 	exec_full_command(node);
 
-	//THEN (alors
+	//THEN (alors)
+	int fd = open(output_file, O_RDONLY);
 	line = get_next_line(fd);
 	assert_that(line, is_equal_to_string("toto\n"));
 	close(fd);
@@ -41,4 +44,5 @@ Ensure(exec_full_command, can_exec_echo_toto)
 	free_strs(node->value);
 	free(node);
 	free(line);
+	fclose(file);
 }
