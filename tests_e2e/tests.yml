@@ -23,3 +23,21 @@ stdin: |
   rm output.txt
 stdout: |
   fichierbienremplis
+---
+name: Exec > output.txt echo toto
+cmd: ./minishell
+stdin: |
+  > output.txt echo fichierbienremplis
+  cat output.txt
+  rm output.txt
+stdout: |
+  fichierbienremplis
+---
+name: Exec echo toto > output.txt tata
+cmd: ./minishell
+stdin: |
+  echo toto > output.txt tata
+  cat output.txt
+  rm output.txt
+stdout: |
+  toto tata
