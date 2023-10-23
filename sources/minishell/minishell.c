@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/21 06:32:18 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/23 10:55:36 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 static bool is_interactive_mode(void)
 {
-	return (isatty(STDIN_FILENO));
+	return (isatty(STDIN_FILENO) && isatty(STDERR_FILENO));
 }
 
 static void	interactive_mode(void)
