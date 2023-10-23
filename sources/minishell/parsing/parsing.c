@@ -122,9 +122,9 @@ void	create_tree(t_node *node, t_token_list *token_list)
 	index = 0;
 	while (index < token_list->size)
 	{
-		while (token_list->tokens[index].type == WORD)
+		while (index < token_list->size && token_list->tokens[index].type == WORD)
 			index++;
-		if (token_list->tokens[index].type == O_REDIRECTION)
+		if (index < token_list->size && token_list->tokens[index].type == O_REDIRECTION)
 		{
 			create_o_redirection_tree(node, token_list);
 			return ;
