@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/09/29 19:16:11 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/24 01:02:24 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	ft_strs_to_ints(int *array, char **argv);
 void	ft_bubble_sort(int *array, size_t size);
 void	ft_swap(int *a, int *b);
 void	print_str(char *str);
-void	*ft_realloc(void *ptr, size_t size);
+void	*ft_realloc(void *ptr, size_t new_size, size_t old_size);
 // STRTOK
 char	**ft_strtok(char *str_to_tokenise, char *separators);
 size_t	current_token_len(char *str_to_tokenize, char *separators);

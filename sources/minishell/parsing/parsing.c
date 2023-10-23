@@ -31,6 +31,8 @@ void	clear_tree(t_node *node)
 
 void	add_word(t_node *node, char *word)
 {
+	size_t	old_size;
+	size_t	new_size;
 	node->values_size++;
 	if (node->values_capacity == 0)
 	{
@@ -44,8 +46,10 @@ void	add_word(t_node *node, char *word)
 	}
 	if (node->values_capacity < node->values_size)
 	{
+		old_size = (node->values_capacity + 1) * sizeof(char *);
 		node->values_capacity *= 2;
-		node->values = ft_realloc(node->values, ((node->values_capacity + 1) * sizeof(char *)));
+		new_size = (node->values_capacity + 1) * sizeof(char *);
+		node->values = ft_realloc(node->values, new_size, old_size);
 		if (!node->values)
 		{
 			clear_tree(node);
