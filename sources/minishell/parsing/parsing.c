@@ -2,6 +2,7 @@
 #include "lexer.h"
 #include <stdlib.h>
 #include "libft.h"
+#include <stdbool.h>
 
 t_node	*init_node(void)
 {
@@ -29,20 +30,18 @@ void	clear_tree(t_node *node)
 	free(node);
 }
 
-void	add_word(t_node *node, char *word)
+bool	add_word(t_node *node, char *word)
 {
 	size_t	old_size;
 	size_t	new_size;
+
 	node->values_size++;
 	if (node->values_capacity == 0)
 	{
 		node->values_capacity = 1;
 		node->values = malloc(sizeof(char *) * (node->values_capacity + 1));
 		if (!node->values)
-		{
-			clear_tree(node);
-			return ;
-		}
+			return (false);
 	}
 	if (node->values_capacity < node->values_size)
 	{
@@ -51,21 +50,16 @@ void	add_word(t_node *node, char *word)
 		new_size = (node->values_capacity + 1) * sizeof(char *);
 		node->values = ft_realloc(node->values, new_size, old_size);
 		if (!node->values)
-		{
-			clear_tree(node);
-			return ;
-		}
+			return (false);
 	}
 	node->values[node->values_size - 1] = ft_strdup(word);
 	if (!node->values[node->values_size - 1])
-	{
-		clear_tree(node);
-		return ;
-	}
+		return (false);
 	node->values[node->values_size] = NULL;
+	return (true);
 }
 
-void	create_simple_command_tree(t_node *node, t_token_list *token_list)
+bool	create_simple_command_tree(t_node *node, t_token_list *token_list)
 {
 	size_t index;
 
@@ -73,15 +67,17 @@ void	create_simple_command_tree(t_node *node, t_token_list *token_list)
 	while (index < token_list->size)
 	{
 		if (token_list->tokens[index].type == WORD)
-			add_word(node, token_list->tokens[index].value);
+			if (!add_word(node, token_list->tokens[index].value))
+				return (false);
 		if (!node)
-			return ;
+			return (false);
 		index++;
 	}
 	node->type = SIMPLE_COMMAND;
+	return (true);
 }
 
-void	create_o_redirection_tree(t_node *node, t_token_list *token_list)
+bool	create_o_redirection_tree(t_node *node, t_token_list *token_list)
 {
 	t_node	*left;
 	t_node	*right;
@@ -91,21 +87,20 @@ void	create_o_redirection_tree(t_node *node, t_token_list *token_list)
 	left = init_node();
 	right = init_node();
 	if (!left || !right)
-	{
-		clear_tree(node);
-		return ;
-	}
+		return (false);
 	while (token_list->size > index)
 	{
 		if (token_list->tokens[index].type == WORD)
-			add_word(left, token_list->tokens[index].value);
+		{
+			if (!add_word(left, token_list->tokens[index].value))
+				return (false);
+		}
 		else if (token_list->tokens[index].type == O_REDIRECTION)
 		{
 			index++;
-			add_word(right, token_list->tokens[index].value);
+			if (!add_word(right, token_list->tokens[index].value))
+				return (false);
 		}
-		if (!left || !right)
-			return ;
 		index++;
 	}
 	node->type = O_REDIRECTION;
@@ -113,9 +108,10 @@ void	create_o_redirection_tree(t_node *node, t_token_list *token_list)
 	right->type = SIMPLE_COMMAND;
 	node->left = left;
 	node->right = right;
+	return (true);
 }
 
-void	create_tree(t_node *node, t_token_list *token_list)
+bool	create_tree(t_node *node, t_token_list *token_list)
 {
 	size_t	index;
 
@@ -126,11 +122,10 @@ void	create_tree(t_node *node, t_token_list *token_list)
 			index++;
 		if (index < token_list->size && token_list->tokens[index].type == O_REDIRECTION)
 		{
-			create_o_redirection_tree(node, token_list);
-			return ;
+			return (create_o_redirection_tree(node, token_list));
 		}
 	}
-	create_simple_command_tree(node, token_list);
+	return (create_simple_command_tree(node, token_list));
 }
 
 t_node	*parsing(t_token_list *token_list)
@@ -138,8 +133,12 @@ t_node	*parsing(t_token_list *token_list)
 	t_node	*node;
 
 	node = init_node();
-	if (!node )
+	if (!node)
 		return (NULL);
-	create_tree(node, token_list);
+	if (!create_tree(node, token_list))
+	{
+		clear_tree(node);
+		return (NULL);
+	}
 	return (node);
 }

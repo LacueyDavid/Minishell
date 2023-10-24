@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/23 10:55:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/24 02:10:03 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,18 @@ static void	interactive_mode(void)
 		if (!input)
 			break;
 		token_list = lexer(input);
+		if (!token_list)
+		{
+			free(input);
+			continue ;
+		}
 		tree = parsing(token_list);
+		if (!tree)
+		{
+			free(input);
+			destroy_token_list(token_list);
+			continue ;
+		}
 		execution(tree);
 		add_history(input);
 		free(input);
@@ -60,7 +71,18 @@ static void	non_interactive_mode(void)
 			break;
 		delete_newline(&input);
 		token_list = lexer(input);
+		if (!token_list)
+		{
+			free(input);
+			continue ;
+		}
 		tree = parsing(token_list);
+		if (!tree)
+		{
+			free(input);
+			destroy_token_list(token_list);
+			continue ;
+		}
 		execution(tree);
 		free(input);
 		destroy_token_list(token_list);
