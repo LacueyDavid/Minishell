@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   simple_command_tree.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:43:51 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/24 06:29:53 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/24 06:44:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include <stdbool.h>
 #include <stdlib.h>
 
-t_node	*parsing(t_token_list *token_list)
+bool	create_simple_command_tree(t_node *node, t_token_list *token_list)
 {
-	t_node	*node;
+	size_t index;
 
-	node = init_node();
-	if (!node)
-		return (NULL);
-	if (!create_tree(node, token_list))
+	index = 0;
+	while (index < token_list->size)
 	{
-		clear_tree(node);
-		return (NULL);
+		if (token_list->tokens[index].type == WORD)
+			if (!add_word(node, token_list->tokens[index].value))
+				return (false);
+		if (!node)
+			return (false);
+		index++;
 	}
-	return (node);
+	node->type = SIMPLE_COMMAND;
+	return (true);
 }

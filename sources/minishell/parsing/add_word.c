@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   add_word.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:43:51 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/24 06:29:17 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/24 06:42:18 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-#include <stdlib.h>
+#include "libft.h"
 
-t_node	*parsing(t_token_list *token_list)
+bool	add_word(t_node *node, char *word)
 {
-	t_node	*node;
-
-	node = init_node();
-	if (!node)
-		return (NULL);
-	if (!create_tree(node, token_list))
-	{
-		clear_tree(node);
-		return (NULL);
-	}
-	return (node);
+	node->values_size++;
+	if (!update_capacity(node))
+		return (false);
+	node->values[node->values_size - 1] = ft_strdup(word);
+	if (!node->values[node->values_size - 1])
+		return (false);
+	node->values[node->values_size] = NULL;
+	return (true);
 }

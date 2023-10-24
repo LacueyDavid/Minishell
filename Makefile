@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/24 05:54:03 by jdenis           ###   ########.fr        #
+#    Updated: 2023/10/24 07:19:38 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,12 +34,18 @@ OBJS =												\
 				execution.o							\
 												)	\
 				$(addprefix parsing/,				\
-				parsing.o						)	\
+				add_word.o							\
+				deletes.o							\
+				node.o								\
+				o_redirection_tree.o				\
+				parsing.o							\
+				simple_command_tree.o				\
+				tree.o								\
+				vector_2_dimension.o			)	\
 													\
 				$(addprefix lexing/,				\
 				lexer.o								\
-				token_list.o						\
-												))	\
+				token_list.o					))	\
 													\
 				$(addprefix get_next_line/,			\
 				get_next_line.o						\

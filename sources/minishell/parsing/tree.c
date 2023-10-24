@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:43:51 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/24 06:47:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
-t_node	*parsing(t_token_list *token_list)
+bool	create_tree(t_node *node, t_token_list *token_list)
 {
-	t_node	*node;
+	size_t	index;
+	size_t	size;
 
-	node = init_node();
-	if (!node)
-		return (NULL);
-	if (!create_tree(node, token_list))
+	index = 0;
+	size = token_list->size;
+	while (index < size)
 	{
-		clear_tree(node);
-		return (NULL);
+		while (index < size && token_list->tokens[index].type == WORD)
+			index++;
+		if (index < size && token_list->tokens[index].type == O_REDIRECTION)
+			return (create_o_redirection_tree(node, token_list));
 	}
-	return (node);
+	return (create_simple_command_tree(node, token_list));
 }

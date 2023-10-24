@@ -1,29 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   node.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:43:51 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/24 07:13:01 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
-t_node	*parsing(t_token_list *token_list)
+t_node	*init_node(void)
 {
 	t_node	*node;
 
-	node = init_node();
+	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
-	if (!create_tree(node, token_list))
-	{
-		clear_tree(node);
-		return (NULL);
-	}
+	node->type = 0;
+	node->values = NULL;
+	node->values_capacity = 0;
+	node->values_size= 0;
+	node->left = NULL;
+	node->right = NULL;
 	return (node);
+}
+
+bool	init_nodes(t_node **left, t_node **right)
+{
+	*left = init_node();
+	*right = init_node();
+	if (!*left || !*right)
+		return (false);
+	return (true);
 }

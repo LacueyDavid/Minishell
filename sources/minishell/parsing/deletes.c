@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   deletes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:43:51 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/24 05:18:37 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/24 06:45:49 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include <stdlib.h>
+#include "libft.h"
 
-t_node	*parsing(t_token_list *token_list)
+void	clear_tree(t_node *node)
 {
-	t_node	*node;
-
-	node = init_node();
 	if (!node)
-		return (NULL);
-	if (!create_tree(node, token_list))
-	{
-		clear_tree(node);
-		return (NULL);
-	}
-	return (node);
+		return ;
+	clear_tree(node->left);
+	clear_tree(node->right);
+	free_strs(node->values);
+	free(node);
 }
