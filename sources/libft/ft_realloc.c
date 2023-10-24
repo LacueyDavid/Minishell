@@ -6,14 +6,14 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 21:15:11 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 01:01:44 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/25 01:29:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-size_t	ft_size_min(size_t a, size_t b)
+static size_t	ft_size_min(size_t a, size_t b)
 {
 	if (a < b)
 		return (a);
