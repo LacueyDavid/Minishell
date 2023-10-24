@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/21 02:03:50 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/24 05:54:03 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ OBJS =												\
 				main.o								\
 				$(addprefix minishell/,				\
 				minishell.o							\
+				history.o							\
 				$(addprefix execution/,				\
 				execution.o							\
 												)	\

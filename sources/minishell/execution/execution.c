@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 03:44:45 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/24 05:25:53 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdio.h>
 
 extern char	**environ;
+extern int	exit_status;
 
 void	exec_simple_command(char **values)
 {
@@ -40,7 +41,7 @@ void	exec_simple_command(char **values)
 		execve(command, values, environ);
 		(perror("Command not found"), exit(1));
 	}
-	waitpid(pid1, NULL, 0);
+	waitpid(pid1, &exit_status, 0);
 }
 
 void	redirection_output(t_node *node)

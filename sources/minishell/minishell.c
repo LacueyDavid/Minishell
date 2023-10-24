@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 02:10:03 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/24 06:10:07 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 #include "lexer.h"
 #include "parsing.h"
 #include "execution.h"
+#include "minishell.h"
+
+int		exit_status = 0;
 
 static bool is_interactive_mode(void)
 {
@@ -32,6 +35,7 @@ static void	interactive_mode(void)
 	t_token_list	*token_list;
 	t_node			*tree;
 
+	redo_history();
 	while(true)
 	{
 		input = readline("Wesh: ");
@@ -51,7 +55,8 @@ static void	interactive_mode(void)
 			continue ;
 		}
 		execution(tree);
-		add_history(input);
+		if (exit_status == 0)
+			update_history(input);
 		free(input);
 		destroy_token_list(token_list);
 		clear_tree(tree);
