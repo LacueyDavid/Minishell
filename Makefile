@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/24 07:19:38 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/25 01:04:16 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ CPPFLAGS = 	-I sources/libft/					\
 			-I sources/minishell/lexing/		\
 			-I sources/minishell/execution/		\
 			-I sources/minishell/parsing/		\
+			-I sources/minishell/history/		\
 
 OBJS =												\
 													\
@@ -29,7 +30,10 @@ OBJS =												\
 				main.o								\
 				$(addprefix minishell/,				\
 				minishell.o							\
-				history.o							\
+													\
+				$(addprefix history/,				\
+				history.o						)	\
+													\
 				$(addprefix execution/,				\
 				execution.o							\
 												)	\
