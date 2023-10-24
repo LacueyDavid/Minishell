@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:10:07 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/24 06:26:48 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "lexer.h"
 #include "parsing.h"
 #include "execution.h"
-#include "minishell.h"
+#include "history.h"
 
 int		exit_status = 0;
 
