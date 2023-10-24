@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:49:25 by jdenis            #+#    #+#             */
-/*   Updated: 2023/10/24 06:10:30 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/24 07:34:31 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <readline/history.h>
 
 
-void add_input_to_history(char *input) 
+void add_input_to_history(char *input)
 {
     int fd = open(".minishell_history", O_WRONLY | O_CREAT | O_APPEND, 0644);
     if (fd == -1) 
@@ -44,7 +44,7 @@ void	redo_history(void)
 		return ;
 	}
 	line = get_next_line(fd);
-	while (fd > 0 && line)
+	while (line)
 	{
 		delete_newline(&line);
 		add_history(line);
