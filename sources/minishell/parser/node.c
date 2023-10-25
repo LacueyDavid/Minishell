@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_word.c                                         :+:      :+:    :+:   */
+/*   node.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 06:29:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:42:18 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/25 02:12:25 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-#include "libft.h"
+#include "parser.h"
+#include <stdlib.h>
+#include <stdbool.h>
 
-bool	add_word(t_node *node, char *word)
+t_node	*init_node(void)
 {
-	node->values_size++;
-	if (!update_capacity(node))
+	t_node	*node;
+
+	node = malloc(sizeof(t_node));
+	if (!node)
+		return (NULL);
+	node->type = 0;
+	node->values = NULL;
+	node->values_capacity = 0;
+	node->values_size= 0;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
+
+bool	init_nodes(t_node **left, t_node **right)
+{
+	*left = init_node();
+	*right = init_node();
+	if (!*left || !*right)
 		return (false);
-	node->values[node->values_size - 1] = ft_strdup(word);
-	if (!node->values[node->values_size - 1])
-		return (false);
-	node->values[node->values_size] = NULL;
 	return (true);
 }

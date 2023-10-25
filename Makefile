@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/25 01:04:16 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/25 02:08:32 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ LDFLAGS = $(LIBFT) -lreadline
 CPPFLAGS = 	-I sources/libft/					\
 			-I sources/get_next_line/			\
 			-I sources/minishell/				\
-			-I sources/minishell/lexing/		\
+			-I sources/minishell/lexer/			\
 			-I sources/minishell/execution/		\
-			-I sources/minishell/parsing/		\
+			-I sources/minishell/parser/		\
 			-I sources/minishell/history/		\
 
 OBJS =												\
@@ -37,17 +37,17 @@ OBJS =												\
 				$(addprefix execution/,				\
 				execution.o							\
 												)	\
-				$(addprefix parsing/,				\
+				$(addprefix parser/,				\
 				add_word.o							\
 				deletes.o							\
 				node.o								\
 				o_redirection_tree.o				\
-				parsing.o							\
+				parser.o							\
 				simple_command_tree.o				\
 				tree.o								\
 				vector_2_dimension.o			)	\
 													\
-				$(addprefix lexing/,				\
+				$(addprefix lexer/,					\
 				lexer.o								\
 				token_list.o					))	\
 													\
@@ -58,9 +58,9 @@ OBJS =												\
 
 TEST_OBJS =												\
 														\
-				sources/minishell/lexing/test_lexer.o	\
+				sources/minishell/lexer/test_lexer.o	\
 				sources/minishell/execution/test_exec.o	\
-				sources/minishell/parsing/test_parsing.o\
+				sources/minishell/parser/test_parser.o	\
 														\
 
 NAME = minishell

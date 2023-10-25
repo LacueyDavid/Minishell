@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:26:48 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/25 02:05:47 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "libft.h"
 #include "get_next_line.h"
 #include "lexer.h"
-#include "parsing.h"
+#include "parser.h"
 #include "execution.h"
 #include "history.h"
 
@@ -47,7 +47,7 @@ static void	interactive_mode(void)
 			free(input);
 			continue ;
 		}
-		tree = parsing(token_list);
+		tree = parser(token_list);
 		if (!tree)
 		{
 			free(input);
@@ -81,7 +81,7 @@ static void	non_interactive_mode(void)
 			free(input);
 			continue ;
 		}
-		tree = parsing(token_list);
+		tree = parser(token_list);
 		if (!tree)
 		{
 			free(input);

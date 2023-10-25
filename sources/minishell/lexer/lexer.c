@@ -6,13 +6,14 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:32:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 02:09:19 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 01:47:16 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "lexer.h"
 #include "libft.h"
+#include <stdbool.h>
 
 static t_token create_token(int type, char *value)
 {

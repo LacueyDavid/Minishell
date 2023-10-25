@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 06:43:51 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 02:14:27 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "parser.h"
 #include <stdlib.h>
 
-t_node	*parsing(t_token_list *token_list)
+t_node	*parser(t_token_list *token_list)
 {
 	t_node	*node;
 

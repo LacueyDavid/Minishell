@@ -6,11 +6,11 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 06:29:37 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 07:27:02 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 02:12:37 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "parser.h"
 #include <stdbool.h>
 
 static bool	fill_nodes_o_redirection(t_node *left, t_node *right, t_token_list *token_list)

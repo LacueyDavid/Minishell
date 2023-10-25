@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_parsing.c                                     :+:      :+:    :+:   */
+/*   test_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 05:28:31 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/21 05:28:43 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 02:21:34 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "unistd.h"
 #include "fcntl.h"
 #include "execution.h"
-#include "parsing.h"
+#include "parser.h"
 #include "libft.h"
 
 Describe(parse_full_command);
@@ -42,7 +42,7 @@ Ensure(parse_full_command, can_parse_echo_toto)
 	t_node *head = NULL;
 
 	//WHEN (quand)
-	head = parsing(token_list);
+	head = parser(token_list);
 
 	//THEN (alors)
 	assert_that(head->type, is_equal_to(SIMPLE_COMMAND));
@@ -79,7 +79,7 @@ Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 	t_node *head = NULL;
 
 	//WHEN (quand)
-	head = parsing(token_list);
+	head = parser(token_list);
 
 	//THEN (alors)
 	t_node *left = head->left;
