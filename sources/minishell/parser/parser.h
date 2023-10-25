@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 08:31:47 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 09:44:25 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_node
 	size_t            values_size;
 	size_t            values_capacity;
 	char            **values;
+	struct s_node    *head;
 	struct s_node    *left;
 	struct s_node    *right;
 }	t_node;

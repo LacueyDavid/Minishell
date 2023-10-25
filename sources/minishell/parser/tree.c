@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 08:53:08 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 09:49:28 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ bool	create_tree(t_node *node, t_token_list *token_list)
 	t_node			*last_current_o_redirection;
 	size_t			index;
 
-
+	node->head = node;
 	node->type = O_REDIRECTION;
 	simple_command = init_node();
+	simple_command->head = node;
 	if (!simple_command)
 		return (false);
 	simple_command->type = SIMPLE_COMMAND;
@@ -47,6 +48,7 @@ bool	create_tree(t_node *node, t_token_list *token_list)
 				return (false);
 			last_current_o_redirection = current_o_redirection;
 			current_o_redirection = current_o_redirection->right;
+			current_o_redirection->head = node;
 		}
 		index++;
 	}

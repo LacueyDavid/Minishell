@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 08:58:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 09:50:14 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@
 extern char	**environ;
 extern int	exit_status;
 
-void	exec_simple_command(char **values)
+void	exec_simple_command(t_node *node)
 {
 	char	**paths;
 	char	*command;
 	pid_t	pid1;
 
-	if (!values)
+	if (!node->values)
 		return ;
 	pid1 = fork();
 	if (pid1 < 0)
@@ -39,20 +39,20 @@ void	exec_simple_command(char **values)
 		paths = find_paths(environ);
 		if (!paths)
 		{
-			free_strs(values);
+			clear_tree(node->head);
 			return ;
 		}
-		command = get_command(values[0], paths);
+		command = get_command(node->values[0], paths);
 		if (!command)
 		{
-			free_strs(values);
 			free_strs(paths);
+			clear_tree(node->head);
 			(perror("Command not found"), exit(1));
 		}
-		execve(command, values, environ);
-		free_strs(values);
+		execve(command, node->values, environ);
 		free_strs(paths);
-		(perror("Command not found"), exit(1));
+		clear_tree(node->head);
+		(perror("Execve failed"), exit(1));
 	}
 	waitpid(pid1, &exit_status, 0);
 }
@@ -82,7 +82,7 @@ void	exec_full_command(t_node *node, int fds[3])
 		dup2(fds[1], STDOUT_FILENO);
 	}
 	else if (node->type == SIMPLE_COMMAND)
-		exec_simple_command(node->values);
+		exec_simple_command(node);
 }
 
 void	execution(t_node *tree)
