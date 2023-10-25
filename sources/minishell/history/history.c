@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:49:25 by jdenis            #+#    #+#             */
-/*   Updated: 2023/10/25 01:43:07 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/25 03:28:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 
 void add_input_to_history(char *input)
 {
-    int fd = open(".minishell_history", O_WRONLY | O_CREAT | O_APPEND, 0644);
-    if (fd < 0) 
+	int fd = open(".minishell_history", O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0) 
 	{
-        perror("Cannot open History file");
-        return ;
-    }
-    write(fd, input, ft_strlen(input));
-    write(fd, "\n", 1);
-    close(fd);
+		perror("Cannot open History file");
+		return ;
+	}
+	write(fd, input, ft_strlen(input));
+	write(fd, "\n", 1);
+	close(fd);
 }
 
 void	redo_history(void)
