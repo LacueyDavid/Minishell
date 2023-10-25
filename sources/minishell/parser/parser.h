@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 02:11:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 08:31:47 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	clear_tree(t_node *node);
 bool	add_word(t_node *node, char *word);
 bool	init_nodes(t_node **left, t_node **right);
 bool	create_tree(t_node *node, t_token_list *token_list);
-bool	create_o_redirection_tree(t_node *node, t_token_list *token_list);
 bool	update_capacity(t_node *node);
-bool	create_simple_command_tree(t_node *node, t_token_list *token_list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 02:20:39 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 08:53:08 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,47 @@
 
 bool	create_tree(t_node *node, t_token_list *token_list)
 {
-	size_t	index;
-	size_t	size;
+	t_node			*simple_command;
+	t_node			*current_o_redirection;
+	t_node			*last_current_o_redirection;
+	size_t			index;
 
+
+	node->type = O_REDIRECTION;
+	simple_command = init_node();
+	if (!simple_command)
+		return (false);
+	simple_command->type = SIMPLE_COMMAND;
+	current_o_redirection = node;
 	index = 0;
-	size = token_list->size;
-	while (index < size)
+	while (index < token_list->size)
 	{
-		while (index < size && token_list->tokens[index].type == WORD)
+		if (token_list->tokens[index].type == WORD)
+		{
+			if (!add_word(simple_command, token_list->tokens[index].value))
+				return (false);
+		}
+		else if (token_list->tokens[index].type == O_REDIRECTION)
+		{
 			index++;
-		if (index < size && token_list->tokens[index].type == O_REDIRECTION)
-			return (create_o_redirection_tree(node, token_list));
+			current_o_redirection->right = init_node();
+			if (!current_o_redirection->right)
+				return (false);
+			current_o_redirection->right->type = O_REDIRECTION;
+			if (!add_word(current_o_redirection->right, token_list->tokens[index].value))
+				return (false);
+			last_current_o_redirection = current_o_redirection;
+			current_o_redirection = current_o_redirection->right;
+		}
+		index++;
 	}
-	return (create_simple_command_tree(node, token_list));
+	current_o_redirection->type = SIMPLE_COMMAND;
+	if (node == current_o_redirection)
+	{
+		node->values = simple_command->values;
+		free(simple_command);
+	}
+	else
+		last_current_o_redirection->left = simple_command;
+	return (true);
 }

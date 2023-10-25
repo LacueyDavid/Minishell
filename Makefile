@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/25 03:19:53 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/25 08:31:22 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,9 +46,7 @@ OBJS =												\
 				add_word.o							\
 				deletes.o							\
 				node.o								\
-				o_redirection_tree.o				\
 				parser.o							\
-				simple_command_tree.o				\
 				tree.o								\
 				vector_2_dimension.o			)	\
 													\

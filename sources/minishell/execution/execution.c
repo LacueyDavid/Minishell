@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 04:06:19 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 08:58:17 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	exec_simple_command(char **values)
 	char	*command;
 	pid_t	pid1;
 
+	if (!values)
+		return ;
 	pid1 = fork();
 	if (pid1 < 0)
 	{
@@ -36,9 +38,20 @@ void	exec_simple_command(char **values)
 	{
 		paths = find_paths(environ);
 		if (!paths)
+		{
+			free_strs(values);
 			return ;
+		}
 		command = get_command(values[0], paths);
+		if (!command)
+		{
+			free_strs(values);
+			free_strs(paths);
+			(perror("Command not found"), exit(1));
+		}
 		execve(command, values, environ);
+		free_strs(values);
+		free_strs(paths);
 		(perror("Command not found"), exit(1));
 	}
 	waitpid(pid1, &exit_status, 0);
@@ -62,7 +75,10 @@ void	exec_full_command(t_node *node, int fds[3])
 	if (node->type == O_REDIRECTION)
 	{
 		redirection_output(node);
-		exec_full_command(node->left, fds);
+		if (!node->left)
+			exec_full_command(node->right, fds);
+		else
+			exec_full_command(node->left, fds);
 		dup2(fds[1], STDOUT_FILENO);
 	}
 	else if (node->type == SIMPLE_COMMAND)
