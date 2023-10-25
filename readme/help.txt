@@ -1,0 +1,1 @@
+pour enlever les leak de readline : --suppressions=.readline_suppressions.supp

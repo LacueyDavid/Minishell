@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:18:32 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/05/12 18:18:58 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 03:59:26 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
 	size = ft_strlen(s1) + ft_strlen(s2) + 1;
-	str = ft_calloc(size, 1);
+	str = malloc(size);
 	index = 0;
 	if (str == NULL)
 		return (NULL);

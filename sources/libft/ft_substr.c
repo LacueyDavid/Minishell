@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:26:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/05/12 18:28:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 04:01:13 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*toobigstart(void)
 {
 	char	*str;
 
-	str = ft_calloc(1, 1);
+	str = malloc(1);
 	if (str == NULL)
 		return (NULL);
 	str[0] = '\0';
@@ -31,9 +31,9 @@ static char	*str_fill(char const *s, unsigned int start, size_t len, char *str)
 	index = 0;
 	size = ft_strlen(s) - start + 1;
 	if (len < size)
-		str = ft_calloc(len + 1, 1);
+		str = malloc(len + 1);
 	else
-		str = ft_calloc(ft_strlen(s) - start + 1, 1);
+		str = malloc(ft_strlen(s) - start + 1);
 	if (!str)
 		return (NULL);
 	while (s[start] && index < len)

@@ -41,3 +41,22 @@ stdin: |
   rm output.txt
 stdout: |
   toto tata
+---
+name: Exec echo toto > file1.txt > file2.txt tata
+cmd: ./minishell
+stdin: |
+  echo toto > file1.txt > file2.txt tata
+  cat file2.txt
+  rm file2.txt
+  rm file1.txt
+stdout: |
+  toto tata
+---
+name: Exec echo toto > file1.txt > file2.txt tata
+cmd: ./minishell
+stdin: |
+  echo toto > file1.txt > file2.txt tata
+  cat file1.txt
+  rm file1.txt
+  rm file2.txt
+stdout: |
