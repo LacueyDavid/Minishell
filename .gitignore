@@ -2,3 +2,4 @@
 .vscode
 .nfs*
 .minishell_history
+*.txt
