@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   init_token_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/10 20:32:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 03:11:27 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/25 02:59:45 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/25 03:07:09 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "lexer.h"
-#include "libft.h"
 
-t_token_list *lexer(char *input)
+t_token_list *init_token_list(void)
 {
-	t_token_list	*token_list;
-	char			**splited_input;
+	t_token_list *token_list;
 
-	token_list = init_token_list();
+	token_list = malloc(sizeof(t_token_list));
 	if (!token_list)
 		return (NULL);
-	splited_input = ft_strtok(input, MINISHELL_IFS);
-	if (!splited_input)
-	{
-		free(token_list);
-		return (NULL);
-	}
-	if (!tokenize_splited_input(token_list, splited_input))
-		return (NULL);
-	free_strs(splited_input);
+	token_list->tokens = NULL;
+	token_list->size = 0;
+	token_list->capacity = 0;
 	return (token_list);
 }

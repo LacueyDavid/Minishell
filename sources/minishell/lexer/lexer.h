@@ -6,14 +6,15 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:23:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/17 03:42:44 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/25 03:19:07 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-#include <stddef.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 # ifndef MINISHELL_IFS
 #  define MINISHELL_IFS " \t\n\r\v\f"
@@ -39,9 +40,10 @@ typedef struct token_list
 	t_token	*tokens;
 }	t_token_list;
 
-void			destroy_token_list(t_token_list *token_list);
-void			add_token(t_token_list *token_list, t_token token);
 t_token_list	*init_token_list(void);
 t_token_list	*lexer(char *input);
+void			destroy_token_list(t_token_list *token_list);
+void			add_token(t_token_list *token_list, t_token token);
+bool			tokenize_splited_input(t_token_list *token_list, char **splited_input);
 
 #endif

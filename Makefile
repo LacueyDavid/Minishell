@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/25 02:08:32 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/25 03:19:53 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,11 @@ OBJS =												\
 													\
 				$(addprefix sources/,				\
 				main.o								\
+													\
+				$(addprefix get_next_line/,			\
+				get_next_line.o						\
+				get_next_line_utils.o			)	\
+													\
 				$(addprefix minishell/,				\
 				minishell.o							\
 													\
@@ -49,11 +54,12 @@ OBJS =												\
 													\
 				$(addprefix lexer/,					\
 				lexer.o								\
-				token_list.o					))	\
+				add_token.o							\
+				destroy.o							\
+				init_token_list.o					\
+				lexer.o								\
+				tokenize_splited_input.o		)))	\
 													\
-				$(addprefix get_next_line/,			\
-				get_next_line.o						\
-				get_next_line_utils.o			))	\
 													\
 
 TEST_OBJS =												\
