@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 15:00:18 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 15:56:22 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	exec_simple_command(t_node *node)
 	pid1 = fork();
 	if (pid1 < 0)
 	{
-		(perror("Fork failed"));
+		(exit_status = -1, perror("Fork failed"));
 		return ;
 	}
 	if (pid1 == 0)
@@ -39,20 +39,18 @@ void	exec_simple_command(t_node *node)
 		paths = find_paths(environ);
 		if (!paths)
 		{
-			clear_tree(node->head);
+			(exit_status = -1, perror("No paths found"));
 			return ;
 		}
 		command = get_command(node->vector_strs.values[0], paths);
 		if (!command)
 		{
-			free_strs(paths);
-			clear_tree(node->head);
-			(perror("Command not found"), exit(1));
+			(exit_status = -1, free_strs(paths), perror("Command not found"));
+			return ;
 		}
 		execve(command, node->vector_strs.values, environ);
-		free_strs(paths);
-		clear_tree(node->head);
-		(perror("Execve failed"), exit(1));
+		(exit_status = -1, free_strs(paths), free(command), perror("Execve failed"));
+		return ;
 	}
 	waitpid(pid1, &exit_status, 0);
 }

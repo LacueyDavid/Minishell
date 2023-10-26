@@ -6,15 +6,15 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 12:53:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 15:30:44 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-#include "lexer.h"
 #include <stdbool.h>
+#include "lexer.h"
 
 typedef enum e_node_type
 {
@@ -24,9 +24,9 @@ typedef enum e_node_type
 
 typedef struct s_vector
 {
-	size_t		size;
-	size_t		capacity;
-	char		**values;
+	size_t	size;
+	size_t	capacity;
+	char	**values;
 }	t_vector_strs;
 
 typedef struct s_node

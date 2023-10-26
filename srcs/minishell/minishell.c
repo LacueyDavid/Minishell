@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 15:00:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 16:19:59 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ static void	interactive_mode(void)
 	redo_history();
 	while(true)
 	{
-		input = readline("Wesh: ");
+		input = readline("\e[38;5;153mWesh: \e[38;5;225m");
 		if (!input)
-			break;
+			break ;
 		token_list = lexer(input);
 		if (!token_list)
 		{
@@ -50,16 +50,15 @@ static void	interactive_mode(void)
 		tree = parser(token_list);
 		if (!tree)
 		{
-			free(input);
-			destroy_token_list(token_list);
+			(free(input), destroy_token_list(token_list));
 			continue ;
 		}
 		execution(tree);
 		if (exit_status == 0)
 			update_history(input);
-		free(input);
-		destroy_token_list(token_list);
-		clear_tree(tree);
+		else if (exit_status == -1)
+			(clear_tree(tree), destroy_token_list(token_list), exit(1));
+		(free(input), destroy_token_list(token_list), clear_tree(tree));
 	}
 }
 
@@ -73,7 +72,7 @@ static void	non_interactive_mode(void)
 	{
 		input = get_next_line(STDIN_FILENO);
 		if (!input)
-			break;
+			break ;
 		delete_newline(&input);
 		token_list = lexer(input);
 		if (!token_list)
@@ -84,14 +83,11 @@ static void	non_interactive_mode(void)
 		tree = parser(token_list);
 		if (!tree)
 		{
-			free(input);
-			destroy_token_list(token_list);
+			(free(input), destroy_token_list(token_list));
 			continue ;
 		}
 		execution(tree);
-		free(input);
-		destroy_token_list(token_list);
-		clear_tree(tree);
+		(free(input), destroy_token_list(token_list), clear_tree(tree));
 	}
 }
 
