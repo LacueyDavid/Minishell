@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_word.c                                         :+:      :+:    :+:   */
+/*   clear_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 06:29:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 02:11:53 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/24 05:18:37 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/26 12:26:02 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <stdlib.h>
 #include "libft.h"
 
-bool	add_word(t_node *node, char *word)
+void	clear_tree(t_node *node)
 {
-	node->values_size++;
-	if (!update_capacity(node))
-		return (false);
-	node->values[node->values_size - 1] = ft_strdup(word);
-	if (!node->values[node->values_size - 1])
-		return (false);
-	node->values[node->values_size] = NULL;
-	return (true);
+	if (!node)
+		return ;
+	clear_tree(node->left);
+	clear_tree(node->right);
+	free_strs(node->vector_strs.values);
+	free(node);
 }

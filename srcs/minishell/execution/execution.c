@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 09:50:14 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 12:25:41 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	exec_simple_command(t_node *node)
 	char	*command;
 	pid_t	pid1;
 
-	if (!node->values)
+	if (!node->vector_strs.values)
 		return ;
 	pid1 = fork();
 	if (pid1 < 0)
@@ -42,14 +42,14 @@ void	exec_simple_command(t_node *node)
 			clear_tree(node->head);
 			return ;
 		}
-		command = get_command(node->values[0], paths);
+		command = get_command(node->vector_strs.values[0], paths);
 		if (!command)
 		{
 			free_strs(paths);
 			clear_tree(node->head);
 			(perror("Command not found"), exit(1));
 		}
-		execve(command, node->values, environ);
+		execve(command, node->vector_strs.values, environ);
 		free_strs(paths);
 		clear_tree(node->head);
 		(perror("Execve failed"), exit(1));
@@ -61,7 +61,7 @@ void	redirection_output(t_node *node)
 {
 	int	fd;
 
-	fd = open(node->right->values[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(node->right->vector_strs.values[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		(perror("Open failed"), exit(1));
 	if (dup2(fd, STDOUT_FILENO) < 0)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node.c                                             :+:      :+:    :+:   */
+/*   init_node.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 02:12:25 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 11:00:39 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ t_node	*init_node(void)
 	if (!node)
 		return (NULL);
 	node->type = 0;
-	node->values = NULL;
-	node->values_capacity = 0;
-	node->values_size= 0;
+	node->vector_strs.capacity = 0;
+	node->vector_strs.size = 0;
+	node->vector_strs.values = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 05:28:31 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 02:21:34 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 12:25:15 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ Ensure(parse_full_command, can_parse_echo_toto)
 
 	//THEN (alors)
 	assert_that(head->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(head->values[0], is_equal_to_string("echo"));
-	assert_that(head->values[1], is_equal_to_string("toto"));
+	assert_that(head->vector_strs.values[0], is_equal_to_string("echo"));
+	assert_that(head->vector_strs.values[1], is_equal_to_string("toto"));
 	assert_that(head->left, is_equal_to(NULL));
 	assert_that(head->right, is_equal_to(NULL));
 
@@ -88,15 +88,15 @@ Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 	assert_that(head->type, is_equal_to(O_REDIRECTION));
 
 	assert_that(left->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(left->values[0], is_equal_to_string("echo"));
-	assert_that(left->values[1], is_equal_to_string("toto"));
-	assert_that(left->values[2], is_equal_to_string(NULL));
+	assert_that(left->vector_strs.values[0], is_equal_to_string("echo"));
+	assert_that(left->vector_strs.values[1], is_equal_to_string("toto"));
+	assert_that(left->vector_strs.values[2], is_equal_to_string(NULL));
 	assert_that(left->left, is_equal_to(NULL));
 	assert_that(left->right, is_equal_to(NULL));
 
 	assert_that(right->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(right->values[0], is_equal_to_string("output.txt"));
-	assert_that(right->values[1], is_equal_to_string(NULL));
+	assert_that(right->vector_strs.values[0], is_equal_to_string("output.txt"));
+	assert_that(right->vector_strs.values[1], is_equal_to_string(NULL));
 	assert_that(right->left, is_equal_to(NULL));
 	assert_that(right->right, is_equal_to(NULL));
 

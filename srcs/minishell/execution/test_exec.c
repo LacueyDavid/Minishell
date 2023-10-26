@@ -21,10 +21,10 @@ Ensure(execution, can_exec_echo_toto)
 	//GIVEN (etant donné etat initial)
 	t_node *node = malloc(sizeof(t_node));
 	node->type = SIMPLE_COMMAND;
-	node->values = malloc(sizeof(char *) * 3);
-	node->values[0] = ft_strdup("echo");
-	node->values[1] = ft_strdup("toto");
-	node->values[2] = NULL;
+	node->vector_strs.values = malloc(sizeof(char *) * 3);
+	node->vector_strs.values[0] = ft_strdup("echo");
+	node->vector_strs.values[1] = ft_strdup("toto");
+	node->vector_strs.values[2] = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	//WHEN (quand)
@@ -41,7 +41,7 @@ Ensure(execution, can_exec_echo_toto)
 	close(fd);
 	unlink(output_file);
 
-	free_strs(node->values);
+	free_strs(node->vector_strs.values);
 	free(node);
 	free(line);
 	fclose(file);
@@ -55,11 +55,11 @@ Ensure(execution, can_exec_echo_toto_with_option)
 	//GIVEN (etant donné etat initial)
 	t_node *node = malloc(sizeof(t_node));
 	node->type = SIMPLE_COMMAND;
-	node->values = malloc(sizeof(char *) * 4);
-	node->values[0] = ft_strdup("echo");
-	node->values[1] = ft_strdup("-n");
-	node->values[2] = ft_strdup("toto");
-	node->values[3] = NULL;
+	node->vector_strs.values = malloc(sizeof(char *) * 4);
+	node->vector_strs.values[0] = ft_strdup("echo");
+	node->vector_strs.values[1] = ft_strdup("-n");
+	node->vector_strs.values[2] = ft_strdup("toto");
+	node->vector_strs.values[3] = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	//WHEN (quand)
@@ -76,7 +76,7 @@ Ensure(execution, can_exec_echo_toto_with_option)
 	close(fd);
 	unlink(output_file);
 
-	free_strs(node->values);
+	free_strs(node->vector_strs.values);
 	free(node);
 	free(line);
 	fclose(file);
@@ -90,17 +90,17 @@ Ensure(execution, can_exec_echo_toto_with_redirection)
 	//GIVEN (etant donné etat initial)
 	t_node *left = malloc(sizeof(t_node));
 	left->type = SIMPLE_COMMAND;
-	left->values = malloc(sizeof(char *) * 4);
-	left->values[0] = ft_strdup("echo");
-	left->values[1] = ft_strdup("-n");
-	left->values[2] = ft_strdup("toto");
-	left->values[3] = NULL;
+	left->vector_strs.values = malloc(sizeof(char *) * 4);
+	left->vector_strs.values[0] = ft_strdup("echo");
+	left->vector_strs.values[1] = ft_strdup("-n");
+	left->vector_strs.values[2] = ft_strdup("toto");
+	left->vector_strs.values[3] = NULL;
 
 	t_node *right = malloc(sizeof(t_node));
 	right->type = SIMPLE_COMMAND;
-	right->values = malloc(sizeof(char *) * 2);
-	right->values[0] = ft_strdup(output_file);
-	right->values[1] = NULL;
+	right->vector_strs.values = malloc(sizeof(char *) * 2);
+	right->vector_strs.values[0] = ft_strdup(output_file);
+	right->vector_strs.values[1] = NULL;
 
 	t_node *head = malloc(sizeof(t_node));
 	head->type = O_REDIRECTION;
@@ -117,9 +117,9 @@ Ensure(execution, can_exec_echo_toto_with_redirection)
 	close(fd);
 	unlink(output_file);
 
-	free_strs(left->values);
+	free_strs(left->vector_strs.values);
 	free(left);
-	free_strs(right->values);
+	free_strs(right->vector_strs.values);
 	free(right);
 	free(head);
 	free(line);

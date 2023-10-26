@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/25 08:31:22 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/26 11:14:01 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,17 +16,17 @@ CFLAGS = -Wall -Wextra -Werror -g3 -fPIC
 
 LDFLAGS = $(LIBFT) -lreadline
 
-CPPFLAGS = 	-I sources/libft/					\
-			-I sources/get_next_line/			\
-			-I sources/minishell/				\
-			-I sources/minishell/lexer/			\
-			-I sources/minishell/execution/		\
-			-I sources/minishell/parser/		\
-			-I sources/minishell/history/		\
+CPPFLAGS = 	-I srcs/libft/					\
+			-I srcs/get_next_line/			\
+			-I srcs/minishell/				\
+			-I srcs/minishell/lexer/			\
+			-I srcs/minishell/execution/		\
+			-I srcs/minishell/parser/		\
+			-I srcs/minishell/history/		\
 
 OBJS =												\
 													\
-				$(addprefix sources/,				\
+				$(addprefix srcs/,				\
 				main.o								\
 													\
 				$(addprefix get_next_line/,			\
@@ -44,11 +44,11 @@ OBJS =												\
 												)	\
 				$(addprefix parser/,				\
 				add_word.o							\
-				deletes.o							\
-				node.o								\
+				clear_tree.o						\
+				init_node.o							\
 				parser.o							\
-				tree.o								\
-				vector_2_dimension.o			)	\
+				create_tree.o						\
+				update_vector_strs_capacity.o	)	\
 													\
 				$(addprefix lexer/,					\
 				lexer.o								\
@@ -62,14 +62,14 @@ OBJS =												\
 
 TEST_OBJS =												\
 														\
-				sources/minishell/lexer/test_lexer.o	\
-				sources/minishell/execution/test_exec.o	\
-				sources/minishell/parser/test_parser.o	\
+				srcs/minishell/lexer/test_lexer.o	\
+				srcs/minishell/execution/test_exec.o	\
+				srcs/minishell/parser/test_parser.o	\
 														\
 
 NAME = minishell
-LIBFT = sources/libft/libft.a
-LIBFTPATH = sources/libft/
+LIBFT = srcs/libft/libft.a
+LIBFTPATH = srcs/libft/
 
 all: $(NAME)
 

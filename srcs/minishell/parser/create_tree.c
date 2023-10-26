@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tree.c                                             :+:      :+:    :+:   */
+/*   create_tree.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 09:49:28 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 11:11:13 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	create_tree(t_node *node, t_token_list *token_list)
 	current_o_redirection->type = SIMPLE_COMMAND;
 	if (node == current_o_redirection)
 	{
-		node->values = simple_command->values;
+		node->vector_strs.values = simple_command->vector_strs.values;
 		free(simple_command);
 	}
 	else
