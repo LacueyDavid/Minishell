@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 11:12:52 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 12:53:36 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 
 #include "lexer.h"
 #include <stdbool.h>
+
+typedef enum e_node_type
+{
+	SIMPLE_COMMAND,
+	COMMAND_O_REDIRECT
+}   e_node_type;
 
 typedef struct s_vector
 {
@@ -25,7 +31,7 @@ typedef struct s_vector
 
 typedef struct s_node
 {
-	e_token_type	type;
+	e_node_type		type;
 	t_vector_strs	vector_strs;
 	struct s_node	*head;
 	struct s_node	*left;

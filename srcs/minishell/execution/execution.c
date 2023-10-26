@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 12:25:41 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/26 12:54:01 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	redirection_output(t_node *node)
 
 void	exec_full_command(t_node *node, int fds[3])
 {
-	if (node->type == O_REDIRECTION)
+	if (node->type == COMMAND_O_REDIRECT)
 	{
 		redirection_output(node);
 		if (!node->left)

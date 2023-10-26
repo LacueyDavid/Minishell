@@ -103,7 +103,7 @@ Ensure(execution, can_exec_echo_toto_with_redirection)
 	right->vector_strs.values[1] = NULL;
 
 	t_node *head = malloc(sizeof(t_node));
-	head->type = O_REDIRECTION;
+	head->type = COMMAND_O_REDIRECT;
 	head->left = left;
 	head->right = right;
 
