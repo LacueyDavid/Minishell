@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 06:39:32 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/27 06:42:51 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ bool	create_tree(t_node *head, t_token_list *token_list)
 	index = 0;
 	
 	init_current_redirection(&current_redirection, &head);
-	init_simple_command(&simple_command, head);
+	if (!init_simple_command(&simple_command, head))
+		return (false);
 	while (index < token_list->size)
 	{
 		if (token_list->tokens[index].type == WORD)
