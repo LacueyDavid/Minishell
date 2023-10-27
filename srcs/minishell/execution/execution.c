@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 05:42:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/27 06:20:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,31 @@ void	redirection_output(t_node *node)
 		(perror(RED"Close failed"), exit(1));
 }
 
+void	redirection_input(t_node *node)
+{
+	int	fd;
+
+	fd = open(node->right->vector_strs.values[0], O_RDONLY);
+	if (fd < 0)
+		(perror(RED"Open failed"), exit(1));
+	if (dup2(fd, STDIN_FILENO) < 0)
+		(perror(RED"Dup2 failed"), exit(1));
+	if (close(fd) < 0)
+		(perror(RED"Close failed"), exit(1));
+}
+
 void	exec_full_command(t_node *node, int fds[3])
 {
-	if (node->type == COMMAND_O_REDIRECT)
+	if (node->type == COMMAND_I_REDIRECT)
+	{
+		redirection_input(node);
+		if (!node->left)
+			exec_full_command(node->right, fds);
+		else
+			exec_full_command(node->left, fds);
+		dup2(fds[0], STDIN_FILENO);
+	}
+	else if (node->type == COMMAND_O_REDIRECT)
 	{
 		redirection_output(node);
 		if (!node->left)
@@ -89,6 +111,8 @@ void	execution(t_node *tree)
 	int fds[3];
 
 	fds[1] = dup(1);
+	fds[0] = dup(0);
 	exec_full_command(tree, fds);
 	close (fds[1]);
+	close (fds[0]);
 }

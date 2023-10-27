@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 03:10:40 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 03:19:19 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/27 06:01:28 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static t_token choose_token(char *input)
 
 	if (ft_strcmp(input, ">") == 0)
 		token = create_token(O_REDIRECTION, input);
+	else if (ft_strcmp(input, "<") == 0)
+		token = create_token(I_REDIRECTION, input);
 	else
 		token = create_token(WORD, input);
 	return (token);

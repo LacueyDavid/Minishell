@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 05:44:50 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/27 06:27:02 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	init_current_redirection(t_node **current, t_node **head)
 	*current = *head;
 }
 
-static bool	add_redirection(t_node **current, t_node **last_current, t_token token)
+static bool add_o_redirection(t_node **current, t_node **last_current, t_token token)
 {
 	(*current)->type = COMMAND_O_REDIRECT;
 	(*current)->right = init_node();
@@ -42,6 +42,31 @@ static bool	add_redirection(t_node **current, t_node **last_current, t_token tok
 		return (false);
 	*last_current = *current;
 	*current = (*current)->right;
+	return (true);
+}
+
+static bool	add_i_redirection(t_node **current, t_node **last_current, t_token token)
+{
+	(*current)->type = COMMAND_I_REDIRECT;
+	(*current)->right = init_node();
+	if (!(*current)->right)
+		return (false);
+	(*current)->right->type = COMMAND_I_REDIRECT;
+	if (!add_word((*current)->right, token.value))
+		return (false);
+	*last_current = *current;
+	*current = (*current)->right;
+	return (true);
+}
+
+static bool	add_redirection(t_node **current, t_node **last_current, t_token token)
+{
+	if (token.type == O_REDIRECTION)
+		if (!add_o_redirection(current, last_current, token))
+			return (false);
+	if (token.type == I_REDIRECTION)
+		if (!add_i_redirection(current, last_current, token))
+			return (false);
 	return (true);
 }
 
@@ -72,7 +97,7 @@ bool	create_tree(t_node *head, t_token_list *token_list)
 		if (token_list->tokens[index].type == WORD)
 			if (!add_word(simple_command, token_list->tokens[index].value))
 				return (false);
-		if (token_list->tokens[index].type == O_REDIRECTION)
+		if (token_list->tokens[index].type == O_REDIRECTION || token_list->tokens[index].type == I_REDIRECTION)
 		{
 			index++;
 			if (!add_redirection(&current_redirection, &last_redirection, token_list->tokens[index]))
