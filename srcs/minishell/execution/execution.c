@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 08:11:34 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/27 09:15:34 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	exec_full_command(t_node *node, int fds[4])
 
 void	execution(t_node *tree)
 {
-	int fds[3];
+	int fds[4];
 
 	fds[1] = dup(1);
 	fds[0] = dup(0);
