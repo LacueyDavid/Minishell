@@ -60,3 +60,41 @@ stdin: |
   rm file1.txt
   rm file2.txt
 stdout: |
+---
+name: Exec echo toto > file1.txt < file1.txt tata
+cmd: ./minishell
+stdin: |
+  echo toto > file1.txt < file1.txt tata
+  cat file1.txt
+  rm file1.txt
+stdout: |
+  toto tata
+---
+name: Exec echo toto > file1.txt puis wc -c < file1.txt
+cmd: ./minishell
+stdin: |
+  echo toto > file1.txt
+  wc -c < file1.txt
+  rm file1.txt
+stdout: |
+  5
+---
+name: Exec > tonton < titi > bibi echo toto < tata > bobo tete non < tyty oui < tutu
+cmd: ./minishell
+stdin: |
+  touch titi tata tyty tutu
+  > tonton < titi > bibi echo toto < tata > bobo tete non < tyty oui < tutu
+  cat bobo
+  rm tonton titi bibi tata tyty tutu
+stdout: |
+  toto tete non oui
+---
+name: Exec > tonton < titi > bibi echo toto < tata tete non < tyty oui < tutu
+cmd: ./minishell
+stdin: |
+  touch titi tata tyty tutu
+  > tonton < titi > bibi wc -c < tata < tyty < tutu < bobo
+  cat bibi
+  rm tonton titi bibi tata tyty tutu bobo
+stdout: |
+  18
