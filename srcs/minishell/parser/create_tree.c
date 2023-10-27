@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 07:11:50 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/27 07:45:08 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,20 @@ static bool	add_i_redirection(t_node **current, t_node **last_current, t_token t
 	return (true);
 }
 
+static bool	add_here_doc(t_node **current, t_node **last_current, t_token token)
+{
+	(*current)->type = HERE_DOCUMENT;
+	(*current)->right = init_node();
+	if (!(*current)->right)
+		return (false);
+	(*current)->right->type = HERE_DOCUMENT;
+	if (!add_word((*current)->right, token.value))
+		return (false);
+	*last_current = *current;
+	*current = (*current)->right;
+	return (true);
+}
+
 static void	is_simple_command(t_node *head, t_node *simple_command, t_node *current_redirection, t_node *last_redirection)
 {
 	if (head == current_redirection)
@@ -117,6 +131,12 @@ bool	create_tree(t_node *head, t_token_list *token_list)
 		{
 			index++;
 			if (!add_append(&current_redirection, &last_redirection, token_list->tokens[index]))
+				return (false);
+		}
+		if (token_list->tokens[index].type == HERE_DOC)
+		{
+			index++;
+			if (!add_here_doc(&current_redirection, &last_redirection, token_list->tokens[index]))
 				return (false);
 		}
 		index++;

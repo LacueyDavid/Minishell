@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 07:07:57 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/27 08:11:34 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include "colors.h"
+#include "get_next_line.h"
+#include <readline/readline.h>
 
 extern char	**environ;
 extern int	exit_status;
@@ -95,7 +97,37 @@ void	redirection_input(t_node *node)
 		(perror(RED"Close failed"), exit(1));
 }
 
-void	exec_full_command(t_node *node, int fds[3])
+void	here_doc(t_node *node)
+{
+	char	*eof;
+	char	*line;
+	int		fd;
+
+	eof = node->right->vector_strs.values[0];
+	fd = open("here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+		(perror(RED"Open failed"), exit(1));
+	while (true)
+	{
+		line = readline(LIGHT_BLUE "> " LIGHT_PINK);
+		if (!line)
+			break ;
+		if (ft_strcmp(eof, line) == 0)
+			break ;
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	free(line);
+	close(fd);
+	fd = open("here_doc", O_RDONLY);
+	if (dup2(fd, STDIN_FILENO) < 0)
+		(perror(RED"Dup2 failed"), exit(1));
+	if (close(fd) < 0)
+		(perror(RED"Close failed"), exit(1));
+}
+
+void	exec_full_command(t_node *node, int fds[4])
 {
 	if (node->type == COMMAND_I_REDIRECT)
 	{
@@ -124,8 +156,18 @@ void	exec_full_command(t_node *node, int fds[3])
 			exec_full_command(node->left, fds);
 		dup2(fds[1], STDOUT_FILENO);
 	}
+	else if (node->type == HERE_DOCUMENT)
+	{
+		here_doc(node);
+		if (!node->left)
+			exec_full_command(node->right, fds);
+		else
+			exec_full_command(node->left, fds);
+		dup2(fds[0], STDIN_FILENO);
+	}
 	else if (node->type == SIMPLE_COMMAND)
 		exec_simple_command(node);
+	unlink("here_doc");
 }
 
 void	execution(t_node *tree)

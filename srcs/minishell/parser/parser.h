@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 07:08:29 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/27 07:26:49 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef enum e_node_type
 	COMMAND_O_REDIRECT,
 	COMMAND_I_REDIRECT,
 	APPEND_REDIRECT,
+	HERE_DOCUMENT,
 }   e_node_type;
 
 typedef struct s_vector
