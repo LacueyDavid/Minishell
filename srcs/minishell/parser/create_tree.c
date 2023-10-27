@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 06:27:02 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/27 06:39:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,6 @@ static bool	add_i_redirection(t_node **current, t_node **last_current, t_token t
 	return (true);
 }
 
-static bool	add_redirection(t_node **current, t_node **last_current, t_token token)
-{
-	if (token.type == O_REDIRECTION)
-		if (!add_o_redirection(current, last_current, token))
-			return (false);
-	if (token.type == I_REDIRECTION)
-		if (!add_i_redirection(current, last_current, token))
-			return (false);
-	return (true);
-}
-
 static void	is_simple_command(t_node *head, t_node *simple_command, t_node *current_redirection, t_node *last_redirection)
 {
 	if (head == current_redirection)
@@ -97,10 +86,16 @@ bool	create_tree(t_node *head, t_token_list *token_list)
 		if (token_list->tokens[index].type == WORD)
 			if (!add_word(simple_command, token_list->tokens[index].value))
 				return (false);
-		if (token_list->tokens[index].type == O_REDIRECTION || token_list->tokens[index].type == I_REDIRECTION)
+		if (token_list->tokens[index].type == O_REDIRECTION)
 		{
 			index++;
-			if (!add_redirection(&current_redirection, &last_redirection, token_list->tokens[index]))
+			if (!add_o_redirection(&current_redirection, &last_redirection, token_list->tokens[index]))
+				return (false);
+		}
+		if (token_list->tokens[index].type == I_REDIRECTION)
+		{
+			index++;
+			if (!add_i_redirection(&current_redirection, &last_redirection, token_list->tokens[index]))
 				return (false);
 		}
 		index++;
