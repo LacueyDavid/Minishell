@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 05:28:31 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 12:25:15 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/27 05:34:40 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 	t_node *left = head->left;
 	t_node *right = head->right;
 
-	assert_that(head->type, is_equal_to(O_REDIRECTION));
+	assert_that(head->type, is_equal_to(COMMAND_O_REDIRECT));
 
 	assert_that(left->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(left->vector_strs.values[0], is_equal_to_string("echo"));
@@ -94,7 +94,6 @@ Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 	assert_that(left->left, is_equal_to(NULL));
 	assert_that(left->right, is_equal_to(NULL));
 
-	assert_that(right->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(right->vector_strs.values[0], is_equal_to_string("output.txt"));
 	assert_that(right->vector_strs.values[1], is_equal_to_string(NULL));
 	assert_that(right->left, is_equal_to(NULL));

@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   colors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 05:23:06 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/10/27 01:34:27 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/10/27 01:45:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
-#include <stdlib.h>
+#ifndef COLORS_H
+# define COLORS_H
 
-t_node	*parser(t_token_list *token_list)
-{
-	t_node	*head;
+#ifndef WHITE
+# define WHITE		"\033[0m"
+#endif
 
-	head = init_node();
-	if (!head)
-		return (NULL);
-	if (!create_tree(head, token_list))
-	{
-		clear_tree(head);
-		return (NULL);
-	}
-	return (head);
-}
+#ifndef LIGHT_BLUE
+# define LIGHT_BLUE	"\e[38;5;153m"
+#endif
+
+#ifndef LIGHT_PINK
+# define LIGHT_PINK	"\e[38;5;225m"
+#endif
+
+#ifndef RED
+# define RED		"\033[0;31m"
+#endif
+
+#endif

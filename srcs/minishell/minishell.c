@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 16:19:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/27 01:46:10 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "parser.h"
 #include "execution.h"
 #include "history.h"
+#include "colors.h"
 
 int		exit_status = 0;
 
@@ -38,7 +39,7 @@ static void	interactive_mode(void)
 	redo_history();
 	while(true)
 	{
-		input = readline("\e[38;5;153mWesh: \e[38;5;225m");
+		input = readline(LIGHT_BLUE "Wesh: " LIGHT_PINK);
 		if (!input)
 			break ;
 		token_list = lexer(input);
