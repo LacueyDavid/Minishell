@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 07:26:49 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/28 07:58:01 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,15 @@ typedef struct s_node
 	e_node_type		type;
 	t_vector_strs	vector_strs;
 	struct s_node	*head;
+	struct s_node	*parent;
 	struct s_node	*left;
 	struct s_node	*right;
 }	t_node;
+
+typedef struct s_parser_map
+{
+	bool			(*function)(t_node **node, t_token token);
+}				t_parser_map;
 
 t_node	*parser(t_token_list *token_list);
 t_node	*init_node(void);

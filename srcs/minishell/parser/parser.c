@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 05:23:06 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/28 06:31:22 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_node	*parser(t_token_list *token_list)
 	head = init_node();
 	if (!head)
 		return (NULL);
+	head->head = head;
 	if (!create_tree(head, token_list))
 	{
 		clear_tree(head);

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:23:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 07:26:16 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/10/28 07:58:11 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # ifndef MINISHELL_IFS
 #  define MINISHELL_IFS " \t\n\r\v\f"
 # endif
+
+#ifndef NUMBER_OF_TOKEN_TYPES
+# define NUMBER_OF_TOKEN_TYPES 5
+#endif
 
 typedef enum e_token_type
 {
