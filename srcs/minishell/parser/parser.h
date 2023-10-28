@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/28 09:49:35 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/28 10:27:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ typedef struct s_env_for_parser
 
 t_node	*parser(t_token_list *token_list);
 t_node	*init_node(void);
-void	clear_tree(t_node *node);
 bool	add_word(t_node *node, char *word);
 bool	init_nodes(t_node **left, t_node **right);
+bool	init_parser_env(t_parser_env *env, t_node **head);
 bool	create_tree(t_node *head, t_token_list *token_list);
 bool	update_vector_strs_capacity(t_vector_strs *node);
+void	clear_tree(t_node *node);
+void	create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES]);
 
 #endif

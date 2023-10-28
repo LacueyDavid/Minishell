@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_node.c                                        :+:      :+:    :+:   */
+/*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 05:30:47 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/28 10:20:58 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,27 @@ bool	init_nodes(t_node **left, t_node **right)
 	*right = init_node();
 	if (!*left || !*right)
 		return (false);
+	return (true);
+}
+
+static bool	init_simple_command(t_node **simple_command, t_node *head)
+{
+	*simple_command = init_node();
+	if (!*simple_command)
+		return (false);
+	(*simple_command)->type = SIMPLE_COMMAND;
+	(*simple_command)->head = head;
+	(*simple_command)->parent = NULL;
+	(*simple_command)->left = NULL;
+	(*simple_command)->right = NULL;
+	return (true);
+}
+
+bool	init_parser_env(t_parser_env *env, t_node **head)
+{
+	create_parser_map(env->parser_map);
+	if (!init_simple_command(&env->simple_command, *head))
+		return (false);
+	env->head = head;
 	return (true);
 }
