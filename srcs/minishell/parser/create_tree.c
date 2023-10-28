@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/28 08:41:01 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/28 09:55:34 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static bool add_append(t_node **node, t_token token)
 	return (true);
 }
 
+#include <stdio.h>
 static bool add_o_redirection(t_node **node, t_token token)
 {
 	(*node)->type = COMMAND_O_REDIRECT;
@@ -93,8 +94,11 @@ static bool	init_simple_command(t_node **simple_command, t_node *head)
 	*simple_command = init_node();
 	if (!*simple_command)
 		return (false);
-	(*simple_command)->head = head;
 	(*simple_command)->type = SIMPLE_COMMAND;
+	(*simple_command)->head = head;
+	(*simple_command)->parent = NULL;
+	(*simple_command)->left = NULL;
+	(*simple_command)->right = NULL;
 	return (true);
 }
 
@@ -106,30 +110,48 @@ void	create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES])
 	parser_map[HERE_DOC].function = add_here_doc;
 }
 
-bool	create_tree(t_node *head, t_token_list *token_list)
+
+static bool	create_nodes(t_parser_env env, t_token *tokens, size_t *index)
 {
-	t_node			*simple_command;
-	size_t			index;
-	t_parser_map	parser_map[NUMBER_OF_TOKEN_TYPES];
 	e_token_type	type;
 
+	type = tokens[*index].type;
+	if (type == WORD)
+	{
+		if (!add_word(env.simple_command, tokens[*index].value))
+			return (false);
+	}
+	else
+	{
+		if (!env.parser_map[type].function(env.head, tokens[++(*index)]))
+			return (false);
+	}
+	return (true);
+}
+
+static bool	init_parser_env(t_parser_env *env, t_node **head)
+{
+	create_parser_map(env->parser_map);
+	if (!init_simple_command(&env->simple_command, *head))
+		return (false);
+	env->head = head;
+	return (true);
+}
+
+bool	create_tree(t_node *head, t_token_list *token_list)
+{
+	t_parser_env	env;
+	size_t			index;
+
 	index = 0;
-	create_parser_map(parser_map);
-	if (!init_simple_command(&simple_command, head))
+	if (!init_parser_env(&env, &head))
 		return (false);
 	while (index < token_list->size)
 	{
-		type = token_list->tokens[index].type;
-		if (type == WORD)
-		{
-			if (!add_word(simple_command, token_list->tokens[index].value))
-				return (false);
-		}
-		else
-			if (!parser_map[type].function(&head, token_list->tokens[++index]))
-				return (false);
+		if (!create_nodes(env, token_list->tokens, &index))
+			return (false);
 		index++;
 	}
-	is_simple_command(head, simple_command);
+	is_simple_command(head, env.simple_command);
 	return (true);
 }
