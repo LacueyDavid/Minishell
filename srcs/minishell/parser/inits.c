@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/28 10:20:58 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/29 07:47:14 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,14 @@ static bool	init_simple_command(t_node **simple_command, t_node *head)
 	return (true);
 }
 
-bool	init_parser_env(t_parser_env *env, t_node **head)
+bool	init_parser_env(t_parser_env *env)
 {
 	create_parser_map(env->parser_map);
-	if (!init_simple_command(&env->simple_command, *head))
+	env->head = init_node();
+	if (!env->head)
 		return (false);
-	env->head = head;
+	env->head->head = env->head;
+	if (!init_simple_command(&env->simple_command, env->head))
+		return (false);
 	return (true);
 }

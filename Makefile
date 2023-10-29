@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/28 10:28:14 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/10/29 09:24:15 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,9 +40,17 @@ OBJS =													\
 				$(addprefix history/,					\
 				history.o						)		\
 														\
-				$(addprefix execution/,					\
-				execution.o								\
-												)		\
+				$(addprefix here_doc/,					\
+				here_doc.o						)		\
+														\
+				$(addprefix lexer/,						\
+				lexer.o									\
+				add_token.o								\
+				destroy.o								\
+				init_token_list.o						\
+				lexer.o									\
+				tokenize_splited_input.o		)		\
+														\
 				$(addprefix parser/,					\
 				add_word.o								\
 				clear_tree.o							\
@@ -52,14 +60,10 @@ OBJS =													\
 				create_tree.o							\
 				update_vector_strs_capacity.o	)		\
 														\
-				$(addprefix lexer/,						\
-				lexer.o									\
-				add_token.o								\
-				destroy.o								\
-				init_token_list.o						\
-				lexer.o									\
-				tokenize_splited_input.o		)))		\
-														\
+				$(addprefix execution/,					\
+				execution.o								\
+				init_exec.o								\
+				redirections.o					)))		\
 														\
 
 TEST_OBJS =												\

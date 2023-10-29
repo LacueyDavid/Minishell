@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 01:46:10 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/29 09:48:39 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	interactive_mode(void)
 	while(true)
 	{
 		input = readline(LIGHT_BLUE "Wesh: " LIGHT_PINK);
+		write(STDOUT_FILENO, WHITE, 5);
 		if (!input)
 			break ;
 		token_list = lexer(input);

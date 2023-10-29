@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 09:15:34 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/10/29 09:49:37 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,160 +23,71 @@
 extern char	**environ;
 extern int	exit_status;
 
-void	exec_simple_command(t_node *node)
+void	exec_in_the_son(t_node *node)
 {
 	char	**paths;
 	char	*command;
+
+	paths = find_paths(environ);
+	if (!paths)
+	{
+		(exit_status = -1, perror(RED"No paths found"WHITE));
+		return ;
+	}
+	command = get_command(node->vector_strs.values[0], paths);
+	if (!command)
+	{
+		(exit_status = -1, free_strs(paths), perror(RED"Command not found"WHITE));
+		return ;
+	}
+	execve(command, node->vector_strs.values, environ);
+	(exit_status = -1, free_strs(paths), free(command), perror(RED"Execve failed"WHITE));
+	return ;
+}
+
+void	exec_simple_command(t_node *node)
+{
 	pid_t	pid1;
 
-	if (!node->vector_strs.values)
+	if (!node || !node->vector_strs.values)
 		return ;
 	pid1 = fork();
 	if (pid1 < 0)
 	{
-		(exit_status = -1, perror(RED"Fork failed"));
+		(exit_status = -1, perror(RED"Fork failed"WHITE));
 		return ;
 	}
 	if (pid1 == 0)
 	{
-		paths = find_paths(environ);
-		if (!paths)
-		{
-			(exit_status = -1, perror(RED"No paths found"));
-			return ;
-		}
-		command = get_command(node->vector_strs.values[0], paths);
-		if (!command)
-		{
-			(exit_status = -1, free_strs(paths), perror(RED"Command not found"));
-			return ;
-		}
-		execve(command, node->vector_strs.values, environ);
-		(exit_status = -1, free_strs(paths), free(command), perror(RED"Execve failed"));
+		exec_in_the_son(node);
 		return ;
 	}
 	waitpid(pid1, &exit_status, 0);
 }
 
-void	redirection_output(t_node *node)
+void	exec_full_command(t_node *node, int fds[NUMBER_OF_FDS], t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 {
-	int	fd;
-
-	fd = open(node->right->vector_strs.values[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		(perror(RED"Open failed"), exit(1));
-	if (dup2(fd, STDOUT_FILENO) < 0)
-		(perror(RED"Dup2 failed"), exit(1));
-	if (close(fd) < 0)
-		(perror(RED"Close failed"), exit(1));
-}
-
-void	append_output(t_node *node)
-{
-	int	fd;
-
-	fd = open(node->right->vector_strs.values[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd < 0)
-		(perror(RED"Open failed"), exit(1));
-	if (dup2(fd, STDOUT_FILENO) < 0)
-		(perror(RED"Dup2 failed"), exit(1));
-	if (close(fd) < 0)
-		(perror(RED"Close failed"), exit(1));
-}
-
-void	redirection_input(t_node *node)
-{
-	int	fd;
-
-	fd = open(node->right->vector_strs.values[0], O_RDONLY);
-	if (fd < 0)
-		(perror(RED"Open failed"), exit(1));
-	if (dup2(fd, STDIN_FILENO) < 0)
-		(perror(RED"Dup2 failed"), exit(1));
-	if (close(fd) < 0)
-		(perror(RED"Close failed"), exit(1));
-}
-
-void	here_doc(t_node *node)
-{
-	char	*eof;
-	char	*line;
-	int		fd;
-
-	eof = node->right->vector_strs.values[0];
-	fd = open("here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		(perror(RED"Open failed"), exit(1));
-	while (true)
+	if (!node)
+		return ;
+	exec_map[node->type].function(node);
+	if (node->type != SIMPLE_COMMAND)
 	{
-		line = readline(LIGHT_BLUE "> " LIGHT_PINK);
-		if (!line)
-			break ;
-		if (ft_strcmp(eof, line) == 0)
-			break ;
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
-	free(line);
-	close(fd);
-	fd = open("here_doc", O_RDONLY);
-	if (dup2(fd, STDIN_FILENO) < 0)
-		(perror(RED"Dup2 failed"), exit(1));
-	if (close(fd) < 0)
-		(perror(RED"Close failed"), exit(1));
-}
-
-void	exec_full_command(t_node *node, int fds[4])
-{
-	if (node->type == COMMAND_I_REDIRECT)
-	{
-		redirection_input(node);
 		if (!node->left)
-			exec_full_command(node->right, fds);
+			exec_full_command(node->right, fds, exec_map);
 		else
-			exec_full_command(node->left, fds);
-		dup2(fds[0], STDIN_FILENO);
+			exec_full_command(node->left, fds, exec_map);
 	}
-	else if (node->type == COMMAND_O_REDIRECT)
-	{
-		redirection_output(node);
-		if (!node->left)
-			exec_full_command(node->right, fds);
-		else
-			exec_full_command(node->left, fds);
-		dup2(fds[1], STDOUT_FILENO);
-	}
-	else if (node->type == APPEND_REDIRECT)
-	{
-		append_output(node);
-		if (!node->left)
-			exec_full_command(node->right, fds);
-		else
-			exec_full_command(node->left, fds);
-		dup2(fds[1], STDOUT_FILENO);
-	}
-	else if (node->type == HERE_DOCUMENT)
-	{
-		here_doc(node);
-		if (!node->left)
-			exec_full_command(node->right, fds);
-		else
-			exec_full_command(node->left, fds);
-		dup2(fds[0], STDIN_FILENO);
-	}
-	else if (node->type == SIMPLE_COMMAND)
-		exec_simple_command(node);
-	unlink("here_doc");
+	reset_standard_streams(fds);
+	unlink("here_doc.minishell");
 }
 
 void	execution(t_node *tree)
 {
-	int fds[4];
+	int fds[NUMBER_OF_FDS];
+	t_exec_map	exec_map[NUMBER_OF_EXEC_FUNCS];
 
-	fds[1] = dup(1);
-	fds[0] = dup(0);
-	exec_full_command(tree, fds);
-	close (fds[1]);
-	close (fds[0]);
+	init_fds(fds);
+	init_exec_func_map(exec_map);
+	exec_full_command(tree, fds, exec_map);
+	close_fds(fds);
 }
