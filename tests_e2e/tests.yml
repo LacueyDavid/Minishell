@@ -98,3 +98,14 @@ stdin: |
   rm tonton titi bibi tata tyty tutu bobo
 stdout: |
   18
+---
+name: Exec echo toto > toto.txt suivi de echo tata >> toto.txt
+cmd: ./minishell
+stdin: |
+  echo toto > toto.txt
+  echo tata >> toto.txt
+  cat toto.txt
+  rm toto.txt
+stdout: |
+  toto
+  tata
