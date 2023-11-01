@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/29 09:48:39 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/01 12:43:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	interactive_mode(void)
 			continue ;
 		}
 		execution(tree);
-		if (exit_status == 0)
+		if (input)
 			update_history(input);
 		else if (exit_status == -1)
 			(clear_tree(tree), destroy_token_list(token_list), exit(1));

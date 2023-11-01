@@ -109,3 +109,28 @@ stdin: |
 stdout: |
   toto
   tata
+---
+name: Exec echo *.txt
+cmd: ./minishell
+stdin: |
+  touch toto.txt titi.txt tata.txt tutu.txt
+  echo *.txt
+  rm toto.txt titi.txt tata.txt tutu.txt
+stdout: |
+  tata.txt titi.txt toto.txt
+---
+name: Exec ls to*
+cmd: ./minishell
+stdin: |
+  touch toto.txt tito.txt toti.txt
+  ls to*
+  rm toto.txt tito.txt toti.txt
+stdout: |
+  toti.txt toto.txt
+---
+name: Exec echo *zefgzegt
+cmd: ./minishell
+stdin: |
+  echo *zefgzegt
+stdout: |
+  *zefgzegt

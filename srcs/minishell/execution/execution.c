@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/29 09:49:37 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/01 12:46:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "colors.h"
 #include "get_next_line.h"
 #include <readline/readline.h>
+#include "wildcards.h"
 
 extern char	**environ;
 extern int	exit_status;
@@ -38,6 +39,12 @@ void	exec_in_the_son(t_node *node)
 	if (!command)
 	{
 		(exit_status = -1, free_strs(paths), perror(RED"Command not found"WHITE));
+		return ;
+	}
+	wildcards(&(node->vector_strs.values));
+	if (!node->vector_strs.values)
+	{
+		(exit_status = -1, free_strs(paths), perror(RED"Wildcards failed"));
 		return ;
 	}
 	execve(command, node->vector_strs.values, environ);

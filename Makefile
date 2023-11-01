@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/10/29 09:24:15 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/11/01 12:46:43 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ CPPFLAGS = 	-I srcs/libft/								\
 			-I srcs/minishell/execution/				\
 			-I srcs/minishell/parser/					\
 			-I srcs/minishell/history/					\
+			-I srcs/minishell/wildcards/				\
 			-I includes/								\
 
 OBJS =													\
@@ -42,6 +43,9 @@ OBJS =													\
 														\
 				$(addprefix here_doc/,					\
 				here_doc.o						)		\
+														\
+				$(addprefix wildcards/,					\
+				wildcards.o						)		\
 														\
 				$(addprefix lexer/,						\
 				lexer.o									\
