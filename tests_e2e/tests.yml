@@ -89,7 +89,7 @@ stdin: |
 stdout: |
   toto tete non oui
 ---
-name: Exec > tonton < titi > bibi echo toto < tata tete non < tyty oui < tutu
+name: Exec > tonton < titi > bibi wc -c < tata < tyty < tutu < bobo
 cmd: ./minishell
 stdin: |
   touch titi tata tyty tutu
@@ -117,7 +117,7 @@ stdin: |
   echo *.txt
   rm toto.txt titi.txt tata.txt tutu.txt
 stdout: |
-  tata.txt titi.txt toto.txt
+  toto.txt tutu.txt titi.txt tata.txt
 ---
 name: Exec ls to*
 cmd: ./minishell
@@ -126,7 +126,8 @@ stdin: |
   ls to*
   rm toto.txt tito.txt toti.txt
 stdout: |
-  toti.txt toto.txt
+  toti.txt
+  toto.txt
 ---
 name: Exec echo *zefgzegt
 cmd: ./minishell
