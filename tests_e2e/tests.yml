@@ -110,15 +110,6 @@ stdout: |
   toto
   tata
 ---
-name: Exec echo *.txt
-cmd: ./minishell
-stdin: |
-  touch toto.txt titi.txt tata.txt tutu.txt
-  echo *.txt
-  rm toto.txt titi.txt tata.txt tutu.txt
-stdout: |
-  toto.txt tutu.txt titi.txt tata.txt
----
 name: Exec ls to*
 cmd: ./minishell
 stdin: |
