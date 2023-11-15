@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 03:10:40 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/27 07:25:55 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/15 02:56:26 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static t_token choose_token(char *input)
 		token = create_token(APPEND_REDIRECTION, input);
 	else if (ft_strcmp(input, "<<") == 0)
 		token = create_token(HERE_DOC, input);
+	else if (ft_strcmp(input, "|") == 0)
+		token = create_token(PIPE, input);
 	else
 		token = create_token(WORD, input);
 	return (token);

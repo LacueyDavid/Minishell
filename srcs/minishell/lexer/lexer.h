@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:23:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/28 07:58:11 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/15 02:56:54 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef enum e_token_type
 	I_REDIRECTION,
 	APPEND_REDIRECTION,
 	HERE_DOC,
+	PIPE,
 }   e_token_type;
 
 typedef struct token
