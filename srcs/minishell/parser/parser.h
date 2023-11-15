@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/29 08:23:35 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/15 03:22:11 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_parser_env
 {
 	t_parser_map	parser_map[NUMBER_OF_TOKEN_TYPES];
 	t_node *head;
+	t_node *temporary;
 	t_node *simple_command;
 }	t_parser_env;
 

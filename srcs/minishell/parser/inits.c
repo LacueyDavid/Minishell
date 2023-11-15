@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/29 07:47:14 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/15 03:41:36 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ bool	init_parser_env(t_parser_env *env)
 	if (!env->head)
 		return (false);
 	env->head->head = env->head;
+	env->temporary = env->head;
 	if (!init_simple_command(&env->simple_command, env->head))
 		return (false);
 	return (true);

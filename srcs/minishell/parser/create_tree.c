@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/29 08:26:23 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/15 03:48:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	create_nodes(t_parser_env *env, t_token *tokens, size_t *index)
 			return (false);
 	}
 	else
-		if (!env->parser_map[type].function(&env->head, tokens[++(*index)]))
+		if (!env->parser_map[type].function(&env->temporary, tokens[++(*index)]))
 			return (false);
 	return (true);
 }
@@ -55,6 +55,6 @@ bool	create_tree(t_parser_env *env, t_token_list *token_list)
 			return (false);
 		index++;
 	}
-	is_simple_command(env->head, env->simple_command);
+	is_simple_command(env->temporary, env->simple_command);
 	return (true);
 }
