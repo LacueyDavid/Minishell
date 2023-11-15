@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:23:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 02:56:54 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/15 05:29:48 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # endif
 
 #ifndef NUMBER_OF_TOKEN_TYPES
-# define NUMBER_OF_TOKEN_TYPES 5
+# define NUMBER_OF_TOKEN_TYPES 6
 #endif
 
 typedef enum e_token_type

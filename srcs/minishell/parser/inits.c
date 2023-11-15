@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 03:41:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/15 05:18:50 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static bool	init_simple_command(t_node **simple_command, t_node *head)
 bool	init_parser_env(t_parser_env *env)
 {
 	create_parser_map(env->parser_map);
+	env->number_of_pipes = 0;
 	env->head = init_node();
 	if (!env->head)
 		return (false);

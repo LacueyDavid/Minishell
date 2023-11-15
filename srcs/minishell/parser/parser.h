@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 03:22:11 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/15 05:27:31 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef enum e_node_type
 	COMMAND_I_REDIRECT,
 	APPEND_REDIRECT,
 	HERE_DOCUMENT,
+	COMMAND_PIPE,
 }   e_node_type;
 
 typedef struct s_vector_strs
@@ -42,17 +43,20 @@ typedef struct s_node
 	struct s_node	*right;
 }	t_node;
 
+struct s_parser_env;
+
 typedef struct s_parser_map
 {
-	bool			(*function)(t_node **node, t_token token);
-}				t_parser_map;
+	bool			(*function)(struct s_parser_env *env, t_token token);
+}	t_parser_map;
 
 typedef struct s_parser_env
 {
 	t_parser_map	parser_map[NUMBER_OF_TOKEN_TYPES];
-	t_node *head;
-	t_node *temporary;
-	t_node *simple_command;
+	t_node			*head;
+	t_node 			*temporary;
+	t_node			*simple_command;
+	size_t			number_of_pipes;
 }	t_parser_env;
 
 t_node	*parser(t_token_list *token_list);
