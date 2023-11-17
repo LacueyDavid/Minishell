@@ -6,13 +6,20 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:17:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 05:44:41 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/17 11:51:10 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdlib.h>
 #include <stdbool.h>
+
+static bool	add_simple_command(t_parser_env *env, t_token token)
+{
+	if (!add_word(env->simple_command, token.value))
+		return (false);
+	return (true);
+}
 
 static bool add_append(t_parser_env *env, t_token token)
 {
@@ -99,12 +106,16 @@ static bool	add_pipe(t_parser_env *env, t_token token)
 	env->head->parent = node;
 	node->left = env->head;
 	env->head = node;
-	node->right = NULL;
+	// node->right = init_node();
+	// if (!node->right)
+	// 	return (false);
+	// env->simple
 	return (true);
 }
 
 void	create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES])
 {
+	parser_map[WORD].function = add_simple_command;
 	parser_map[O_REDIRECTION].function = add_o_redirection;
 	parser_map[I_REDIRECTION].function = add_i_redirection;
 	parser_map[APPEND_REDIRECTION].function = add_append;

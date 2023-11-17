@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 05:30:45 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/17 11:29:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,10 @@ static bool	create_nodes(t_parser_env *env, t_token *tokens, size_t *index)
 	e_token_type	type;
 
 	type = tokens[*index].type;
-	if (type == WORD)
-	{
-		if (!add_word(env->simple_command, tokens[*index].value))
-			return (false);
-	}
-	else
-	{
-		if (!env->parser_map[type].function(env, tokens[++(*index)]))
-			return (false);
-	}
+	if (type != WORD)
+		(*index)++;
+	if (!env->parser_map[type].function(env, tokens[*index]))
+		return (false);
 	return (true);
 }
 
