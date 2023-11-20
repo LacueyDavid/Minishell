@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/20 16:31:28 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/20 16:40:57 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ bool	create_piped_tree(t_parser_env *env, t_token_list *token_list)
 		return (false);
 	if (is_pipes(token_list->tokens, token_list->size))
 	{
+		env->head->type = COMMAND_PIPE;
 		while (index < token_list->size)
 		{
 			tmp = pipeless_token_list(token_list, &index);
