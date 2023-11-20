@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/17 11:45:56 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/17 18:43:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ bool	create_tree(t_parser_env *env, t_token_list *token_list);
 bool	update_vector_strs_capacity(t_vector_strs *node);
 void	clear_tree(t_node *node);
 void	create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES]);
+bool	add_pipe(t_parser_env *env);
 
 #endif
