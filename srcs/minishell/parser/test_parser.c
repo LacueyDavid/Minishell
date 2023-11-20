@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 05:28:31 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 05:52:12 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/20 20:16:27 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 	destroy_token_list(token_list);
 }
 
-Ensure(parse_full_command, can_parse_pipe)
+Ensure(parse_full_command, can_parse_simple_pipe)
 {
 	//GIVEN (etant donné etat initial)
 	t_token_list *token_list = init_token_list();
@@ -111,6 +111,7 @@ Ensure(parse_full_command, can_parse_pipe)
 	t_token token2;
 	t_token token3;
 	t_token token4;
+	t_token token5;
 	token1.type = WORD;
 	token1.value = ft_strdup("echo");
 	token2.type = WORD;
@@ -118,11 +119,14 @@ Ensure(parse_full_command, can_parse_pipe)
 	token3.type = PIPE;
 	token3.value = ft_strdup("|");
 	token4.type = WORD;
-	token4.value = ft_strdup("wc -l");
+	token4.value = ft_strdup("wc");
+	token5.type = WORD;
+	token5.value = ft_strdup("-l");
 	add_token(token_list, token1);
 	add_token(token_list, token2);
 	add_token(token_list, token3);
 	add_token(token_list, token4);
+	add_token(token_list, token5);
 
 	t_node *head = NULL;
 

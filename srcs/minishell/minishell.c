@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/09 00:54:36 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/20 20:24:28 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	interactive_mode(void)
 			(free(input), destroy_token_list(token_list));
 			continue ;
 		}
+		printf("ok pour le parser\n");
 		execution(tree);
 		if (input[0] != '!')
 			update_history(input);

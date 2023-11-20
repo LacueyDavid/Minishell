@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   create_tree.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/20 16:40:57 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/20 20:23:37 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 static void	is_simple_command(t_node *node, t_node *simple_command)
 {
@@ -32,6 +34,8 @@ static bool	create_nodes(t_parser_env *env, t_token *tokens, size_t *index)
 {
 	e_token_type	type;
 
+	// printf("affichage de l'envirronement : \n");
+	// print_parser_env(env);
 	type = tokens[*index].type;
 	if (type != WORD)
 		(*index)++;
@@ -66,6 +70,8 @@ t_token_list	*pipeless_token_list(t_token_list *token_list, size_t *index)
 
 	i = *index;
 	tmp = init_token_list();
+	// if (token_list->tokens[i].type == PIPE)
+	// 	*index++;
 	while (i < token_list->size && token_list->tokens[i].type != PIPE)
 	{
 		add_token(tmp, token_list->tokens[i]);
@@ -130,55 +136,152 @@ bool	copy_tree(t_node *node, t_node *tmp_node)
 	return (true);
 }
 
-bool	copy_env(t_parser_env *env, t_parser_env tmp_env)
+bool copy_env(const t_parser_env *env, t_parser_env *tmp_env_ptr) 
 {
-	if(!init_parser_env(&tmp_env))
+    if (!init_parser_env(tmp_env_ptr)) 
+        return false;
+    tmp_env_ptr->head = init_node();
+    if (!tmp_env_ptr->head)
+        return false;
+    if (!copy_tree(env->head, tmp_env_ptr->head))
+        return false;
+    tmp_env_ptr->number_of_pipes = env->number_of_pipes;
+    return true;
+}
+
+// bool	create_piped_tree(t_parser_env *env, t_token_list *token_list)
+// {
+// 	size_t			index;
+// 	t_token_list	*tmp1;
+// 	t_token_list	*tmp2;
+// 	t_parser_env	tmp_env;
+
+// 	index = 0;
+// 	if(!copy_env(env, tmp_env))
+// 		return (false);
+// 	if (is_pipes(token_list->tokens, token_list->size))
+// 	{
+// 		printf("ok boi\n");
+// 		env->head->type = COMMAND_PIPE;
+// 		while (index < token_list->size)
+// 		{
+// 			printf("ok boi boi\n");
+// 			if (index == 0)
+// 				tmp1 = pipeless_token_list(token_list, &index);
+// 			printf("pete les couilles\n");
+// 			if (index < token_list->size)
+// 				index++;
+// 			tmp2 = pipeless_token_list(token_list, &index);
+// 			printf("pete les couilles x2\n");
+// 			if (!create_redirection_tree(&tmp_env, tmp1))
+// 				return (false);
+// 			printf("ok boi boi boi\n");
+// 			if (index < token_list->size)
+// 			{
+// 				env->temporary->left = tmp_env.head;
+// 				add_pipe(env);
+// 			}
+// 			else
+// 			{
+// 				env->temporary->left = tmp_env.head;
+// 				clear_tree(tmp_env.head);
+// 				if (!create_redirection_tree(&tmp_env, tmp2))
+// 					return (false);
+// 				env->temporary->right = tmp_env.head;
+// 			}
+// 			printf("ok boi boi boi boi\n");
+// 			index++;
+// 			destroy_token_list(tmp1);
+// 			clear_tree(tmp_env.head);
+// 			tmp1 = tmp2;
+// 		}
+// 		destroy_token_list(tmp1);
+// 	}
+// 	else
+// 	{
+// 		if (!create_redirection_tree(env, token_list))
+// 			return (false);
+// 	}
+// 	return (true);
+// }
+
+void	clear_tree_head(t_node *node)
+{
+	if (!node)
+		return ;
+	clear_tree(node->left);
+	clear_tree(node->right);
+	free_strs(node->vector_strs.values);
+}
+
+bool	add_last_command(t_parser_env *env)
+{
+	t_node *node;
+
+	node = init_node();
+	if (!node)
 		return (false);
-	tmp_env.head = init_node();
-	if (!tmp_env.head)
-		return (false);
-	tmp_env.temporary = tmp_env.head;
-	if(!copy_tree(env->head, tmp_env.head))
-		return (false);
+	node->type = SIMPLE_COMMAND;
+	env->temporary->right = node;
+	node->head = env->temporary->head;
+	node->parent = env->temporary;
+	env->temporary = node;
 	return (true);
 }
 
-bool	create_piped_tree(t_parser_env *env, t_token_list *token_list)
-{
-	size_t			index;
-	t_token_list	*tmp;
-	t_parser_env	tmp_env;
+bool create_piped_tree(t_parser_env *env, t_token_list *token_list) {
+    size_t index;
+    t_token_list *tmp1;
+    t_token_list *tmp2;
+    t_parser_env *tmp_env;
 
-	index = 0;
-	if(!copy_env(env, tmp_env))
-		return (false);
-	if (is_pipes(token_list->tokens, token_list->size))
-	{
-		env->head->type = COMMAND_PIPE;
-		while (index < token_list->size)
+    index = 0;
+	tmp_env = (t_parser_env *)malloc(sizeof(t_parser_env));
+    if (tmp_env == NULL)
+        return false;
+    if (!copy_env(env, tmp_env))
+        return false;
+    if (is_pipes(token_list->tokens, token_list->size)) {
+        env->head->type = COMMAND_PIPE;
+
+        while (index < token_list->size) 
 		{
-			tmp = pipeless_token_list(token_list, &index);
-			if (!create_redirection_tree(&tmp_env, tmp))
-				return (false);
-			if (index < token_list->size)
+            if (index == 0)
+                tmp1 = pipeless_token_list(token_list, &index);
+            if (index < token_list->size)
+                index++;
+            tmp2 = pipeless_token_list(token_list, &index);
+            if (!create_redirection_tree(tmp_env, tmp1))
+                return false;
+            if (index < token_list->size) 
 			{
-				env->temporary->left = tmp_env.head;
-				add_pipe(env);
-			}
-			else
-				env->temporary->right = tmp_env.head;
-			index++;
-			destroy_token_list(tmp);
-			clear_tree(tmp_env.head);
-		}
-	}
-	else
+                env->temporary->left = tmp_env->head;
+                add_pipe(env);
+            } 
+			else 
+			{
+				add_last_command(env);
+                env->temporary->left = tmp_env->head;
+                clear_tree_head(tmp_env->head);
+                if (!create_redirection_tree(tmp_env, tmp2))
+                    return false;
+                env->temporary->right = tmp_env->head;
+            }
+            destroy_token_list(tmp1);
+        	//clear_tree(tmp_env->head);
+            tmp1 = tmp2;
+			//destroy_token_list(tmp2);
+        }
+        destroy_token_list(tmp1);
+    } 
+	else 
 	{
-		if (!create_redirection_tree(env, token_list))
-			return (false);
-	}
-	return (true);
+        if (!create_redirection_tree(env, token_list))
+            return false;
+    }
+    return true;
 }
+
 //TEST////////////////////////////////////////
 //TEST////////////////////////////////////////
 //TEST////////////////////////////////////////

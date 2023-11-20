@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:17:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/20 15:53:04 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/20 20:06:37 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 static bool	add_simple_command(t_parser_env *env, t_token token)
 {
@@ -100,5 +101,4 @@ void	create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES])
 	parser_map[I_REDIRECTION].function = add_i_redirection;
 	parser_map[APPEND_REDIRECTION].function = add_append;
 	parser_map[HERE_DOC].function = add_here_doc;
-	// parser_map[PIPE].function = add_pipe;
 }

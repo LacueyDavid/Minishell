@@ -67,6 +67,5 @@ Ensure(lexer, recognizes_two_differents_token)
 	assert_that(token_list->tokens[2].value, is_equal_to_string(">"));
 	assert_that(token_list->tokens[3].type, is_equal_to(WORD));
 	assert_that(token_list->tokens[3].value, is_equal_to_string("output.txt"));
-	assert_that(token_list->tokens[4].value, is_equal_to_string(NULL));
 	destroy_token_list(token_list);
 }
