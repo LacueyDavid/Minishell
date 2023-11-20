@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/20 16:24:33 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/20 16:31:28 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ bool	create_redirection_tree(t_parser_env *env, t_token_list *token_list)
 	is_simple_command(env->temporary, env->simple_command);
 	return (true);
 }
+
+//TEST////////////////////////////////////////
+//TEST////////////////////////////////////////
+//TEST////////////////////////////////////////
 
 t_token_list	*pipeless_token_list(t_token_list *token_list, size_t *index)
 {
@@ -174,3 +178,6 @@ bool	create_piped_tree(t_parser_env *env, t_token_list *token_list)
 	}
 	return (true);
 }
+//TEST////////////////////////////////////////
+//TEST////////////////////////////////////////
+//TEST////////////////////////////////////////
