@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/29 08:05:06 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:49:39 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_node	*parser(t_token_list *token_list)
 
 	if (!init_parser_env(&env))
 		return (NULL);
-	if (!create_tree(&env, token_list))
+	if (!create_piped_tree(&env, token_list))
 	{
 		clear_tree(env.head);
 		return (NULL);

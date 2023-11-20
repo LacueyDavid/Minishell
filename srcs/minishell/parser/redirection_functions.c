@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 10:17:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/17 18:42:35 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/20 15:53:04 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,22 +93,6 @@ static bool	add_here_doc(t_parser_env *env, t_token token)
 	return (true);
 }
 
-bool	add_pipe(t_parser_env *env)
-{
-	t_node *node;
-
-	env->number_of_pipes++;
-	node = init_node();
-	if (!node)
-		return (false);
-	node->type = COMMAND_PIPE;
-	env->temporary->right = node;
-	node->head = env->temporary->head;
-	node->parent = env->temporary;
-	env->temporary = node;
-	return (true);
-}
-
 void	create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES])
 {
 	parser_map[WORD].function = add_simple_command;
@@ -116,5 +100,5 @@ void	create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES])
 	parser_map[I_REDIRECTION].function = add_i_redirection;
 	parser_map[APPEND_REDIRECTION].function = add_append;
 	parser_map[HERE_DOC].function = add_here_doc;
-	//parser_map[PIPE].function = add_pipe;
+	// parser_map[PIPE].function = add_pipe;
 }
