@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_tree.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/20 20:23:37 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/22 23:39:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,49 +229,101 @@ bool	add_last_command(t_parser_env *env)
 	return (true);
 }
 
-bool create_piped_tree(t_parser_env *env, t_token_list *token_list) {
+t_vector_strs	copy_vector_strs(t_vector_strs vector_strs)
+{
+	t_vector_strs	tmp;
+	size_t			index;
+
+	index = 0;
+	tmp.size = vector_strs.size;
+	tmp.capacity = vector_strs.capacity;
+	tmp.values = (char **)malloc(sizeof(char *) * (tmp.capacity + 1));
+	if (!tmp.values)
+		return ((t_vector_strs){0});
+	while (index < tmp.size && vector_strs.values[index])
+	{
+		tmp.values[index] = ft_strdup(vector_strs.values[index]);
+		if (!tmp.values[index])
+		{
+			free_strs(tmp.values);
+			return ((t_vector_strs){0});
+		}
+		index++;
+	}
+	tmp.values[index] = NULL;
+	return (tmp);
+}
+
+bool create_piped_tree(t_parser_env *env, t_token_list *token_list) 
+{
     size_t index;
     t_token_list *tmp1;
     t_token_list *tmp2;
     t_parser_env *tmp_env;
 
     index = 0;
-	tmp_env = (t_parser_env *)malloc(sizeof(t_parser_env));
+    tmp_env = (t_parser_env *)malloc(sizeof(t_parser_env));
     if (tmp_env == NULL)
         return false;
+
+    tmp_env->head = (t_node *)malloc(sizeof(t_node));
+    if (tmp_env->head == NULL) 
+	{
+        free(tmp_env);
+        return false;
+    }
+
     if (!copy_env(env, tmp_env))
         return false;
-    if (is_pipes(token_list->tokens, token_list->size)) {
+
+    if (is_pipes(token_list->tokens, token_list->size)) 
+	{
         env->head->type = COMMAND_PIPE;
 
         while (index < token_list->size) 
 		{
             if (index == 0)
                 tmp1 = pipeless_token_list(token_list, &index);
+
             if (index < token_list->size)
                 index++;
+
             tmp2 = pipeless_token_list(token_list, &index);
+
             if (!create_redirection_tree(tmp_env, tmp1))
                 return false;
+
             if (index < token_list->size) 
 			{
-                env->temporary->left = tmp_env->head;
+                env->head->left = tmp_env->head;
+				env->head->left->vector_strs = copy_vector_strs(tmp_env->head->vector_strs);
                 add_pipe(env);
             } 
 			else 
 			{
-				add_last_command(env);
-                env->temporary->left = tmp_env->head;
+				// size_t index_test = 0;
+				// printf("affichage des vector strs\n");
+				// while(tmp_env->head->vector_strs.values[index_test])
+				// {
+				// 	printf("valeur du veceur %zu : %s\n", index_test, tmp_env->head->vector_strs.values[index_test]);
+				// 	index_test++;
+				// }
+                add_last_command(env);
+                env->head->left = tmp_env->head;
+				env->head->left->vector_strs = copy_vector_strs(tmp_env->head->vector_strs);
                 clear_tree_head(tmp_env->head);
+
                 if (!create_redirection_tree(tmp_env, tmp2))
                     return false;
-                env->temporary->right = tmp_env->head;
+
+                env->head->right = tmp_env->head;
+				env->head->right->vector_strs = copy_vector_strs(tmp_env->head->vector_strs);
             }
+
             destroy_token_list(tmp1);
-        	//clear_tree(tmp_env->head);
             tmp1 = tmp2;
-			//destroy_token_list(tmp2);
         }
+
         destroy_token_list(tmp1);
     } 
 	else 
@@ -279,6 +331,7 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list) {
         if (!create_redirection_tree(env, token_list))
             return false;
     }
+
     return true;
 }
 
