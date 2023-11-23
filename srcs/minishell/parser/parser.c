@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/20 20:19:41 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/23 08:37:50 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ t_node	*parser(t_token_list *token_list)
 		clear_tree(env.head);
 		return (NULL);
 	}
-	return (env.head->head);
+	return (env.head);
 }

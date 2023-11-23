@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/23 06:26:55 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/23 09:20:10 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ static bool	create_nodes(t_parser_env *env, t_token *tokens, size_t *index)
 {
 	e_token_type	type;
 
-	// printf("affichage de l'envirronement : \n");
-	// print_parser_env(env);
 	type = tokens[*index].type;
 	if (type != WORD)
 		(*index)++;
@@ -209,8 +207,6 @@ t_vector_strs	copy_vector_strs(t_vector_strs vector_strs)
 
 bool	reset_head(t_parser_env *env)
 {
-	create_parser_map(env->parser_map);
-	env->number_of_pipes = 0;
 	env->head = init_node();
 	if (!env->head)
 		return (false);
@@ -221,7 +217,7 @@ bool	reset_head(t_parser_env *env)
 	return (true);
 }
 
-bool create_piped_tree(t_parser_env *env, t_token_list *token_list) 
+bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 {
 	size_t			index;
 	t_token_list	*tmp1;
@@ -235,7 +231,7 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 		return false;
 	if (is_pipes(token_list->tokens, token_list->size))
 	{
-		env->head->type = COMMAND_PIPE;
+		env->temporary->type = COMMAND_PIPE;
 		while (index < token_list->size)
 		{
 			if (index == 0)
@@ -247,17 +243,17 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 				return false;
 			if (index < token_list->size)
 			{
-				env->head->left = tmp_env.head;
+				env->temporary->left = tmp_env.head;
+				reset_head(&tmp_env);
 				add_pipe(env);
 			}
 			else
 			{
-				add_last_command(env);
-				env->head->left = tmp_env.head;
+				env->temporary->left = tmp_env.head;
 				reset_head(&tmp_env);
 				if (!create_redirection_tree(&tmp_env, tmp2))
 					return false;
-				env->head->right = tmp_env.head;
+				env->temporary->right = tmp_env.head;
 			}
 			destroy_token_list(tmp1);
 			tmp1 = tmp2;
