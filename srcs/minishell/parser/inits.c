@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/20 18:18:04 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/23 05:09:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	init_nodes(t_node **left, t_node **right)
 	return (true);
 }
 
-static bool	init_simple_command(t_node **simple_command, t_node *head)
+bool	init_simple_command(t_node **simple_command, t_node *head)
 {
 	*simple_command = init_node();
 	if (!*simple_command)

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:23:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 05:29:48 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/23 06:26:33 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ t_token_list	*lexer(char *input);
 void			destroy_token_list(t_token_list *token_list);
 void			add_token(t_token_list *token_list, t_token token);
 bool			tokenize_splited_input(t_token_list *token_list, char **splited_input);
+void resize_token_list(t_token_list *token_list);
 
 #endif

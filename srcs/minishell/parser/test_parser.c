@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 05:28:31 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/22 23:30:11 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/23 05:35:55 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ Ensure(parse_full_command, can_parse_simple_pipe)
 	t_node *right = head->right;
 
 	assert_that(head->type, is_equal_to(COMMAND_PIPE));
-	
 	assert_that(left->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(left->vector_strs.values[0], is_equal_to_string("echo"));
 	assert_that(left->vector_strs.values[1], is_equal_to_string("toto"));
@@ -152,6 +151,6 @@ Ensure(parse_full_command, can_parse_simple_pipe)
 	assert_that(right->left, is_equal_to(NULL));
 	assert_that(right->right, is_equal_to(NULL));
 
-	// clear_tree(head);
-	// destroy_token_list(token_list);
+	clear_tree(head);
+	destroy_token_list(token_list);
 }

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:57:27 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 03:07:31 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/23 06:26:33 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "lexer.h"
 
-static void resize_token_list(t_token_list *token_list)
+void resize_token_list(t_token_list *token_list)
 {
 	size_t	old_size;
 	size_t	new_size;
