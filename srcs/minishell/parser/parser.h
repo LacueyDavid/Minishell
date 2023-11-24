@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/23 05:09:46 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/24 04:25:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_node
 	struct s_node	*parent;
 	struct s_node	*left;
 	struct s_node	*right;
+	size_t			number_of_pipes;
 }	t_node;
 
 struct s_parser_env;

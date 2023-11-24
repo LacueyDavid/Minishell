@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/23 05:09:29 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/24 04:26:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_node	*init_node(void)
 	node->vector_strs.values = NULL;
 	node->left = NULL;
 	node->right = NULL;
+	node->parent = NULL;
+	node->number_of_pipes = 0;
 	return (node);
 }
 

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/01 12:46:18 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/24 04:52:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include "get_next_line.h"
 #include <readline/readline.h>
 #include "wildcards.h"
+#include <sys/types.h>
+#include <unistd.h>
 
 extern char	**environ;
 extern int	exit_status;
@@ -86,6 +88,44 @@ void	exec_full_command(t_node *node, int fds[NUMBER_OF_FDS], t_exec_map exec_map
 	}
 	reset_standard_streams(fds);
 	unlink("here_doc.minishell");
+}
+
+void	exec_pipes(t_node *node)
+{
+	int		*fds[2];
+	pid_t	*pid_tab;
+	size_t	index;
+	
+	index = 0;
+	fds = malloc(2 * (sizeof(int)) * (node->number_of_pipes + 1));
+	if (!fds)
+	{
+		(exit_status = -1, perror(RED"Malloc failed"WHITE));
+		return ;
+	}
+	pid_tab = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
+	if (!fds)
+	{
+		(exit_status = -1, perror(RED"Malloc failed"WHITE));
+		return ;
+	}
+	while (index < node->number_of_pipes + 1)
+	{
+		if (pipe(fds[index]) < 0)
+		{
+			(exit_status = -1, perror(RED"Pipe failed"WHITE));
+			return ;
+		}
+		pid_tab[index] = fork();
+		index++;
+	}
+	index = 0;
+	dup2(fds[index][0], STDIN_FILENO);
+	while (index < node->number_of_pipe + 1)
+	{
+		dup2(fds[index + 1][0], fds[index][1]);
+		index++;
+	}
 }
 
 void	execution(t_node *tree)

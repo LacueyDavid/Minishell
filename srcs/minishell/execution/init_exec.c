@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 09:19:37 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/29 09:27:28 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/24 04:33:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_exec_func_map(t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 	exec_map[COMMAND_I_REDIRECT].function = redirection_input;
 	exec_map[APPEND_REDIRECT].function = append_output;
 	exec_map[HERE_DOCUMENT].function = here_doc;
+	exec_map[PIPE].function = exec_pipes;
 }
 
 void	init_fds(int fds[NUMBER_OF_FDS])
