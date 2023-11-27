@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/23 08:22:13 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/28 00:47:54 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static void	interactive_mode(void)
 			(free(input), destroy_token_list(token_list));
 			continue ;
 		}
-		printf("ok pour le parser\n");
 		execution(tree);
 		if (input[0] != '!')
 			update_history(input);

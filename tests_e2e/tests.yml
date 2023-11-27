@@ -136,10 +136,10 @@ stdin: |
 stdout: |
   *zefgzegt
 
-# ---
-# name: Exec echo toto | wc -c | wc -l
-# cmd: ./minishell
-# stdin: |
-#   echo toto | wc -c | wc -l
-# stdout: |
-#   1
+---
+name: Exec echo toto | wc -c | wc -l
+cmd: ./minishell
+stdin: |
+  echo toto | wc -c | wc -l
+stdout: |
+  1
