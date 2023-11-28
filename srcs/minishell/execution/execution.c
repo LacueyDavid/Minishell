@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/28 00:55:57 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/28 01:06:18 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,14 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
         index++;
     }
     // Execute the left node (if it exists)
-    if (node->left) 
-        exec_pipes(node->left, exec_map);
+    if (node->left)
+	{
+    	exec_full_command(node->left, pipe_fds[0], exec_map);
+	}
+	if (node->right->type == SIMPLE_COMMAND)
+		exec_full_command(node->right, pipe_fds[node->number_of_pipes - 1], exec_map);
+	else
+		exec_pipes(node->right, exec_map);
     // Wait for all child processes to finish
     index = 0;
     while (index < node->number_of_pipes + 1) 
