@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/28 00:49:52 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/28 00:55:57 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,13 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 
     index = 0;
     pipe_fds = malloc(sizeof(int *) * node->number_of_pipes);
-    pid_tab = malloc(sizeof(pid_t) * node->number_of_pipes);
+    pid_tab = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
     if (!pipe_fds || !pid_tab) 
 	{
         perror(RED"Malloc failed"WHITE);
         exit(EXIT_FAILURE);
     }
+    // Create pipes
     while (index < node->number_of_pipes) 
 	{
         pipe_fds[index] = malloc(sizeof(int) * 2);
@@ -121,17 +122,17 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
     }
     index = 0;
     // Fork processes
-    while (index < node->number_of_pipes) 
+    while (index < node->number_of_pipes + 1) 
 	{
         pid_tab[index] = fork();
+
         if (pid_tab[index] < 0) 
 		{
             perror(RED"Fork failed"WHITE);
             exit(EXIT_FAILURE);
         }
         if (pid_tab[index] == 0) 
-		{ 
-			// Child process
+		{ // Child process
             // Close unused pipe ends
             if (index > 0) 
 			{
@@ -157,9 +158,12 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
         close(pipe_fds[index][1]);
         index++;
     }
+    // Execute the left node (if it exists)
+    if (node->left) 
+        exec_pipes(node->left, exec_map);
     // Wait for all child processes to finish
     index = 0;
-    while (index < node->number_of_pipes) 
+    while (index < node->number_of_pipes + 1) 
 	{
         waitpid(pid_tab[index], NULL, 0);
         index++;
