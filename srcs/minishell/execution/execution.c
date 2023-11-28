@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/28 01:06:18 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/28 03:23:48 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,138 +90,120 @@ void	exec_full_command(t_node *node, int fds[NUMBER_OF_FDS], t_exec_map exec_map
 	unlink("here_doc.minishell");
 }
 
-void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS]) 
+void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 {
-    int **pipe_fds;
-    pid_t *pid_tab;
-    size_t index;
+	int		**pipe_fds;
+	pid_t	*pid_tab;
+	size_t	index;
 
-    index = 0;
-    pipe_fds = malloc(sizeof(int *) * node->number_of_pipes);
-    pid_tab = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
-    if (!pipe_fds || !pid_tab) 
+	index = 0;
+	pipe_fds = malloc(sizeof(int *) * node->number_of_pipes + 1);
+	pid_tab = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
+	if (!pipe_fds || !pid_tab)
 	{
-        perror(RED"Malloc failed"WHITE);
-        exit(EXIT_FAILURE);
-    }
-    // Create pipes
-    while (index < node->number_of_pipes) 
-	{
-        pipe_fds[index] = malloc(sizeof(int) * 2);
-        if (!pipe_fds[index]) 
-		{
-            perror(RED"Malloc failed"WHITE);
-            exit(EXIT_FAILURE);
-        }
-        if (pipe(pipe_fds[index]) < 0) 
-		{
-            perror(RED"Pipe failed"WHITE);
-            exit(EXIT_FAILURE);
-        }
-        index++;
-    }
-    index = 0;
-    // Fork processes
-    while (index < node->number_of_pipes + 1) 
-	{
-        pid_tab[index] = fork();
-
-        if (pid_tab[index] < 0) 
-		{
-            perror(RED"Fork failed"WHITE);
-            exit(EXIT_FAILURE);
-        }
-        if (pid_tab[index] == 0) 
-		{ // Child process
-            // Close unused pipe ends
-            if (index > 0) 
-			{
-                close(pipe_fds[index - 1][1]);
-                dup2(pipe_fds[index - 1][0], STDIN_FILENO);
-            }
-            if (index < node->number_of_pipes) 
-			{
-                close(pipe_fds[index][0]);
-                dup2(pipe_fds[index][1], STDOUT_FILENO);
-            }
-            // Execute the command
-            exec_map[node->type].function(node);
-            exit(EXIT_SUCCESS);
-        }
-        index++;
-    }
-    // Close all pipe ends in the parent process
-    index = 0;
-    while (index < node->number_of_pipes) 
-	{
-        close(pipe_fds[index][0]);
-        close(pipe_fds[index][1]);
-        index++;
-    }
-    // Execute the left node (if it exists)
-    if (node->left)
-	{
-    	exec_full_command(node->left, pipe_fds[0], exec_map);
+		perror(RED"Malloc failed"WHITE);
+		exit(EXIT_FAILURE);
 	}
-	if (node->right->type == SIMPLE_COMMAND)
-		exec_full_command(node->right, pipe_fds[node->number_of_pipes - 1], exec_map);
-	else
-		exec_pipes(node->right, exec_map);
-    // Wait for all child processes to finish
-    index = 0;
-    while (index < node->number_of_pipes + 1) 
+	// Create pipes
+	while (index < node->number_of_pipes + 1)
 	{
-        waitpid(pid_tab[index], NULL, 0);
-        index++;
-    }
-    // Clean up
-    index = 0;
-    while (index < node->number_of_pipes) 
+		pipe_fds[index] = malloc(sizeof(int) * 2);
+		if (!pipe_fds[index])
+		{
+			perror(RED"Malloc failed"WHITE);
+			//supp tout les malloc si un malloc fail
+			exit(EXIT_FAILURE);
+		}
+		if (pipe(pipe_fds[index]) < 0)
+		{
+			perror(RED"Pipe failed"WHITE);
+			exit(EXIT_FAILURE);
+		}
+		index++;
+	}
+	index = 0;
+	pid_tab[index] = fork();
+	if (pid_tab[index] < 0)
 	{
-        free(pipe_fds[index]);
-        index++;
-    }
-    free(pipe_fds);
-    free(pid_tab);
+		perror(RED"Fork failed"WHITE);
+		exit(EXIT_FAILURE);
+	}
+	index++;
+	while (index < node->number_of_pipes + 1)
+	{
+		if(pid_tab[0] == 0)
+		{
+			pid_tab[index] = fork();
+			if (pid_tab[index] < 0)
+			{
+				perror(RED"Fork failed"WHITE);
+				exit(EXIT_FAILURE);
+			}
+		}
+		index++;
+	}
+	printf("number of pipes : %zu\n", node->number_of_pipes);
+	while (index < node->number_of_pipes + 1)
+	{
+		if (pid_tab[index] == 0)
+		{
+			if (index == 0)
+			{
+				dup2(pipe_fds[index][0], STDIN_FILENO);
+				dup2(pipe_fds[index][1], 3);
+				printf("je suis le premier fork\n");
+				exec_full_command(node->left, pipe_fds[index], exec_map);
+				close(pipe_fds[index][0]);
+				close(pipe_fds[index][1]);
+			}
+			else if (index == node->number_of_pipes)
+			{
+				dup2(pipe_fds[index][1], STDOUT_FILENO);
+				dup2(pipe_fds[index][0], node->number_of_pipes + 2);
+				printf("je suis le dernier fork\n");
+				exec_full_command(node->right, pipe_fds[index], exec_map);
+				close(pipe_fds[index][1]);
+				close(pipe_fds[index][0]);
+			}
+			else
+			{
+				dup2(pipe_fds[index][0], (int)index + 2);
+				dup2(pipe_fds[index][1], (int)index + 3);
+				printf("je suis le fork numero %zu\n", index);
+				exec_full_command(node->left, pipe_fds[index], exec_map);
+				close(pipe_fds[index][0]);
+				close(pipe_fds[index][1]);
+			}
+		}
+		index++;
+		if (node->type == COMMAND_PIPE && node->right->type == COMMAND_PIPE)
+			node = node->right;
+	}
+	// Close all pipe ends in the parent process
+	index = 0;
+	while (index < node->number_of_pipes)
+	{
+		close(pipe_fds[index][0]);
+		close(pipe_fds[index][1]);
+		index++;
+	}
+	// Wait for all child processes to finish
+	index = 0;
+	while (index < node->number_of_pipes + 1)
+	{
+		waitpid(pid_tab[index], &exit_status, 0);
+		index++;
+	}
+	// Clean up
+	index = 0;
+	while (index < node->number_of_pipes + 1)
+	{
+		free(pipe_fds[index]);
+		index++;
+	}
+	free(pipe_fds);
+	free(pid_tab);
 }
-
-// void	exec_pipes(t_node *node)
-// {
-// 	int		*fds[2];
-// 	pid_t	*pid_tab;
-// 	size_t	index;
-	
-// 	index = 0;
-// 	*fds = malloc(2 * (sizeof(int)) * (node->number_of_pipes + 1));
-// 	if (!*fds)
-// 	{
-// 		(exit_status = -1, perror(RED"Malloc failed"WHITE));
-// 		return ;
-// 	}
-// 	pid_tab = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
-// 	if (!pid_tab)
-// 	{
-// 		(exit_status = -1, perror(RED"Malloc failed"WHITE));
-// 		return ;
-// 	}
-// 	while (index < node->number_of_pipes + 1)
-// 	{
-// 		if (pipe(fds[index]) < 0)
-// 		{
-// 			(exit_status = -1, perror(RED"Pipe failed"WHITE));
-// 			return ;
-// 		}
-// 		pid_tab[index] = fork();
-// 		index++;
-// 	}
-// 	index = 0;
-// 	dup2(fds[index][0], STDIN_FILENO);
-// 	while (index < node->number_of_pipes + 1)
-// 	{
-// 		dup2(fds[index + 1][0], fds[index][1]);
-// 		index++;
-// 	}
-// }
 
 void	execution(t_node *tree)
 {
