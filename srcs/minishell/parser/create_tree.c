@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 18:17:12 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/30 20:31:34 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,12 +217,12 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 	t_parser_env	tmp_env;
 
 	index = 0;
-	if (!init_parser_env(&tmp_env))
-		return false;
-	if (!copy_env(env, &tmp_env))
-		return false;
 	if (is_pipes(token_list->tokens, token_list->size))
 	{
+		if (!init_parser_env(&tmp_env))
+			return false;
+		if (!copy_env(env, &tmp_env))
+			return false;
 		free(env->simple_command);
 		env->temporary->type = COMMAND_PIPE;
 		env->number_of_pipes++;
@@ -253,12 +253,12 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 			tmp1 = tmp2;
 		}
 		destroy_token_list(tmp1);
+		env->head->number_of_pipes = env->number_of_pipes;
 	}
 	else
 	{
 		if (!create_redirection_tree(env, token_list))
 			return false;
 	}
-	env->head->number_of_pipes = env->number_of_pipes;
 	return true;
 }
