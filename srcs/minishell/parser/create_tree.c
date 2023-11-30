@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/25 01:37:17 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/11/30 18:17:12 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,13 @@ bool	create_redirection_tree(t_parser_env *env, t_token_list *token_list)
 	return (true);
 }
 
-bool copy_token(t_token_list *token_list, t_token token)
+void	copy_token(t_token_list *token_list, t_token token)
 {
-	t_token *token_to_copy;
+	t_token token_to_copy;
 
-	token_to_copy = malloc(sizeof(t_token));
-	if (!token_to_copy)
-		return (false);
-	token_to_copy->type = token.type;
-	token_to_copy->value = ft_strdup(token.value);
-	add_token(token_list, *token_to_copy);
-	return (true);
+	token_to_copy.type = token.type;
+	token_to_copy.value = ft_strdup(token.value);
+	add_token(token_list, token_to_copy);
 }
 
 bool	fill_tmp(t_token_list *token_list, t_token token)
@@ -79,10 +75,6 @@ bool	fill_tmp(t_token_list *token_list, t_token token)
 	copy_token(token_list, token);
 	return (true);
 }
-
-//TEST////////////////////////////////////////
-//TEST////////////////////////////////////////
-//TEST////////////////////////////////////////
 
 t_token_list	*pipeless_token_list(t_token_list *token_list, size_t *index)
 {
@@ -118,20 +110,6 @@ bool	add_pipe(t_parser_env *env)
 	return (true);
 }
 
-bool	is_pipes(t_token *tokens, size_t size)
-{
-	size_t	index;
-
-	index = 0;
-	while (index < size)
-	{
-		if (tokens[index].type == PIPE)
-			return (true);
-		index++;
-	}
-	return (false);
-}
-
 bool	copy_tree(t_node *node, t_node *tmp_node)
 {
 	if (node->left)
@@ -155,14 +133,6 @@ bool	copy_tree(t_node *node, t_node *tmp_node)
 	tmp_node->type = node->type;
 	tmp_node->vector_strs = node->vector_strs;
 	return (true);
-}
-
-bool copy_env(const t_parser_env *env, t_parser_env *tmp_env_ptr) 
-{
-	if (!copy_tree(env->head, tmp_env_ptr->head))
-		return false;
-	tmp_env_ptr->number_of_pipes = env->number_of_pipes;
-	return true;
 }
 
 bool	add_last_command(t_parser_env *env)
@@ -217,6 +187,28 @@ bool	reset_head(t_parser_env *env)
 	return (true);
 }
 
+bool	is_pipes(t_token *tokens, size_t size)
+{
+	size_t	index;
+
+	index = 0;
+	while (index < size)
+	{
+		if (tokens[index].type == PIPE)
+			return (true);
+		index++;
+	}
+	return (false);
+}
+
+bool copy_env(const t_parser_env *env, t_parser_env *tmp_env_ptr) 
+{
+	if (!copy_tree(env->head, tmp_env_ptr->head))
+		return false;
+	tmp_env_ptr->number_of_pipes = env->number_of_pipes;
+	return true;
+}
+
 bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 {
 	size_t			index;
@@ -231,6 +223,7 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 		return false;
 	if (is_pipes(token_list->tokens, token_list->size))
 	{
+		free(env->simple_command);
 		env->temporary->type = COMMAND_PIPE;
 		env->number_of_pipes++;
 		while (index < token_list->size)
@@ -269,7 +262,3 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 	env->head->number_of_pipes = env->number_of_pipes;
 	return true;
 }
-
-//TEST////////////////////////////////////////
-//TEST////////////////////////////////////////
-//TEST////////////////////////////////////////

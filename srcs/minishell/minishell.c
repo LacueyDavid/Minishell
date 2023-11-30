@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 05:25:04 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/30 18:26:56 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,20 @@ static void	interactive_mode(void)
 		write(STDOUT_FILENO, WHITE, 5);
 		if (!input)
 			break ;
-		token_list = lexer(input);
-		if (!token_list)
-		{
-			free(input);
-			continue ;
-		}
-		tree = parser(token_list);
-		if (!tree)
-		{
-			(free(input), destroy_token_list(token_list));
-			continue ;
-		}
-		execution(tree);
 		if (input[0] != '!')
 			update_history(input);
-		else if (exit_status == -1)
-			(clear_tree(tree), destroy_token_list(token_list), exit(1));
-		(free(input), destroy_token_list(token_list), clear_tree(tree));
+		token_list = lexer(input);
+		free(input);
+		if (!token_list)
+			continue ;
+		tree = parser(token_list);
+		destroy_token_list(token_list);
+		if (!tree)
+			continue ;
+		execution(tree);
+		if (exit_status == -1)
+			exit(1);
+		clear_tree(tree);
 	}
 }
 
@@ -77,19 +73,15 @@ static void	non_interactive_mode(void)
 			break ;
 		delete_newline(&input);
 		token_list = lexer(input);
+		free(input);
 		if (!token_list)
-		{
-			free(input);
 			continue ;
-		}
 		tree = parser(token_list);
+		destroy_token_list(token_list);
 		if (!tree)
-		{
-			(free(input), destroy_token_list(token_list));
 			continue ;
-		}
 		execution(tree);
-		(free(input), destroy_token_list(token_list), clear_tree(tree));
+		clear_tree(tree);
 	}
 }
 

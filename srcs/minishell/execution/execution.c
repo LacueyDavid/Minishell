@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 05:23:48 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/11/30 16:52:43 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 	index = 0;
 	index2 = 0;
 	fd_stdin = dup(STDIN_FILENO);
-	pids = malloc(sizeof(pid_t) * node->number_of_pipes + 1);
+	pids = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
 	if (!pids)
 	{
 		(exit_status = -1, perror(RED"Malloc failed"WHITE));
@@ -148,7 +148,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 		clear_tree(node->head);
 		exit(exit_status);
 	}
-	while (index2 < index)
+	while (index2 <= index)
 	{
 		waitpid(pids[index2], &exit_status, 0);
 		index2++;
