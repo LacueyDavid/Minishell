@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 20:31:34 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/04 04:13:17 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,15 @@ bool copy_env(const t_parser_env *env, t_parser_env *tmp_env_ptr)
 	return true;
 }
 
+void	put_the_good_head(t_node *head, t_node *node)
+{
+	if (!node || !head)
+		return ;
+	put_the_good_head(head, node->left);
+	put_the_good_head(head, node->right);
+	node->head = head;
+}
+
 bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 {
 	size_t			index;
@@ -254,6 +263,7 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 		}
 		destroy_token_list(tmp1);
 		env->head->number_of_pipes = env->number_of_pipes;
+		put_the_good_head(env->head, env->head);
 	}
 	else
 	{
