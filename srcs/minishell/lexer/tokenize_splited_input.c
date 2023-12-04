@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 03:10:40 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/15 05:01:43 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/04 04:31:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ bool tokenize_splited_input(t_token_list *token_list, char **splited_input)
 			destroy_token_list(token_list);
 			return (false);
 		}
-		add_token(token_list, token);
+		if (!add_token(token_list, token))
+		{
+			destroy_token_list(token_list);
+			return (false);
+		}
 		splited_input++;
 	}
 	return (true);

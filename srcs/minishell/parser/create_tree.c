@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/04 04:13:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/04 04:25:55 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,17 @@ bool	create_redirection_tree(t_parser_env *env, t_token_list *token_list)
 	return (true);
 }
 
-void	copy_token(t_token_list *token_list, t_token token)
+bool	copy_token(t_token_list *token_list, t_token token)
 {
 	t_token token_to_copy;
 
 	token_to_copy.type = token.type;
 	token_to_copy.value = ft_strdup(token.value);
-	add_token(token_list, token_to_copy);
+	if (!token_to_copy.value)
+		return (false);
+	if (!add_token(token_list, token_to_copy))
+		return (false);
+	return (true);
 }
 
 bool	fill_tmp(t_token_list *token_list, t_token token)
@@ -87,7 +91,11 @@ t_token_list	*pipeless_token_list(t_token_list *token_list, size_t *index)
 		return (NULL);
 	while (i < token_list->size && token_list->tokens[i].type != PIPE)
 	{
-		copy_token(tmp, token_list->tokens[i]);
+		if (!copy_token(tmp, token_list->tokens[i]))
+		{
+			destroy_token_list(tmp);
+			return (NULL);
+		}
 		i++;
 	}
 	*index = i;
@@ -239,21 +247,28 @@ bool create_piped_tree(t_parser_env *env, t_token_list *token_list)
 		{
 			if (index == 0)
 				tmp1 = pipeless_token_list(token_list, &index);
+			if (!tmp1)
+				return false;
 			if (index < token_list->size)
 				index++;
 			tmp2 = pipeless_token_list(token_list, &index);
+			if (!tmp2)
+				return false;
 			if (!create_redirection_tree(&tmp_env, tmp1))
 				return false;
 			if (index < token_list->size)
 			{
 				env->temporary->left = tmp_env.head;
-				reset_head(&tmp_env);
-				add_pipe(env);
+				if (!reset_head(&tmp_env))
+					return false;
+				if (!add_pipe(env))
+					return false;
 			}
 			else
 			{
 				env->temporary->left = tmp_env.head;
-				reset_head(&tmp_env);
+				if (!reset_head(&tmp_env))
+					return false;
 				if (!create_redirection_tree(&tmp_env, tmp2))
 					return false;
 				env->temporary->right = tmp_env.head;
