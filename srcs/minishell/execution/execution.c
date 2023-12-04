@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 16:52:43 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/04 05:05:58 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	exec_in_the_son(t_node *node)
 	}
 	execve(command, node->vector_strs.values, environ);
 	(exit_status = -1, free_strs(paths), free(command), perror(RED"Execve failed"WHITE));
-	return ;
+	exit(exit_status);
 }
 
 void	exec_simple_command(t_node *node)
@@ -148,16 +148,16 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 		clear_tree(node->head);
 		exit(exit_status);
 	}
+	dup2(fd_stdin, STDIN_FILENO);
+	close(fd_stdin);
+	close(fds[0]);
+	close(fds[1]);
 	while (index2 <= index)
 	{
 		waitpid(pids[index2], &exit_status, 0);
 		index2++;
 	}
 	free(pids);
-	dup2(fd_stdin, STDIN_FILENO);
-	close(fd_stdin);
-	close(fds[0]);
-	close(fds[1]);
 }
 
 void	execution(t_node *tree)
