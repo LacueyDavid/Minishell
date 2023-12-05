@@ -14,53 +14,35 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include "libft.h"
 
 int ft_cd(char *command) 
 {
-    // char *path;
+    char *path;
+    char *home_dir;
+    char *new_path;
 
-    // // Ignorer la commande "cd" et extraire le chemin
-    // if (strncmp(command, "cd ", 3) == 0) 
-	// {
-    //     path = strdup(command + 3); // Ignorer les trois premiers caractères (cd )
-
-    //     // Traiter le cas de ~ pour le répertoire personnel
-    //     if (path[0] == '~') 
-	// 	{
-    //         const char *home_dir = getenv("HOME");
-    //         if (home_dir != NULL) 
-	// 		{
-    //             printf("Changement vers le répertoire personnel : %s\n", home_dir);
-
-    //             char *new_path = malloc(strlen(home_dir) + strlen(path));
-    //             strcpy(new_path, home_dir);
-    //             strcat(new_path, path + 1); // Ignorer le ~
-    //             free(path);
-    //             path = new_path;
-    //         }
-    //     }
-
-    //     printf("Changement de répertoire vers : %s\n", path);
-
-    //     // Utiliser chdir pour changer de répertoire
-    //     if (chdir(path) != 0) 
-	// 	{
-    //         perror("ft_cd");
-    //     }
-
-    //     free(path);
-    // } 
-	// else 
-	// {
-    //     fprintf(stderr, "Commande cd non valide : %s\n", command);
-    // }
-}
-
-int main(void) 
-{
-	chdir("/home/jdenis/");
-	// ft_cd("cd ..");
-	// ft_cd("cd /tmp");
-	// ft_cd("cd ~");
-	// ft_cd("cd ~/Documents");
+    path = ft_strdup(command + 3);
+    if (path[0] == '~') 
+    {
+        home_dir = malloc(ft_strlen(path) + ft_strlen(getenv("HOME")));
+        home_dir = getenv("HOME");
+        if (home_dir != NULL) 
+        {
+            new_path = malloc(ft_strlen(home_dir) + ft_strlen(path));
+            ft_strcpy(new_path, home_dir);
+            ft_strcat(new_path, path + 1);
+            free(path);
+            path = new_path;
+            free(new_path);
+            free(home_dir);
+        }
+    }
+    if (chdir(path) != 0) 
+    {
+        perror("ft_cd");
+        return (EXIT_FAILURE);
+    }
+    free(path);
+    return (EXIT_SUCCESS);
 }

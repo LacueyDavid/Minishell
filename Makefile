@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/12/04 11:21:20 by marvin           ###   ########.fr        #
+#    Updated: 2023/12/05 07:54:08 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,6 @@ OBJS =													\
 				redirection_functions.o					\
 				parser.o								\
 				create_tree.o							\
-				print_env.o								\
 				update_vector_strs_capacity.o	)		\
 														\
 				$(addprefix builtins/,					\
