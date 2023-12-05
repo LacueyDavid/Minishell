@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:31 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/04 11:15:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/12/05 09:46:07 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ int	ft_pwd(void)
 		return (EXIT_FAILURE);
 	printf("%s", path);
 	free(path);
+	printf("\n");
 	return (EXIT_SUCCESS);
 }

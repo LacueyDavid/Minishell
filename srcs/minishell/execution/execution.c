@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/04 05:05:58 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/05 11:01:09 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include "wildcards.h"
 #include <sys/types.h>
 #include <unistd.h>
+#include "builtins.h"
 
 extern char	**environ;
 extern int	exit_status;
@@ -37,20 +38,25 @@ void	exec_in_the_son(t_node *node)
 		(exit_status = -1, perror(RED"No paths found"WHITE));
 		return ;
 	}
-	command = get_command(node->vector_strs.values[0], paths);
-	if (!command)
-	{
-		(exit_status = -1, free_strs(paths), perror(RED"Command not found"WHITE));
-		return ;
-	}
 	wildcards(&(node->vector_strs.values));
 	if (!node->vector_strs.values)
 	{
 		(exit_status = -1, free_strs(paths), perror(RED"Wildcards failed"));
 		return ;
 	}
-	execve(command, node->vector_strs.values, environ);
-	(exit_status = -1, free_strs(paths), free(command), perror(RED"Execve failed"WHITE));
+	if (is_a_builtin(node->vector_strs.values[0]) == 1)
+		exit_status = exec_builtin(node->vector_strs.values);
+	else
+	{
+		command = get_command(node->vector_strs.values[0], paths);
+		if (!command)
+		{
+			(exit_status = -1, free_strs(paths), perror(RED"Command not found"WHITE));
+			return ;
+		}
+		execve(command, node->vector_strs.values, environ);
+		(exit_status = -1, free_strs(paths), free(command), perror(RED"Execve failed"WHITE));
+	}
 	exit(exit_status);
 }
 

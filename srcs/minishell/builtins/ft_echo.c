@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/04 11:20:07 by marvin           ###   ########.fr       */
+/*   Updated: 2023/12/05 11:17:45 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,12 @@ int ft_echo(char *str)
 	{
 		if (!is_white_space(str[index]))
         	printf("%c", str[index]);
-        if (is_white_space(str[index + 1]) && str[index + 1] != '\0') 
+        if (str[index + 1] != '\0' && is_white_space(str[index + 1])) 
 		{
-            while (is_white_space(str[index]) && str[index] != '\0')
+            while (is_white_space(str[index + 1]) && str[index + 1] != '\0')
                 index++;
-            printf(" ");
+			if (str[index + 1] != '\0')
+            	printf(" ");
         }
         index++;
     }

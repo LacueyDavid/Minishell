@@ -12,13 +12,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-// #include "libft.h"
+#include "libft.h"
 
 extern int	exit_status;
 
-void ft_exit(char *status) 
+int ft_exit(char *status) 
 {
-    printf("exit\n");
-
-    exit_status = atoi(status);
+    if (!status || ft_atoi(status + 5) == 0)
+        exit_status = 1;
+    else
+        exit_status = ft_atoi(status + 5);
+    printf("exit WeShell\n");
+    return(exit_status);
 }
