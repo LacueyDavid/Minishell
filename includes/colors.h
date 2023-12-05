@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 01:34:27 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 16:06:35 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/04 09:19:22 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 #endif
 
 #ifndef LIGHT_BLUE
-# define LIGHT_BLUE	"\001\033\e[38;5;153m\002"
+# define LIGHT_BLUE	"\001\033[38;5;153m\002"
 #endif
 
 #ifndef LIGHT_PINK
-# define LIGHT_PINK	"\001\033\e[38;5;225m\002"
+# define LIGHT_PINK	"\001\033[38;5;225m\002"
 #endif
 
 #ifndef RED
