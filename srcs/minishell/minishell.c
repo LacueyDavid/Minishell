@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 18:26:56 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/04 12:38:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	interactive_mode(void)
 	t_node			*tree;
 
 	redo_history();
-	while(true)
+	while(exit_status == 0)
 	{
 		input = readline(LIGHT_BLUE "Wesh: " LIGHT_PINK);
 		write(STDOUT_FILENO, WHITE, 5);

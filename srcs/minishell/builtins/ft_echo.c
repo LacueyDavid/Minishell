@@ -3,58 +3,80 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2023/10/03 18:37:39 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/04 11:20:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include <stdbool.h>
 
-int	help_n_option(char **str)
+bool	is_white_space(char c)
 {
-	int	index;
-
-	index = 1;
-	if (str[0][0] == '-' && str[0][1] == 'n')
-	{
-		while (str[0][index])
-		{
-			if (str[0][index] == 'n')
-				index++;
-			else
-				return (0);
-		}
-		return (1);
-	}
-	else
-		return (0);
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
-void	ft_echo(char **str)
+int skip_n(char *str, bool *is_flag) 
 {
-	int	index;
-	int	is_flag;
+    int index = 4;
+	int index2;
+	bool all_pass;
 
-	is_flag = help_n_option(str);
-	index = is_flag;
-	while (str[index])
-	{
-		printf("%s", str[index]);
-		if (str[index + 1])
-			printf(" ");
-		else
-			break ;
+	all_pass = false;
+	while (str[index] != '\0' && is_white_space(str[index]))
 		index++;
-	}
-	if (is_flag == 0)
-		printf("\n");
+	if (str[index] == '\0')
+		return index;
+	while (all_pass == false) 
+	{
+		if(str[index] == '-')
+		{
+			index2 = index;
+			index++;
+			while (str[index] == 'n' && str[index] != '\0')
+				index++;
+			if (is_white_space(str[index]) || str[index] == '\0')
+			{
+				*is_flag = true;
+				if (str[index] != '\0')
+					index++;
+			}
+			else
+				return index2;
+
+			while (is_white_space(str[index]) && str[index] != '\0')
+				index++;
+		}
+		else
+			all_pass = true;
+    }
+    return index;
 }
 
-// int	main(void)
-// {
-// 	char *input[4] = {"-nnnnnnnnnnn", "hello", "wolrd", 0};
-// 	ft_echo(input);
-// 	return (0);
-// }
+int ft_echo(char *str) 
+{
+    int index;
+    bool is_flag;
+
+    is_flag = false;
+    index = skip_n(str, &is_flag);
+    while (str[index] != '\0') 
+	{
+		if (!is_white_space(str[index]))
+        	printf("%c", str[index]);
+        if (is_white_space(str[index + 1]) && str[index + 1] != '\0') 
+		{
+            while (is_white_space(str[index]) && str[index] != '\0')
+                index++;
+            printf(" ");
+        }
+        index++;
+    }
+    if (!is_flag)
+	{
+		printf("\n");
+	}
+	return (EXIT_SUCCESS);
+}

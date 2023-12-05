@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/11/20 18:42:14 by jdenis           ###   ########.fr        #
+#    Updated: 2023/12/04 11:21:20 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ CPPFLAGS = 	-I srcs/libft/								\
 			-I srcs/minishell/parser/					\
 			-I srcs/minishell/history/					\
 			-I srcs/minishell/wildcards/				\
+			-I srcs/minishell/builtins/					\
 			-I includes/								\
 
 OBJS =													\
@@ -65,6 +66,10 @@ OBJS =													\
 				print_env.o								\
 				update_vector_strs_capacity.o	)		\
 														\
+				$(addprefix builtins/,					\
+				ft_echo.o								\
+				ft_pwd.o						)		\
+														\
 				$(addprefix execution/,					\
 				execution.o								\
 				init_exec.o								\
@@ -77,6 +82,8 @@ TEST_OBJS =												\
 				srcs/minishell/execution/test_exec.o	\
 				srcs/minishell/parser/test_parser.o		\
 				srcs/minishell/parser/test_pipeless_token_list.o		\
+				srcs/minishell/builtins/test_echo.o		\
+				srcs/minishell/builtins/test_pwd.o		\
 														\
 
 NAME = minishell
