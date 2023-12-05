@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/05 16:24:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/05 21:19:52 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,15 @@ static void	interactive_mode(void)
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
+	int				last_exit_status;
 
+	last_exit_status = 0;
 	redo_history();
 	while(true)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, handler_sigint);
+		exit_status = 0;
 		input = readline(LIGHT_BLUE "Wesh: " LIGHT_PINK);
 		write(STDOUT_FILENO, WHITE, 5);
 		if (!input)
@@ -67,9 +70,9 @@ static void	interactive_mode(void)
 			continue ;
 		execution(tree);
 		clear_tree(tree);
-		if (exit_status == -1)
-			exit(1);
+		last_exit_status = exit_status;
 	}
+	(void)last_exit_status;
 }
 
 static void	non_interactive_mode(void)

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/05 16:24:12 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/05 22:25:45 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ static void	handle_heredoc(int sig)
 	(void)sig;
 	close(STDIN_FILENO);
 	write(STDOUT_FILENO, "\n", 2);
-	exit(130);
+	exit_status = 130;
 }
 
-// changer la fonction pour sigquit (mettre le status a 130 ou 0 et proteger les mallocs du fork
 void	here_doc(t_node *node)
 {
 	char	*eof;
@@ -40,7 +39,6 @@ void	here_doc(t_node *node)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	pid = fork();
-	// les fork avec exit sont mal protegé je pense
 	if (pid < 0)
 		(perror(RED"Fork failed"), exit(1));
 	if (pid == 0)
@@ -63,7 +61,11 @@ void	here_doc(t_node *node)
 		}
 		free(line);
 		close(fd);
-		exit(1);
+		clear_tree(node->head);
+		if (exit_status == 130)
+			exit(130);
+		else
+			exit(0);
 	}
 	waitpid(pid, &exit_status, 0);
 	if (WIFEXITED(exit_status))

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/30 05:08:28 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/05 22:57:44 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_exec_map
 	void		(*function)(t_node *node);
 }				t_exec_map;
 
-void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS]);
+void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS]);
 void	exec_simple_command(t_node *value);
 void	execution(t_node *node);
 void	here_doc(t_node *node);
