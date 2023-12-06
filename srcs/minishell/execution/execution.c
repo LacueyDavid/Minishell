@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/06 15:46:55 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/06 20:43:17 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,16 @@ void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], 
 
 size_t	how_many_heredocs(t_node *node)
 {
+	size_t value;
+
+	value = 0;
 	if (!node)
 		return 0;
-	return how_many_heredocs(node->left) + how_many_heredocs(node->right) + (node->type == HERE_DOCUMENT);
+	if (node->type == HERE_DOCUMENT)
+		value = 1;
+	if (node->right == NULL && node->type == HERE_DOCUMENT)
+		return 0;
+	return how_many_heredocs(node->left) + how_many_heredocs(node->right) + value;
 }
 
 void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS])
@@ -210,57 +217,73 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 	free(pids);
 }
 
+static void	handle_heredoc(int sig)
+{
+	(void)sig;
+	close(STDIN_FILENO);
+	write(STDOUT_FILENO, "\n", 2);
+	exit_status = 130;
+}
+
 void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 {
-	pid_t	pid;
-
 	if (!node)
 		return ;
-	signal(SIGINT, handler_sigint);
-	signal(SIGQUIT, handler_sigint);
 	if (node->type == HERE_DOCUMENT)
 	{
-		node->head->number_of_here_doc++;
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		pid = fork();
-		if (pid < 0)
-			(perror(RED"Fork failed"), exit(1));
-		if (pid == 0)
-		{
-			dup2(fds[0], STDIN_FILENO);
-			dup2(fds[1], STDOUT_FILENO);
-			here_doc(node);
-		}
-		waitpid(pid, &exit_status, 0);
-		if (WIFEXITED(exit_status))
-			exit_status = WEXITSTATUS(exit_status);
-		else if (WIFSIGNALED(exit_status))
-			exit_status = WTERMSIG(exit_status) + 128;
+		node->head->number_of_here_doc_index++;
+		printf("number of here doc index: %ld\n", node->head->number_of_here_doc_index);
+		printf("number of here doc: %ld\n", node->head->number_of_here_doc);
+		here_doc(node);
 	}
 	fill_heredocs(node->left, fds);
 	fill_heredocs(node->right, fds);
 }
 
-void	unlink_heredoc_files(t_node *node)
+void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 {
-	char	*heredoc_name;
-	size_t	index;
-	char	*index_str;
+	pid_t	pid;
 
 	if (!node)
 		return ;
-	index = 1;
-	while(index <= node->number_of_here_doc)
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	node->head->number_of_here_doc = how_many_heredocs(node);
+	pid = fork();
+	if (pid < 0)
+		(perror(RED"Fork failed"), exit(1));
+	if (pid == 0)
 	{
-		index_str = ft_itoa(index);
-		heredoc_name = ft_strjoin("here_doc.minishell", index_str);
-		unlink(heredoc_name);
-		free(index_str);
-		free(heredoc_name);
-		index++;
+		signal(SIGINT, handle_heredoc);
+		fill_heredocs(node, fds);
+		exit(0);
 	}
+	waitpid(pid, &exit_status, 0);
+	if (WIFEXITED(exit_status))
+		exit_status = WEXITSTATUS(exit_status);
+	else if (WIFSIGNALED(exit_status))
+		exit_status = WTERMSIG(exit_status) + 128;
 }
+
+// void	unlink_heredoc_files(t_node *node)
+// {
+// 	char	*heredoc_name;
+// 	size_t	index;
+// 	char	*index_str;
+//
+// 	if (!node)
+// 		return ;
+// 	index = 1;
+// 	while(index <= node->number_of_here_doc)
+// 	{
+// 		index_str = ft_itoa(index);
+// 		heredoc_name = ft_strjoin("here_doc.minishell", index_str);
+// 		unlink(heredoc_name);
+// 		free(index_str);
+// 		free(heredoc_name);
+// 		index++;
+// 	}
+// }
 
 void	execution(t_node *tree)
 {
@@ -273,14 +296,16 @@ void	execution(t_node *tree)
 	signal(SIGQUIT, handler_sigint);
 	init_fds(fds);
 	init_exec_func_map(exec_map);
-	fill_heredocs(tree, fds);
+	fork_heredocs(tree, fds);
+	if ( exit_status != 0)
+		return ;
 	if (tree->number_of_pipes > 0)
 		exec_pipes(tree, exec_map, fds);
 	else
 		exec_full_command(tree, exec_map, fds);
 	reset_standard_streams(fds);
 	close_fds(fds);
-	unlink_heredoc_files(tree);
+	// unlink_heredoc_files(tree);
 	tree->head->number_of_here_doc = 0;
 	tree->head->number_of_here_doc_index = 0;
 }

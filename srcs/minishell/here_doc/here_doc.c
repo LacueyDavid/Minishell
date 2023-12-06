@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/06 14:54:03 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/06 20:43:17 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,6 @@
 
 extern int	exit_status;
 
-static void	handle_heredoc(int sig)
-{
-	(void)sig;
-	close(STDIN_FILENO);
-	write(STDOUT_FILENO, "\n", 2);
-	exit_status = 130;
-}
-
 void	here_doc(t_node *node)
 {
 	char	*eof;
@@ -37,9 +29,8 @@ void	here_doc(t_node *node)
 	char	*heredoc_name;
 	char	*heredoc_index;
 
-	heredoc_index = ft_itoa(node->head->number_of_here_doc);
+	heredoc_index = ft_itoa(node->head->number_of_here_doc_index);
 	heredoc_name = ft_strjoin("here_doc.minishell", heredoc_index);
-	signal(SIGINT, handle_heredoc);
 	eof = node->right->vector_strs.values[0];
 	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
