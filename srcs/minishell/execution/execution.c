@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/05 23:07:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/06 15:46:55 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@
 
 extern char	**environ;
 extern int	exit_status;
+
+
+static void	handler_sigint(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
 
 void	exec_in_the_son(t_node *node)
 {
@@ -82,14 +91,36 @@ void	exec_simple_command(t_node *node)
 
 void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS])
 {
+	int		fd;
+	char	*heredoc_name;
+	char	*index_of_here_doc;
+
 	if (!node)
 		return ;
-	if (node->type == HERE_DOCUMENT)
+	signal(SIGINT, handler_sigint);
+	signal(SIGQUIT, handler_sigint);
+	if(node->type == HERE_DOCUMENT)
 	{
-		dup2(fds[0], STDIN_FILENO);
-		dup2(fds[1], STDOUT_FILENO);
+		node->head->number_of_here_doc_index++;
+		index_of_here_doc = ft_itoa(node->head->number_of_here_doc_index);
+		heredoc_name = ft_strjoin("here_doc.minishell", index_of_here_doc);
+		fd = open(heredoc_name, O_RDONLY);
+		if (fd < 0)
+		{
+			(exit_status = -1, perror(RED"Open failed"WHITE));
+			return ;
+		}
+		if (dup2(fd, STDIN_FILENO) < 0)
+		{
+			(exit_status = -1, perror(RED"Dup2 failed"WHITE));
+			return ;
+		}
+		close(fd);
+		free(index_of_here_doc);
+		free(heredoc_name);
 	}
-	exec_map[node->type].function(node);
+	else
+		exec_map[node->type].function(node);
 	if (node->type != SIMPLE_COMMAND)
 	{
 		if (!node->left)
@@ -97,9 +128,13 @@ void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], 
 		else
 			exec_full_command(node->left, exec_map, fds);
 	}
-	// if (node->type == SIMPLE_COMMAND)
-	// 	dup2(fd_stdin, STDIN_FILENO);
-	unlink("here_doc.minishell");
+}
+
+size_t	how_many_heredocs(t_node *node)
+{
+	if (!node)
+		return 0;
+	return how_many_heredocs(node->left) + how_many_heredocs(node->right) + (node->type == HERE_DOCUMENT);
 }
 
 void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS])
@@ -119,6 +154,8 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 	}
 	while (node->type == COMMAND_PIPE)
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		pipe(pipe_fds);
 		pids[index] = fork();
 		if (pids[index] < 0)
@@ -137,6 +174,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 			clear_tree(node->head);
 			exit(0);
 		}
+		node->head->number_of_here_doc_index += how_many_heredocs(node->left);
 		dup2(pipe_fds[0], STDIN_FILENO);
 		close(pipe_fds[0]);
 		close(pipe_fds[1]);
@@ -172,12 +210,56 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 	free(pids);
 }
 
-static void	handler_sigint(int sig)
+void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 {
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
+	pid_t	pid;
+
+	if (!node)
+		return ;
+	signal(SIGINT, handler_sigint);
+	signal(SIGQUIT, handler_sigint);
+	if (node->type == HERE_DOCUMENT)
+	{
+		node->head->number_of_here_doc++;
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		pid = fork();
+		if (pid < 0)
+			(perror(RED"Fork failed"), exit(1));
+		if (pid == 0)
+		{
+			dup2(fds[0], STDIN_FILENO);
+			dup2(fds[1], STDOUT_FILENO);
+			here_doc(node);
+		}
+		waitpid(pid, &exit_status, 0);
+		if (WIFEXITED(exit_status))
+			exit_status = WEXITSTATUS(exit_status);
+		else if (WIFSIGNALED(exit_status))
+			exit_status = WTERMSIG(exit_status) + 128;
+	}
+	fill_heredocs(node->left, fds);
+	fill_heredocs(node->right, fds);
+}
+
+void	unlink_heredoc_files(t_node *node)
+{
+	char	*heredoc_name;
+	size_t	index;
+	char	*index_str;
+
+	if (!node)
+		return ;
+	index = 1;
+	while(index <= node->number_of_here_doc)
+	{
+		index_str = ft_itoa(index);
+		heredoc_name = ft_strjoin("here_doc.minishell", index_str);
+		unlink(heredoc_name);
+		free(index_str);
+		free(heredoc_name);
+		index++;
+	}
 }
 
 void	execution(t_node *tree)
@@ -185,14 +267,20 @@ void	execution(t_node *tree)
 	int fds[NUMBER_OF_FDS];
 	t_exec_map	exec_map[NUMBER_OF_EXEC_FUNCS];
 
+	tree->head->number_of_here_doc = 0;
+	tree->head->number_of_here_doc_index = 0;
 	signal(SIGINT, handler_sigint);
 	signal(SIGQUIT, handler_sigint);
 	init_fds(fds);
 	init_exec_func_map(exec_map);
+	fill_heredocs(tree, fds);
 	if (tree->number_of_pipes > 0)
 		exec_pipes(tree, exec_map, fds);
 	else
 		exec_full_command(tree, exec_map, fds);
 	reset_standard_streams(fds);
 	close_fds(fds);
+	unlink_heredoc_files(tree);
+	tree->head->number_of_here_doc = 0;
+	tree->head->number_of_here_doc_index = 0;
 }

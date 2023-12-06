@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/04 04:29:08 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/06 14:27:42 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct s_node
 	struct s_node	*left;
 	struct s_node	*right;
 	size_t			number_of_pipes;
+	size_t			number_of_here_doc;
+	size_t			number_of_here_doc_index;
 }	t_node;
 
 struct s_parser_env;

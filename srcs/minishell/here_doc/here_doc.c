@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/05 22:25:45 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/06 14:54:03 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,47 +34,34 @@ void	here_doc(t_node *node)
 	char	*eof;
 	char	*line;
 	int		fd;
-	pid_t	pid;
+	char	*heredoc_name;
+	char	*heredoc_index;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	pid = fork();
-	if (pid < 0)
-		(perror(RED"Fork failed"), exit(1));
-	if (pid == 0)
+	heredoc_index = ft_itoa(node->head->number_of_here_doc);
+	heredoc_name = ft_strjoin("here_doc.minishell", heredoc_index);
+	signal(SIGINT, handle_heredoc);
+	eof = node->right->vector_strs.values[0];
+	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+		(perror(RED"Open failed"), exit(-1));
+	while (true)
 	{
-		signal(SIGINT, handle_heredoc);
-		eof = node->right->vector_strs.values[0];
-		fd = open("here_doc.minishell", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd < 0)
-			(perror(RED"Open failed"), exit(1));
-		while (true)
-		{
-			line = readline(LIGHT_BLUE "> " LIGHT_PINK);
-			if (!line)
-				break ;
-			if (ft_strcmp(eof, line) == 0)
-				break ;
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-			free(line);
-		}
+		line = readline(LIGHT_BLUE "> " LIGHT_PINK);
+		if (!line)
+			break ;
+		if (ft_strcmp(eof, line) == 0)
+			break ;
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
-		close(fd);
-		clear_tree(node->head);
-		if (exit_status == 130)
-			exit(130);
-		else
-			exit(0);
 	}
-	waitpid(pid, &exit_status, 0);
-	if (WIFEXITED(exit_status))
-		exit_status = WEXITSTATUS(exit_status);
-	else if (WIFSIGNALED(exit_status))
-		exit_status = WTERMSIG(exit_status) + 128;
-	fd = open("here_doc.minishell", O_RDONLY);
-	if (dup2(fd, STDIN_FILENO) < 0)
-		(perror(RED"Dup2 failed"), exit(1));
-	if (close(fd) < 0)
-		(perror(RED"Close failed"), exit(1));
+	free(line);
+	free(heredoc_index);
+	free(heredoc_name);
+	close(fd);
+	clear_tree(node->head);
+	if (exit_status == 130)
+		exit(130);
+	else
+		exit(0);
 }
