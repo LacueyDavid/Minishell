@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/12/07 17:25:58 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/12/07 17:37:08 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ CPPFLAGS = 	-I srcs/libft/								\
 			-I srcs/minishell/wildcards/				\
 			-I srcs/minishell/builtins/					\
 			-I srcs/minishell/signals/					\
+			-I srcs/minishell/here_doc/					\
 			-I includes/								\
 
 OBJS =													\

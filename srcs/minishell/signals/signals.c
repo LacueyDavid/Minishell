@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:18:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 17:26:51 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 17:31:36 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include <unistd.h>
 
 extern int	exit_status;
+
+void handler_sigint_main(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
 void	handler_sigint(int sig)
 {
@@ -30,4 +39,3 @@ void	handle_heredoc(int sig)
 	write(STDOUT_FILENO, "\n", 2);
 	exit_status = 130;
 }
-

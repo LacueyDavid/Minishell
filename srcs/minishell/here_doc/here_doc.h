@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_signals.h                                :+:      :+:    :+:   */
+/*   here_doc.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 17:21:00 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 17:31:14 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/12/07 17:35:20 by dlacuey           #+#    #+#             */
+/*   Updated: 2023/12/07 17:38:54 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_SIGNALS_H
-# define MINISHELL_SIGNALS_H
+#ifndef HERE_DOC_H
+# define HERE_DOC_H
 
-void	handler_sigint_main(int sig);
-void	handler_sigint(int sig);
-void	handle_heredoc(int sig);
+#include "execution.h"
+
+void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS]);
+void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS]);
+void	unlink_heredoc_files(t_node *node);
+size_t	how_many_heredocs(t_node *node);
+void	here_doc(t_node *node);
 
 #endif
