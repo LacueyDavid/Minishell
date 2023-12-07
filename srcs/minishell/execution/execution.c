@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 13:20:54 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 13:46:47 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,11 @@ void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	{
 		node->head->number_of_here_doc_index++;
 		here_doc(node);
+		if (exit_status == 130)
+		{
+			clear_tree(node->head);
+			exit(130);
+		}
 	}
 	fill_heredocs(node->left, fds);
 	fill_heredocs(node->right, fds);
@@ -255,10 +260,7 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 		signal(SIGINT, handle_heredoc);
 		fill_heredocs(node, fds);
 		clear_tree(node->head);
-		if (exit_status == 130)
-			exit(130);
-		else
-			exit(0);
+		exit(0);
 	}
 	waitpid(pid, &exit_status, 0);
 	if (WIFEXITED(exit_status))
@@ -300,7 +302,10 @@ void	execution(t_node *tree)
 	init_exec_func_map(exec_map);
 	fork_heredocs(tree, fds);
 	if ( exit_status != 0)
+	{
+		unlink_heredoc_files(tree);
 		return ;
+	}
 	if (tree->number_of_pipes > 0)
 		exec_pipes(tree, exec_map, fds);
 	else

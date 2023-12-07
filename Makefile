@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/12/05 08:23:21 by jdenis           ###   ########.fr        #
+#    Updated: 2023/12/07 13:36:50 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,14 +65,6 @@ OBJS =													\
 				create_tree.o							\
 				update_vector_strs_capacity.o	)		\
 														\
-				$(addprefix builtins/,					\
-				ft_echo.o								\
-				ft_cd.o									\
-				ft_env.o								\
-				ft_exit.o								\
-				ft_pwd.o								\
-				exec_builtin.o					)		\
-														\
 				$(addprefix execution/,					\
 				execution.o								\
 				init_exec.o								\
@@ -85,8 +77,6 @@ TEST_OBJS =												\
 				srcs/minishell/execution/test_exec.o	\
 				srcs/minishell/parser/test_parser.o		\
 				srcs/minishell/parser/test_pipeless_token_list.o		\
-				srcs/minishell/builtins/test_echo.o		\
-				srcs/minishell/builtins/test_pwd.o		\
 														\
 
 NAME = minishell
