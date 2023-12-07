@@ -19,7 +19,7 @@ extern int	exit_status;
 int ft_exit(char *status) 
 {
     if (!status || ft_atoi(status + 5) == 0)
-        exit_status = 1;
+        exit_status = 0;
     else
         exit_status = ft_atoi(status + 5);
     printf("exit WeShell\n");
