@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:19:59 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/24 04:26:12 by marvin           ###   ########.fr       */
+/*   Updated: 2023/12/07 17:16:13 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_node	*init_node(void)
 	node->right = NULL;
 	node->parent = NULL;
 	node->number_of_pipes = 0;
+	node->number_of_here_doc = 0;
+	node->number_of_here_doc_index = 0;
 	return (node);
 }
 

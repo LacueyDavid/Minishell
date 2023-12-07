@@ -6,34 +6,27 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 16:16:52 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 17:22:17 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include "libft.h"
-#include "execution.h"
-#include "fcntl.h"
 #include <sys/wait.h>
 #include <stdio.h>
-#include "colors.h"
-#include "get_next_line.h"
 #include <readline/readline.h>
-#include "wildcards.h"
 #include <sys/types.h>
 #include <unistd.h>
+#include <fcntl.h>
+
+#include "libft.h"
+#include "execution.h"
+#include "colors.h"
+#include "get_next_line.h"
+#include "wildcards.h"
+#include "minishell_signals.h"
 
 extern char	**environ;
 extern int	exit_status;
-
-
-static void	handler_sigint(int sig)
-{
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
 
 void	exec_in_the_son(t_node *node)
 {
@@ -217,14 +210,6 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 	free(pids);
 }
 
-static void	handle_heredoc(int sig)
-{
-	(void)sig;
-	close(STDIN_FILENO);
-	write(STDOUT_FILENO, "\n", 2);
-	exit_status = 130;
-}
-
 void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 {
 	if (!node || (node->type == HERE_DOCUMENT && node->right == NULL))
@@ -293,8 +278,6 @@ void	execution(t_node *tree)
 	int fds[NUMBER_OF_FDS];
 	t_exec_map	exec_map[NUMBER_OF_EXEC_FUNCS];
 
-	tree->head->number_of_here_doc = 0;
-	tree->head->number_of_here_doc_index = 0;
 	signal(SIGINT, handler_sigint);
 	signal(SIGQUIT, handler_sigint);
 	init_fds(fds);
@@ -312,6 +295,4 @@ void	execution(t_node *tree)
 	reset_standard_streams(fds);
 	close_fds(fds);
 	unlink_heredoc_files(tree);
-	tree->head->number_of_here_doc = 0;
-	tree->head->number_of_here_doc_index = 0;
 }

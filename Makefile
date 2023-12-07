@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/12/07 13:36:50 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/12/07 17:25:58 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ CPPFLAGS = 	-I srcs/libft/								\
 			-I srcs/minishell/history/					\
 			-I srcs/minishell/wildcards/				\
 			-I srcs/minishell/builtins/					\
+			-I srcs/minishell/signals/					\
 			-I includes/								\
 
 OBJS =													\
@@ -47,6 +48,9 @@ OBJS =													\
 														\
 				$(addprefix wildcards/,					\
 				wildcards.o						)		\
+														\
+				$(addprefix signals/,					\
+				signals.o						)		\
 														\
 				$(addprefix lexer/,						\
 				lexer.o									\
