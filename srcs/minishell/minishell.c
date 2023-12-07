@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 17:30:29 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 17:40:52 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@
 #include "minishell_signals.h"
 
 int		exit_status = 0;
-
-static bool is_interactive_mode(void)
-{
-	return (isatty(STDIN_FILENO) && isatty(STDERR_FILENO));
-}
 
 static void	interactive_mode(void)
 {
@@ -91,6 +86,11 @@ static void	non_interactive_mode(void)
 		execution(tree);
 		clear_tree(tree);
 	}
+}
+
+static bool is_interactive_mode(void)
+{
+	return (isatty(STDIN_FILENO) && isatty(STDERR_FILENO));
 }
 
 void	minishell(void)
