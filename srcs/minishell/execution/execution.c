@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/06 20:43:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 13:20:54 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,8 +232,6 @@ void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	if (node->type == HERE_DOCUMENT)
 	{
 		node->head->number_of_here_doc_index++;
-		printf("number of here doc index: %ld\n", node->head->number_of_here_doc_index);
-		printf("number of here doc: %ld\n", node->head->number_of_here_doc);
 		here_doc(node);
 	}
 	fill_heredocs(node->left, fds);
@@ -256,7 +254,11 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	{
 		signal(SIGINT, handle_heredoc);
 		fill_heredocs(node, fds);
-		exit(0);
+		clear_tree(node->head);
+		if (exit_status == 130)
+			exit(130);
+		else
+			exit(0);
 	}
 	waitpid(pid, &exit_status, 0);
 	if (WIFEXITED(exit_status))
@@ -265,25 +267,25 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 		exit_status = WTERMSIG(exit_status) + 128;
 }
 
-// void	unlink_heredoc_files(t_node *node)
-// {
-// 	char	*heredoc_name;
-// 	size_t	index;
-// 	char	*index_str;
-//
-// 	if (!node)
-// 		return ;
-// 	index = 1;
-// 	while(index <= node->number_of_here_doc)
-// 	{
-// 		index_str = ft_itoa(index);
-// 		heredoc_name = ft_strjoin("here_doc.minishell", index_str);
-// 		unlink(heredoc_name);
-// 		free(index_str);
-// 		free(heredoc_name);
-// 		index++;
-// 	}
-// }
+void	unlink_heredoc_files(t_node *node)
+{
+	char	*heredoc_name;
+	size_t	index;
+	char	*index_str;
+
+	if (!node)
+		return ;
+	index = 1;
+	while(index <= node->number_of_here_doc)
+	{
+		index_str = ft_itoa(index);
+		heredoc_name = ft_strjoin("here_doc.minishell", index_str);
+		unlink(heredoc_name);
+		free(index_str);
+		free(heredoc_name);
+		index++;
+	}
+}
 
 void	execution(t_node *tree)
 {
@@ -305,7 +307,7 @@ void	execution(t_node *tree)
 		exec_full_command(tree, exec_map, fds);
 	reset_standard_streams(fds);
 	close_fds(fds);
-	// unlink_heredoc_files(tree);
+	unlink_heredoc_files(tree);
 	tree->head->number_of_here_doc = 0;
 	tree->head->number_of_here_doc_index = 0;
 }

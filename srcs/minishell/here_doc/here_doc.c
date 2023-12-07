@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/06 20:43:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 13:01:59 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,4 @@ void	here_doc(t_node *node)
 	free(heredoc_index);
 	free(heredoc_name);
 	close(fd);
-	clear_tree(node->head);
-	if (exit_status == 130)
-		exit(130);
-	else
-		exit(0);
 }
