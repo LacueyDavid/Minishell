@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/07 13:01:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:05:07 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	here_doc(t_node *node)
 	eof = node->right->vector_strs.values[0];
 	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		(perror(RED"Open failed"), exit(-1));
+		(perror(RED"Open failed"), exit(EXIT_SUCCESS));
 	while (true)
 	{
 		line = readline(LIGHT_BLUE "> " LIGHT_PINK);

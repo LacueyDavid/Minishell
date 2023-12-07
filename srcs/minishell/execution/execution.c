@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 13:46:47 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/07 16:16:52 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ static void	handle_heredoc(int sig)
 
 void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 {
-	if (!node)
+	if (!node || (node->type == HERE_DOCUMENT && node->right == NULL))
 		return ;
 	if (node->type == HERE_DOCUMENT)
 	{
@@ -243,6 +243,7 @@ void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	fill_heredocs(node->right, fds);
 }
 
+#include <errno.h>
 void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 {
 	pid_t	pid;
@@ -254,19 +255,17 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	node->head->number_of_here_doc = how_many_heredocs(node);
 	pid = fork();
 	if (pid < 0)
-		(perror(RED"Fork failed"), exit(1));
+		(perror(RED"Fork in fork heredocs failed"WHITE), exit(1));
 	if (pid == 0)
 	{
 		signal(SIGINT, handle_heredoc);
 		fill_heredocs(node, fds);
 		clear_tree(node->head);
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		exit_status = WEXITSTATUS(exit_status);
-	else if (WIFSIGNALED(exit_status))
-		exit_status = WTERMSIG(exit_status) + 128;
 }
 
 void	unlink_heredoc_files(t_node *node)
