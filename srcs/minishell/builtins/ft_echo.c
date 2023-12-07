@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/05 11:17:45 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/07 12:51:56 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,32 @@ bool	is_white_space(char c)
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
-int skip_n(char *str, bool *is_flag) 
+size_t	skip_first_white_space(char *str)
 {
-    int index = 4;
-	int index2;
-	bool all_pass;
+	size_t index;
 
-	all_pass = false;
+	index = 4;
 	while (str[index] != '\0' && is_white_space(str[index]))
 		index++;
+	return (index);
+}
+
+void	comfirm_flag(bool *is_flag, char *str, size_t *index)
+{
+	*is_flag = true;
+	if (str[*index] != '\0')
+		*index++;
+}
+
+int skip_n(char *str, bool *is_flag) 
+{
+    size_t	index;
+	int		index2;
+	bool	all_pass;
+
+	index = skip_first_white_space(str);
 	if (str[index] == '\0')
-		return index;
+		return (index);
 	while (all_pass == false) 
 	{
 		if(str[index] == '-')
@@ -38,14 +53,9 @@ int skip_n(char *str, bool *is_flag)
 			while (str[index] == 'n' && str[index] != '\0')
 				index++;
 			if (is_white_space(str[index]) || str[index] == '\0')
-			{
-				*is_flag = true;
-				if (str[index] != '\0')
-					index++;
-			}
+				comfirm_flag(is_flag, str, &index);
 			else
 				return index2;
-
 			while (is_white_space(str[index]) && str[index] != '\0')
 				index++;
 		}
@@ -60,7 +70,6 @@ int ft_echo(char *str)
     int index;
     bool is_flag;
 
-    is_flag = false;
     index = skip_n(str, &is_flag);
     while (str[index] != '\0') 
 	{
