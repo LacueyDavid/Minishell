@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/12/07 17:37:08 by dlacuey          ###   ########.fr        #
+#    Updated: 2023/12/08 14:01:18 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ CPPFLAGS = 	-I srcs/libft/								\
 			-I srcs/minishell/builtins/					\
 			-I srcs/minishell/signals/					\
 			-I srcs/minishell/here_doc/					\
+			-I srcs/minishell/env/						\
 			-I includes/								\
 
 OBJS =													\
@@ -70,6 +71,19 @@ OBJS =													\
 				create_tree.o							\
 				update_vector_strs_capacity.o	)		\
 														\
+														\
+				$(addprefix builtins/,					\
+				ft_cd.o									\
+				ft_echo.o								\
+				ft_env.o								\
+				ft_exit.o								\
+				ft_export.o								\
+				ft_pwd.o								\
+				ft_unset.o						)		\
+														\
+				$(addprefix env/,				\
+				environnement.o					)		\
+														\
 				$(addprefix execution/,					\
 				execution.o								\
 				init_exec.o								\
@@ -82,6 +96,7 @@ TEST_OBJS =												\
 				srcs/minishell/execution/test_exec.o	\
 				srcs/minishell/parser/test_parser.o		\
 				srcs/minishell/parser/test_pipeless_token_list.o		\
+				srcs/minishell/builtins/test_echo.o		\
 														\
 
 NAME = minishell

@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   environnement.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 06:28:13 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/08 11:06:18 by jdenis           ###   ########.fr       */
+/*   Created: 2023/12/08 11:06:07 by jdenis            #+#    #+#             */
+/*   Updated: 2023/12/08 13:16:02 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef ENVIRONNEMENT_H
+# define ENVIRONNEMENT_H
 
-void	minishell(void);
+typedef struct s_envs
+{
+	char			**env;
+	char			**exports;
+}					t_envs;
+
+t_envs	*copy_env_and_export(void);
+void	free_envs(t_envs *envs);
 
 #endif

@@ -6,134 +6,110 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/07 12:36:01 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/08 13:57:41 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include "libft.h"
+#include "libft.h"
+#include "environnement.h"
 
-extern char **environ;
+// extern char **environ;
 
-void	free_strs(char **strs)
+int	print_empty_export(t_envs *envs)
 {
-	size_t index;
+	size_t	index;
 
 	index = 0;
-	if (!strs)
-		return ;
-	while (strs[index])
+	while (envs->exports[index])
 	{
-		free(strs[index]);
-		index++;
-	}
-	free(strs);
-}
-size_t	ft_strlen(char *s)
-{
-	size_t	index;
-
-	index = 0;
-	while (s && s[index])
-		index++;
-	return (index);
-}
-
-char	*ft_strdup(char *s)
-{
-	size_t	index;
-	char	*sdup;
-
-	sdup = malloc(ft_strlen(s) + 1);
-	if (!sdup)
-		return (NULL);
-	index = 0;
-	while (s && s[index])
-	{
-		sdup[index] = s[index];
-		index++;
-	}
-	sdup[index] = '\0';
-	return (sdup);
-}
-
-size_t	ft_strslen(char **strs)
-{
-	size_t	index;
-
-	index = 0;
-	while (strs[index])
-		index++;
-	return (index);
-}
-
-int	print_empty_export(void)
-{
-	size_t	index;
-
-	index = 0;
-	while (environ[index])
-	{
-		printf("declare -x %s\n", environ[index]);
+		printf("declare -x %s\n", envs->exports[index]);
 		index++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	add_variable(char **input)
+int add_var(char ***envs, char **input)
 {
-	size_t	index;
-	size_t	index2;
+    size_t index;
+    size_t index2;
 
-	index = ft_strslen(environ);
-	environ = realloc(environ, sizeof(char *) * (ft_strslen(environ) + ft_strslen(input)));
-	if (!environ)
-		return (EXIT_FAILURE);
-	index2 = 1;
-	while (input[index2])
-	{
-		environ[index] = ft_strdup(input[index2]);
-		if (!environ[index])
-		{
-			free_strs(environ);
-			return (EXIT_FAILURE);
-		}
-		index++;
-		index2++;
-	}
-	environ[index] = NULL;
-    return (EXIT_SUCCESS);
+    index = ft_strslen(*envs);
+    *envs = realloc(*envs, sizeof(char *) * (ft_strslen(*envs) + ft_strslen(input)));
+    if (!*envs)
+        return EXIT_FAILURE;
+    index2 = 1;
+    while (input[index2])
+    {
+        (*envs)[index] = ft_strdup(input[index2]);
+        if (!(*envs)[index])
+        {
+            free_strs(*envs);
+            return EXIT_FAILURE;
+        }
+        index++;
+        index2++;
+    }
+    (*envs)[index] = NULL;
+    return EXIT_SUCCESS;
 }
 
-int	ft_export(char **input)
+int add_variables(t_envs *envs, char **input)
+{
+    if (add_var(&(envs->env), input) == EXIT_FAILURE ||
+        add_var(&(envs->exports), input) == EXIT_FAILURE)
+    {
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
+}
+
+int	ft_export(t_envs *envs, char **input)
 {
 	if (!input[1])
-		return (print_empty_export());
+		return (print_empty_export(envs));
 	else
-		return (add_variable(input));
+		return (add_variables(envs, input));
+}
+
+void print_envs(char **envs)
+{
+	size_t index;
+
+	index = 0;
+	while (envs[index])
+	{
+		printf("%s\n", envs[index]);
+		index++;
+	}
 }
 
 // int main(void)
 // {
 // 	char *input[] = {"export", "TEST=OKBRO", "QIYANA=MAFEMME", NULL};
 // 	char *input2[] = {"export", NULL};
-// 	// ft_export(input2);
-// 	size_t index = 0;
-// 	// while (environ[index])
-// 	// {
-// 	// 	printf("%s\n", environ[index]);
-// 	// 	index++;
-// 	// }
-// 	printf("taille env : %zu\n", ft_strslen(environ));
-// 	ft_export(input);
-// 	printf("taille env : %zu\n", ft_strslen(environ));
-// 	index = 0;
-// 	while (environ[index])
-// 	{
-// 		printf("%s\n", environ[index]);
-// 		index++;
-// 	}
+// 	t_envs *envs;
+// 	envs = copy_env_and_export();
+// 	// ft_export(input2, envs);
+// 	print_envs(envs->env);
+// 	printf("\n");
+// 	print_envs(envs->exports);
+// 	ft_export(envs, input);
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+
+// 	print_envs(envs->env);
+// 	printf("\n");
+// 	print_envs(envs->exports);
+// 	free_envs(envs);
 // 	return (0);
 // }

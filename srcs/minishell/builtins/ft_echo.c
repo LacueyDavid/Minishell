@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/07 12:51:56 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/08 14:00:14 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	comfirm_flag(bool *is_flag, char *str, size_t *index)
 {
 	*is_flag = true;
 	if (str[*index] != '\0')
-		*index++;
+		index++;
 }
 
 int skip_n(char *str, bool *is_flag) 

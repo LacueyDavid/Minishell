@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 17:40:52 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/08 14:05:27 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include "history.h"
 #include "colors.h"
 #include "minishell_signals.h"
+#include "environnement.h"
 
 int		exit_status = 0;
 
@@ -34,9 +35,12 @@ static void	interactive_mode(void)
 	t_token_list	*token_list;
 	t_node			*tree;
 	int				last_exit_status;
+	t_envs			*envs;
 
 	last_exit_status = 0;
 	redo_history();
+	envs = copy_env_and_export();
+	(void)envs;
 	while(true)
 	{
 		signal(SIGQUIT, SIG_IGN);
