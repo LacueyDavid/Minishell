@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/08 13:57:41 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/11 12:44:41 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,22 @@ int add_variables(t_envs *envs, char **input)
     return EXIT_SUCCESS;
 }
 
+// int add_variables(t_envs *envs, char **input)
+// {
+//     if (add_var(&(envs->exports), input) == EXIT_FAILURE)
+//         return EXIT_FAILURE;
+//     return EXIT_SUCCESS;
+// }
+
 int	ft_export(t_envs *envs, char **input)
 {
 	if (!input[1])
 		return (print_empty_export(envs));
-	else
-		return (add_variables(envs, input));
+    else if (ft_strchr(input[1], '='))
+        return add_variables(envs, input);
+	// else
+	// 	return (add_variables_export_only(envs, input));
+    return 0;
 }
 
 void print_envs(char **envs)

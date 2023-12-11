@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:13:15 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/05 09:28:08 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/11 13:15:27 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int		ft_pwd(void);
 int 	ft_cd(char *command);
 int		ft_env(void);
 int 	ft_exit(char *status);
+int		ft_export(char **input);
+int		ft_unset(char **input);
 int		exec_builtin(char **command);
 bool	is_a_builtin(char *command);
 

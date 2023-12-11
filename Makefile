@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/12/08 14:01:18 by jdenis           ###   ########.fr        #
+#    Updated: 2023/12/11 12:18:09 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ OBJS =													\
 				ft_pwd.o								\
 				ft_unset.o						)		\
 														\
-				$(addprefix env/,				\
+				$(addprefix env/,						\
 				environnement.o					)		\
 														\
 				$(addprefix execution/,					\

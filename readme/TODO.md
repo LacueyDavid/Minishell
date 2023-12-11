@@ -1,6 +1,5 @@
 # Minishell
 
-les heredoc marchent pas, si on en met plusieurs daffilé
 
 refaire get_next_line (multiple fd)
 

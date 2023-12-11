@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:20:49 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/08 13:54:36 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/11 13:15:17 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void remove_environment_variable(char **envs, char *variable_name)
     }
 }
 
-int	ft_unset(t_envs *envs, char **input) 
+int	ft_unset(t_envs *envs, char **input)
 {
     size_t	index;
 

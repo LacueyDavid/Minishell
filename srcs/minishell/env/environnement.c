@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environnement.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/11 06:29:15 by marvin           ###   ########.fr       */
+/*   Updated: 2023/12/11 12:50:50 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,20 @@ char	*ft_strdup_with_quotes(char *str)
 	char	*new;
 	size_t	index;
 	size_t	index2;
+	bool	equal;
 
 	index = 0;
 	index2 = 0;
-	//je comprends pas pourquoi je dois mettre le fois 2, mais sinon ca marche pas
-	new = malloc(sizeof(char) * (2 * ft_strlen(str) + 3));
+	equal = false;
+	new = malloc(ft_strlen(str) + 3);
 	if (!new)
 		return NULL;
 	while (str[index])
 	{
 		new[index2] = str[index];
-		if (str[index] == '=')
+		if (str[index] == '=' && !equal)
 		{
+			equal = true;
 			index2++;
 			new[index2] = '"';
 		}
@@ -156,37 +158,37 @@ t_envs	*copy_env_and_export(void)
 	return (envs);
 }
 
-int main(void)
-{
-	t_envs	*envs;
-	size_t	index;
+// int main(void)
+// {
+// 	t_envs	*envs;
+// 	size_t	index;
 
-	index = 0;
-	envs = copy_env_and_export();
-	printf("print de l'env\n");
-	while (envs->env[index])
-	{
-		printf("%s\n", envs->env[index]);
-		index++;
-	}
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
+// 	index = 0;
+// 	envs = copy_env_and_export();
+// 	printf("print de l'env\n");
+// 	while (envs->env[index])
+// 	{
+// 		printf("%s\n", envs->env[index]);
+// 		index++;
+// 	}
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
+// 	printf("\n");
 
-	printf("print de l'export\n");
-	index = 0;
-	while (envs->exports[index])
-	{
-		printf("%s\n", envs->exports[index]);
-		index++;
-	}
-	free_envs(envs);
-	return (0);
+// 	printf("print de l'export\n");
+// 	index = 0;
+// 	while (envs->exports[index])
+// 	{
+// 		printf("%s\n", envs->exports[index]);
+// 		index++;
+// 	}
+// 	free_envs(envs);
+// 	return (0);
 
-}
+// }

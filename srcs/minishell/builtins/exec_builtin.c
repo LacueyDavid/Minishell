@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 08:07:24 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/07 11:56:26 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/11 13:15:06 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ int	exec_builtin(char **command)
 		exit_status = ft_cd(string_command);
 	if (!ft_strcmp(command[0], "pwd"))
 		exit_status = ft_pwd();
-	// if (!ft_strcmp(command[0], "export"))
-	// 	exit_status = ft_export(string_command);
-	// if (!ft_strcmp(command[0], "unset"))
-	// 	exit_status = ft_unset(command);
+	if (!ft_strcmp(command[0], "export"))
+		exit_status = ft_export(string_command);
+	if (!ft_strcmp(command[0], "unset"))
+		exit_status = ft_unset(command);
 	if (!ft_strcmp(command[0], "env"))
 		exit_status = ft_env();
 	if (!ft_strcmp(command[0], "exit"))
