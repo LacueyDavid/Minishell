@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/08 14:00:14 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/11 16:21:13 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int ft_echo(char *str)
     int index;
     bool is_flag;
 
+	is_flag = false;
     index = skip_n(str, &is_flag);
     while (str[index] != '\0') 
 	{

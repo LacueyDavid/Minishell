@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 09:19:37 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/06 14:22:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/11 15:03:07 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	init_exec_func_map(t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
 {
-	exec_map[SIMPLE_COMMAND].function = exec_simple_command;
+	// exec_map[SIMPLE_COMMAND].function = exec_simple_command;
 	exec_map[COMMAND_O_REDIRECT].function = redirection_output;
 	exec_map[COMMAND_I_REDIRECT].function = redirection_input;
 	exec_map[APPEND_REDIRECT].function = append_output;

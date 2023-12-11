@@ -12,17 +12,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "environnement.h"
 
-extern char **environ;
-
-int	ft_env(void)
+int	ft_env(t_envs *envs)
 {
 	int	i;
 
 	i = 0;
-	while (environ[i])
+	while (envs->env[i])
 	{
-		printf("%s\n", environ[i]);
+		printf("%s\n", envs->env[i]);
 		i++;
 	}
 	return (EXIT_SUCCESS);

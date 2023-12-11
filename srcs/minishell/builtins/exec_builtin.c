@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 08:07:24 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/11 13:15:06 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/11 16:19:37 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include "builtins.h"
 #include <string.h>
+#include "environnement.h"
 #include "libft.h"
 
 extern int	exit_status;
@@ -67,7 +68,7 @@ char	*ft_compact_strs(char **strs)
 		size += ft_strlen(strs[index]);
 		index++;
 	}
-	string = malloc(sizeof(char) * size + 1);
+	string = malloc(sizeof(char) * (size + 1));
 	if (!string)
 		return (NULL);
 	string[0] = '\0';
@@ -75,13 +76,15 @@ char	*ft_compact_strs(char **strs)
 	while (strs[index])
 	{
 		strcat(string, strs[index]); //utilise les ft
-		strcat(string, " ");
+		if (strs[index + 1])
+			strcat(string, " ");
 		index++;
 	}
+	// string[index] = '\0';
 	return (string);
 }
 
-int	exec_builtin(char **command)
+int	exec_builtin(char **command, t_envs *envs)
 {
 	int		exit_status;
 	char	*string_command;
@@ -91,15 +94,15 @@ int	exec_builtin(char **command)
 	if (!ft_strcmp(command[0], "echo"))
 		exit_status = ft_echo(string_command);
 	if (!ft_strcmp(command[0], "cd"))
-		exit_status = ft_cd(string_command);
+		exit_status = ft_cd(envs, string_command);
 	if (!ft_strcmp(command[0], "pwd"))
-		exit_status = ft_pwd();
+		exit_status = ft_pwd(envs);
 	if (!ft_strcmp(command[0], "export"))
-		exit_status = ft_export(string_command);
+		exit_status = ft_export(envs, command);
 	if (!ft_strcmp(command[0], "unset"))
-		exit_status = ft_unset(command);
+		exit_status = ft_unset(envs, command);
 	if (!ft_strcmp(command[0], "env"))
-		exit_status = ft_env();
+		exit_status = ft_env(envs);
 	if (!ft_strcmp(command[0], "exit"))
 		exit_status = ft_exit(string_command);
 	free(string_command);

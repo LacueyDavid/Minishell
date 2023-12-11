@@ -6,17 +6,17 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:31 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/05 09:46:07 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/11 14:45:56 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_pwd(void)
+int	ft_pwd(t_envs *envs)
 {
 	char	*path;
 
-	path = getcwd(NULL, 0);
+	path = ft_getenv("PWD", envs);
 	if (path == NULL)
 		return (EXIT_FAILURE);
 	printf("%s", path);

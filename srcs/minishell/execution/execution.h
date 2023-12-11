@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 17:35:23 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/11 15:03:02 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,16 @@
 #endif
 
 #include "parser.h"
+#include "environnement.h"
 
 typedef struct s_exec_map
 {
 	void		(*function)(t_node *node);
 }				t_exec_map;
 
-void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS]);
-void	exec_simple_command(t_node *value);
-void	execution(t_node *node);
+void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS], t_envs *envs);
+void	exec_simple_command(t_node *value, t_envs *envs);
+void	execution(t_node *node, t_envs *envs);
 void	redirection_output(t_node *node);
 void	append_output(t_node *node);
 void	redirection_input(t_node *node);

@@ -17,21 +17,6 @@
 #include "environnement.h"
 #include "libft.h"
 
-void    change_pwd(char *path)
-{
-    char *pwd;
-    char *oldpwd;
-
-    pwd = malloc(sizeof(char) * 1024);
-    oldpwd = malloc(sizeof(char) * 1024);
-    pwd = getcwd(pwd, 1024);
-    oldpwd = getenv("OLDPWD");
-    setenv("OLDPWD", pwd, 1);
-    setenv("PWD", path, 1);
-    free(pwd);
-    free(oldpwd);
-}
-
 char    *ft_getenv(char *name, t_envs *envs)
 {
     size_t  index;
@@ -63,20 +48,24 @@ void    ft_setenv(char *name, char *value, t_envs *envs)
     {
         if (ft_strncmp(envs->env[index], name, length) == 0)
         {
-            envs->env[index] = ft_realloc(envs->env[index], length + ft_strlen(value) + 1, ft_strelen(envs->env[index]));
-            envs->env[index] = ft_strcat(envs->env[index], value);
+            free(envs->env[index]);
+            envs->env[index] = malloc(sizeof(char) * (length + ft_strlen(value) + 2));
+            strcpy(envs->env[index], name);
+            strcat(envs->env[index], "=");
+            strcat(envs->env[index], value);
+            return ;
         }
         index++;
     }
 }
 
-void    change_pwd(char *path, t_envs *envs)
+void    change_pwd_in_env(char *path, t_envs *envs)
 {
     ft_setenv("OLDPWD", ft_getenv("PWD", envs), envs);
     ft_setenv("PWD", path, envs);
 }
 
-int ft_cd(char *command) 
+int ft_cd(t_envs *envs, char *command) 
 {
     char *path;
     char *home_dir;
@@ -103,6 +92,7 @@ int ft_cd(char *command)
         perror("cd");
         return (EXIT_FAILURE);
     }
+    change_pwd_in_env(path, envs);
     free(path);
     return (EXIT_SUCCESS);
 }
