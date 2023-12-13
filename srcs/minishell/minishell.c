@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/11 15:25:53 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/13 17:49:13 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static void	non_interactive_mode(void)
 	t_node			*tree;
 	t_envs			*envs;
 
+	//envs mal protégé, a protéger
 	envs = copy_env_and_export();
 	while(true)
 	{
