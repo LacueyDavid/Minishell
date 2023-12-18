@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/11 12:44:41 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/18 16:05:00 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	print_empty_export(t_envs *envs)
 	return (EXIT_SUCCESS);
 }
 
-int add_var(char ***envs, char **input)
+int add_var_exp(char ***envs, char **input)
 {
     size_t index;
     size_t index2;
@@ -43,7 +43,7 @@ int add_var(char ***envs, char **input)
     index2 = 1;
     while (input[index2])
     {
-        (*envs)[index] = ft_strdup(input[index2]);
+        (*envs)[index] = ft_strdup_with_quotes(input[index2]);
         if (!(*envs)[index])
         {
             free_strs(*envs);
@@ -56,44 +56,52 @@ int add_var(char ***envs, char **input)
     return EXIT_SUCCESS;
 }
 
-int add_variables(t_envs *envs, char **input)
+int add_var_env(char ***envs, char **input)
 {
-    if (add_var(&(envs->env), input) == EXIT_FAILURE ||
-        add_var(&(envs->exports), input) == EXIT_FAILURE)
-    {
+    size_t index;
+    size_t index2;
+
+    index = ft_strslen(*envs);
+    *envs = realloc(*envs, sizeof(char *) * (ft_strslen(*envs) + ft_strslen(input)));
+    if (!*envs)
         return EXIT_FAILURE;
+    index2 = 1;
+    while (input[index2])
+    {
+        if (ft_strchr(input[index2], '='))
+        {
+            (*envs)[index] = ft_strdup(input[index2]);
+            if (!(*envs)[index])
+            {
+                free_strs(*envs);
+                return EXIT_FAILURE;
+            }
+            index++;
+        }
+        index2++;
     }
+    (*envs)[index] = NULL;
     return EXIT_SUCCESS;
 }
 
-// int add_variables(t_envs *envs, char **input)
-// {
-//     if (add_var(&(envs->exports), input) == EXIT_FAILURE)
-//         return EXIT_FAILURE;
-//     return EXIT_SUCCESS;
-// }
+int add_variables(t_envs *envs, char **input)
+{
+    if (add_var_env(&(envs->env), input) == EXIT_FAILURE ||
+        add_var_exp(&(envs->exports), input) == EXIT_FAILURE)
+    {
+        return EXIT_FAILURE;
+    }
+    redo_envs(envs);
+    return EXIT_SUCCESS;
+}
 
 int	ft_export(t_envs *envs, char **input)
 {
 	if (!input[1])
 		return (print_empty_export(envs));
-    else if (ft_strchr(input[1], '='))
-        return add_variables(envs, input);
-	// else
-	// 	return (add_variables_export_only(envs, input));
+    else
+        return (add_variables(envs, input));
     return 0;
-}
-
-void print_envs(char **envs)
-{
-	size_t index;
-
-	index = 0;
-	while (envs[index])
-	{
-		printf("%s\n", envs[index]);
-		index++;
-	}
 }
 
 // int main(void)

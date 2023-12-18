@@ -16,6 +16,7 @@
 #include <string.h>
 #include "environnement.h"
 #include "libft.h"
+#include "builtins.h"
 
 char    *ft_getenv(char *name, t_envs *envs)
 {
@@ -61,38 +62,56 @@ void    ft_setenv(char *name, char *value, t_envs *envs)
 
 void    change_pwd_in_env(char *path, t_envs *envs)
 {
-    ft_setenv("OLDPWD", ft_getenv("PWD", envs), envs);
+    char    *current_pwd;
+
+    current_pwd = ft_getenv("PWD", envs);
+    ft_setenv("OLDPWD", current_pwd, envs);
     ft_setenv("PWD", path, envs);
+    free(current_pwd);
 }
 
-int ft_cd(t_envs *envs, char *command) 
+int ft_do_cd(t_envs *envs, char *command) 
 {
     char *path;
     char *home_dir;
     char *new_path;
 
     path = ft_strdup(command + 3);
-    if (path[0] == '~') 
+    if (path[0] != '~') 
+        home_dir = ft_getenv("PWD", envs);
+    else
+        home_dir = ft_getenv("HOME", envs);
+    if (home_dir != NULL) 
     {
-        home_dir = malloc(ft_strlen(path) + ft_strlen(getenv("HOME")));
-        home_dir = getenv("HOME");
-        if (home_dir != NULL) 
-        {
-            new_path = malloc(ft_strlen(home_dir) + ft_strlen(path));
-            strcpy(new_path, home_dir); //utilise les ft
-            strcat(new_path, path + 1); //utilise les ft
-            free(path);
-            path = new_path;
-            free(new_path);
-            free(home_dir);
-        }
+        new_path = malloc(ft_strlen(home_dir) + ft_strlen(path) + 2);
+        ft_strlcpy(new_path, home_dir, ft_strlen(home_dir) + 1); //utilise les ft
+        ft_strlcat(new_path, "/", ft_strlen(new_path) + 2); //utilise les ft
+        ft_strlcat(new_path, path, ft_strlen(new_path) + ft_strlen(path)); //utilise les ft
+        free(path);
+        free(home_dir);
     }
-    if (chdir(path) != 0) 
+    else
     {
         perror("cd");
+        free(path);
+    }
+
+    if (access(new_path, F_OK) == -1) 
+    {
+        perror("cd");
+        free(new_path);
         return (EXIT_FAILURE);
     }
-    change_pwd_in_env(path, envs);
-    free(path);
+    change_pwd_in_env(new_path, envs);
+    free(new_path);
     return (EXIT_SUCCESS);
+}
+
+int ft_cd(t_envs *envs, char *command)
+{
+    int exit_status;
+    
+    exit_status = ft_do_cd(envs, command);
+    redo_envs(envs);
+    return (exit_status);
 }

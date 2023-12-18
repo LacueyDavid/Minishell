@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:07 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/08 13:16:02 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/18 16:03:44 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,8 @@ typedef struct s_envs
 
 t_envs	*copy_env_and_export(void);
 void	free_envs(t_envs *envs);
+void	redo_envs(t_envs *envs);
+void	update_envs(t_envs *envs);
+char	*ft_strdup_with_quotes(char *str);
 
 #endif

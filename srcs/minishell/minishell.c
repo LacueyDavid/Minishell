@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:58:22 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/11 15:25:53 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/18 13:35:29 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include "colors.h"
 #include "minishell_signals.h"
 #include "environnement.h"
+#include "builtins.h"
 
 int		exit_status = 0;
 
@@ -60,9 +61,9 @@ static void	interactive_mode(void)
 		if (!tree)
 			continue ;
 		execution(tree, envs);
-		clear_tree(tree);
+		update_envs(envs);
+		clear_tree(tree->head);
 		last_exit_status = exit_status;
-		// free_envs(envs);
 	}
 	free_envs(envs);
 	(void)last_exit_status;

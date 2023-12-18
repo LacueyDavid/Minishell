@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:49:25 by jdenis            #+#    #+#             */
-/*   Updated: 2023/10/27 05:44:26 by dlacuey          ###   ########.fr       */
+/*   Updated: 2023/12/13 17:31:42 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	redo_history(void)
 	}
 	free(line);
 	close(fd);
-
 }
 
 void	update_history(char *input)

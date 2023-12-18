@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/11 15:29:49 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/18 14:37:07 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		clear_tree(node->head);
 		exit(exit_status);
 	}
-	command = get_command(node->vector_strs.values[0], paths);
-	free_strs(paths);
 	wildcards(&(node->vector_strs.values));
 	if (!node->vector_strs.values)
 	{
@@ -56,22 +54,27 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 	signal(SIGINT, SIG_DFL);
 	if (is_a_builtin(node->vector_strs.values[0]))
 	{
-		exec_builtin(node->vector_strs.values, envs);
-		(exit_status = -1, free(command), perror(RED"Execve failed"WHITE));
+		free_strs(paths);
+		exit_status = exec_builtin(node->vector_strs.values, envs);
+		if (exit_status == -1)
+			perror(RED"Exec builtins failed"WHITE);
 		clear_tree(node->head);
+		free_envs(envs);
 		exit(exit_status);
 	}
 	else
 	{	
+		command = get_command(node->vector_strs.values[0], paths);
+		free_strs(paths);
 		if (!command)
 		{
 			(exit_status = 127, fprintf(stderr, RED"-Wesh: %s: command not found\n"WHITE, node->vector_strs.values[0]));
 			clear_tree(node->head);
 			exit(exit_status);
 		}
-		
 		execve(command, node->vector_strs.values, envs->env);
-		(exit_status = -1, free(command), perror(RED"Execve failed"WHITE));
+		free_envs(envs);
+		(exit_status = -1, free(command), free_envs(envs), perror(RED"Execve failed"WHITE));
 		clear_tree(node->head);
 		exit(exit_status);
 	}

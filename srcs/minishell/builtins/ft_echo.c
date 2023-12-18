@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/11 16:21:13 by jdenis           ###   ########.fr       */
+/*   Updated: 2023/12/13 15:01:33 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int skip_n(char *str, bool *is_flag)
 	int		index2;
 	bool	all_pass;
 
+	all_pass = false;
 	index = skip_first_white_space(str);
 	if (str[index] == '\0')
 		return (index);
@@ -62,7 +63,7 @@ int skip_n(char *str, bool *is_flag)
 		else
 			all_pass = true;
     }
-    return index;
+    return (index);
 }
 
 int ft_echo(char *str) 
@@ -70,8 +71,10 @@ int ft_echo(char *str)
     int index;
     bool is_flag;
 
+	// printf("str = %s\n", str);
 	is_flag = false;
     index = skip_n(str, &is_flag);
+	// printf("index = %d\n", index);
     while (str[index] != '\0') 
 	{
 		if (!is_white_space(str[index]))
