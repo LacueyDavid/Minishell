@@ -50,6 +50,7 @@ OBJS = 			ft_isdigit.o				\
 				ft_realloc.o				\
 				ft_strtok.o					\
 				ft_strtok_utils.o			\
+				ft_add_char.o				\
 
 OBJS_BONUS =	ft_lstnew.o					\
 				ft_lstsize.o				\

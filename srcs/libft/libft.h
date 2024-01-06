@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/24 01:02:24 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/06 09:36:33 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ size_t	count_tokens(char *str_to_tokenize, char *separators);
 void	free_all(char **tokens);
 bool	is_separators(char current_char, char *separators);
 bool	extract_token_malloc_fail(char **tokens, size_t tokens_index);
+bool	ft_add_char(char **str, char c);
 
 typedef struct s_list
 {

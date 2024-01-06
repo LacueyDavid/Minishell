@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/11 15:03:02 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/06 09:39:17 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,8 @@ void	init_exec_func_map(t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS]);
 void	init_fds(int fds[NUMBER_OF_FDS]);
 void	close_fds(int fds[NUMBER_OF_FDS]);
 void	reset_standard_streams(int fds[NUMBER_OF_FDS]);
+bool	expand_env_variables(char ***strs, t_envs *envs);
+ssize_t	count_final_value_size(char *value, t_envs *envs);
+bool	fill_final_value(char *final_value, char *value, t_envs *envs);
 
 #endif

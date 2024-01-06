@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2023/12/11 15:06:04 by jdenis           ###   ########.fr        #
+#    Updated: 2024/01/06 09:43:33 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,89 +16,92 @@ CFLAGS = -Wall -Wextra -Werror -g3 -fPIC
 
 LDFLAGS = $(LIBFT) -lreadline
 
-CPPFLAGS = 	-I srcs/libft/								\
-			-I srcs/get_next_line/						\
-			-I srcs/minishell/							\
-			-I srcs/minishell/lexer/					\
-			-I srcs/minishell/execution/				\
-			-I srcs/minishell/parser/					\
-			-I srcs/minishell/history/					\
-			-I srcs/minishell/wildcards/				\
-			-I srcs/minishell/builtins/					\
-			-I srcs/minishell/signals/					\
-			-I srcs/minishell/here_doc/					\
-			-I srcs/minishell/env/						\
-			-I includes/								\
+CPPFLAGS = 	-I srcs/libft/													\
+			-I srcs/get_next_line/											\
+			-I srcs/minishell/												\
+			-I srcs/minishell/lexer/										\
+			-I srcs/minishell/execution/									\
+			-I srcs/minishell/parser/										\
+			-I srcs/minishell/history/										\
+			-I srcs/minishell/wildcards/									\
+			-I srcs/minishell/builtins/										\
+			-I srcs/minishell/signals/										\
+			-I srcs/minishell/here_doc/										\
+			-I srcs/minishell/env/											\
+			-I includes/													\
 
-OBJS =													\
-														\
-				$(addprefix srcs/,						\
-				main.o									\
-														\
-				$(addprefix get_next_line/,				\
-				get_next_line.o							\
-				get_next_line_utils.o			)		\
-														\
-				$(addprefix minishell/,					\
-				minishell.o								\
-														\
-				$(addprefix history/,					\
-				history.o						)		\
-														\
-				$(addprefix here_doc/,					\
-				here_doc.o						)		\
-														\
-				$(addprefix wildcards/,					\
-				wildcards.o						)		\
-														\
-				$(addprefix signals/,					\
-				signals.o						)		\
-														\
-				$(addprefix lexer/,						\
-				lexer.o									\
-				add_token.o								\
-				destroy.o								\
-				init_token_list.o						\
-				lexer.o									\
-				tokenize_splited_input.o		)		\
-														\
-				$(addprefix parser/,					\
-				add_word.o								\
-				clear_tree.o							\
-				inits.o									\
-				redirection_functions.o					\
-				parser.o								\
-				create_tree.o							\
-				update_vector_strs_capacity.o	)		\
-														\
-														\
-				$(addprefix builtins/,					\
-				ft_cd.o									\
-				ft_echo.o								\
-				ft_env.o								\
-				ft_exit.o								\
-				ft_export.o								\
-				ft_pwd.o								\
-				exec_builtin.o							\
-				ft_unset.o						)		\
-														\
-				$(addprefix env/,						\
-				environnement.o					)		\
-														\
-				$(addprefix execution/,					\
-				execution.o								\
-				init_exec.o								\
-				redirections.o					)))		\
-														\
+OBJS =																		\
+																			\
+				$(addprefix srcs/,											\
+				main.o														\
+																			\
+				$(addprefix get_next_line/,									\
+				get_next_line.o												\
+				get_next_line_utils.o			)							\
+																			\
+				$(addprefix minishell/,										\
+				minishell.o													\
+																			\
+				$(addprefix history/,										\
+				history.o						)							\
+																			\
+				$(addprefix here_doc/,										\
+				here_doc.o						)							\
+																			\
+				$(addprefix wildcards/,										\
+				wildcards.o						)							\
+																			\
+				$(addprefix signals/,										\
+				signals.o						)							\
+																			\
+				$(addprefix lexer/,											\
+				lexer.o														\
+				add_token.o													\
+				destroy.o													\
+				init_token_list.o											\
+				lexer.o														\
+				tokenize_splited_input.o		)							\
+																			\
+				$(addprefix parser/,										\
+				add_word.o													\
+				clear_tree.o												\
+				inits.o														\
+				redirection_functions.o										\
+				parser.o													\
+				create_tree.o												\
+				update_vector_strs_capacity.o	)							\
+																			\
+																			\
+				$(addprefix builtins/,										\
+				ft_cd.o														\
+				ft_echo.o													\
+				ft_env.o													\
+				ft_exit.o													\
+				ft_export.o													\
+				ft_pwd.o													\
+				exec_builtin.o												\
+				ft_unset.o						)							\
+																			\
+				$(addprefix env/,											\
+				environnement.o					)							\
+																			\
+				$(addprefix execution/,										\
+				execution.o													\
+				init_exec.o													\
+				expend_env_variables.o										\
+				expend_count_utils.o										\
+				expend_fill_utils.o											\
+				redirections.o					)))							\
+																			\
 
-TEST_OBJS =												\
-														\
-				srcs/minishell/lexer/test_lexer.o		\
-				srcs/minishell/execution/test_exec.o	\
-				srcs/minishell/parser/test_parser.o		\
-				srcs/minishell/parser/test_pipeless_token_list.o		\
-				srcs/minishell/builtins/test_echo.o		\
-														\
+TEST_OBJS =																	\
+																			\
+				srcs/minishell/lexer/test_lexer.o							\
+				srcs/minishell/execution/test_exec.o						\
+				srcs/minishell/parser/test_parser.o							\
+				srcs/minishell/parser/test_pipeless_token_list.o			\
+				srcs/minishell/builtins/test_echo.o							\
+																			\
 
 NAME = minishell
 LIBFT = srcs/libft/libft.a
