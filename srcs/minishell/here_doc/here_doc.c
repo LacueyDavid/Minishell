@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/07 17:39:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/06 14:19:25 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	node->head->number_of_here_doc = how_many_heredocs(node);
+	if (node->head->number_of_here_doc == 0)
+		return ;
 	pid = fork();
 	if (pid < 0)
 		(perror(RED"Fork in fork heredocs failed"WHITE), exit(1));
@@ -95,6 +97,8 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	waitpid(pid, &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		exit_status = WEXITSTATUS(exit_status);
+	if (WIFSIGNALED(exit_status))
+		exit_status = WTERMSIG(exit_status) + 128;
 }
 
 void	unlink_heredoc_files(t_node *node)

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/06 12:25:18 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/06 13:48:18 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static bool	expand_value(char **values, t_envs *envs)
 	ssize_t size_of_final_value;
 
 	size_of_final_value = count_final_value_size(value, envs);
-	// printf("size_of_final_value = %ld\n", size_of_final_value);
 	if (size_of_final_value == -1)
 		return false;
 	final_value = malloc(size_of_final_value);
@@ -132,6 +131,5 @@ bool	expand_env_variables(t_vector_strs *vector, t_envs *envs)
 	vector->size = ft_strslen(vector->values);
 	vector->capacity = vector->size;
 	remove_quotes(vector->values);
-	// printf("value_after_expansion = %s\n", value_after_expansion);
 	return true;
 }

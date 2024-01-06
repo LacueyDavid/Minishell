@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/06 12:25:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/06 15:01:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		clear_tree(node->head);
 		exit(exit_status);
 	}
-	// for (int i = 0; node->vector_strs.values[i]; i++)
-	// 	printf("before expansion values[%d] = %s\n", i, node->vector_strs.values[i]);
 	if (expand_env_variables(&(node->vector_strs), envs) == false)
 	{
 		(exit_status = 1, perror(RED"Expand env variables failed"WHITE));
@@ -58,8 +56,6 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		clear_tree(node->head);
 		exit(exit_status);
 	}
-	// for (int i = 0; node->vector_strs.values[i]; i++)
-	// 	printf("after expansion values[%d] = %s\n", i, node->vector_strs.values[i]);
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
 	if (is_a_builtin(node->vector_strs.values[0]))
@@ -78,8 +74,7 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		free_strs(paths);
 		if (!command)
 		{
-			//creer son propre fprintf
-			(exit_status = 127, fprintf(stderr, RED"-Wesh: %s: command not found\n"WHITE, node->vector_strs.values[0]));
+			(exit_status = 127);
 			clear_tree(node->head);
 			exit(exit_status);
 		}
@@ -108,6 +103,8 @@ void	exec_simple_command(t_node *node, t_envs *envs)
 	waitpid(pid1, &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		exit_status = WEXITSTATUS(exit_status);
+	if (WIFSIGNALED(exit_status))
+		exit_status = WTERMSIG(exit_status) + 128;
 }
 
 void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS], t_envs *envs)
@@ -221,6 +218,8 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 		waitpid(pids[index2], &exit_status, 0);
 		if (WIFEXITED(exit_status))
 			exit_status = WEXITSTATUS(exit_status);
+		if (WIFSIGNALED(exit_status))
+			exit_status = WTERMSIG(exit_status) + 128;
 		index2++;
 	}
 	free(pids);
@@ -236,11 +235,6 @@ void	execution(t_node *tree, t_envs *envs)
 	init_fds(fds);
 	init_exec_func_map(exec_map);
 	fork_heredocs(tree, fds);
-	if ( exit_status != 0)
-	{
-		unlink_heredoc_files(tree);
-		return ;
-	}
 	if (tree->number_of_pipes > 0)
 		exec_pipes(tree, exec_map, fds, envs);
 	else
