@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/06 09:43:33 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/01/06 09:55:08 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,6 @@ OBJS =																		\
 				create_tree.o												\
 				update_vector_strs_capacity.o	)							\
 																			\
-																			\
 				$(addprefix builtins/,										\
 				ft_cd.o														\
 				ft_echo.o													\
@@ -82,15 +81,17 @@ OBJS =																		\
 				exec_builtin.o												\
 				ft_unset.o						)							\
 																			\
+				$(addprefix expand/,										\
+				expand_env_variables.o										\
+				count_final_value.o											\
+				fill_final_value.o				)							\
+																			\
 				$(addprefix env/,											\
 				environnement.o					)							\
 																			\
 				$(addprefix execution/,										\
 				execution.o													\
 				init_exec.o													\
-				expend_env_variables.o										\
-				expend_count_utils.o										\
-				expend_fill_utils.o											\
 				redirections.o					)))							\
 																			\
 

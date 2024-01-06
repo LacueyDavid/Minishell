@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/06 09:40:21 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/06 12:25:07 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		clear_tree(node->head);
 		exit(exit_status);
 	}
-	if (expand_env_variables(&(node->vector_strs.values), envs) == false)
+	// for (int i = 0; node->vector_strs.values[i]; i++)
+	// 	printf("before expansion values[%d] = %s\n", i, node->vector_strs.values[i]);
+	if (expand_env_variables(&(node->vector_strs), envs) == false)
 	{
 		(exit_status = 1, perror(RED"Expand env variables failed"WHITE));
 		clear_tree(node->head);
@@ -56,6 +58,8 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		clear_tree(node->head);
 		exit(exit_status);
 	}
+	// for (int i = 0; node->vector_strs.values[i]; i++)
+	// 	printf("after expansion values[%d] = %s\n", i, node->vector_strs.values[i]);
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
 	if (is_a_builtin(node->vector_strs.values[0]))
