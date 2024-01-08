@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 10:56:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/06/23 10:56:26 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/08 12:41:22 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ static	t_storage	*actual_fd_storage(int fd, t_storages *storages)
 	i = 0;
 	while (i < storages->size)
 		i++;
+	if (i >= MAP_SIZE)
+		return (NULL);
 	storages->map[i].key = fd;
 	storages->size += 1;
 	return (&(storages->map[i].storage));
@@ -110,6 +112,8 @@ char	*get_next_line(int fd)
 	if (fd < 0)
 		return (NULL);
 	storage = actual_fd_storage(fd, &storages);
+	if (storage == NULL)
+		return (NULL);
 	if (storage->storage == NULL)
 		if (init_environnement_failed(&buffer, storage))
 			return (NULL);
