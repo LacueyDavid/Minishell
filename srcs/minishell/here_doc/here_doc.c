@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/06 14:19:25 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/08 11:00:58 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	waitpid(pid, &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		exit_status = WEXITSTATUS(exit_status);
-	if (WIFSIGNALED(exit_status))
+	else if (WIFSIGNALED(exit_status))
 		exit_status = WTERMSIG(exit_status) + 128;
 }
 

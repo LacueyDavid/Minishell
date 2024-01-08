@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/06 15:01:30 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/08 11:36:36 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		free_strs(paths);
 		if (!command)
 		{
-			(exit_status = 127);
 			clear_tree(node->head);
 			exit(exit_status);
 		}
@@ -103,7 +102,7 @@ void	exec_simple_command(t_node *node, t_envs *envs)
 	waitpid(pid1, &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		exit_status = WEXITSTATUS(exit_status);
-	if (WIFSIGNALED(exit_status))
+	else if (WIFSIGNALED(exit_status))
 		exit_status = WTERMSIG(exit_status) + 128;
 }
 
@@ -185,7 +184,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 			close(pipe_fds[1]);
 			exec_full_command(node->left, exec_map, fds, envs);
 			clear_tree(node->head);
-			exit(0);
+			exit(exit_status);
 		}
 		node->head->number_of_here_doc_index += how_many_heredocs(node->left);
 		dup2(pipe_fds[0], STDIN_FILENO);
@@ -208,7 +207,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 		close(pipe_fds[1]);
 		exec_full_command(node, exec_map, fds, envs);
 		clear_tree(node->head);
-		exit(0);
+		exit(exit_status);
 	}
 	dup2(fds[0], STDIN_FILENO);
 	close(pipe_fds[0]);
@@ -218,7 +217,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 		waitpid(pids[index2], &exit_status, 0);
 		if (WIFEXITED(exit_status))
 			exit_status = WEXITSTATUS(exit_status);
-		if (WIFSIGNALED(exit_status))
+		else if (WIFSIGNALED(exit_status))
 			exit_status = WTERMSIG(exit_status) + 128;
 		index2++;
 	}

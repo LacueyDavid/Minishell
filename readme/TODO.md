@@ -1,4 +1,5 @@
 # Minishell
+FAIRE mettre a jour la version non interactive
 
 MODIFIER get_next_line (multiple fd)
 MODIFIER le heredoc pour le faire sans fork?
