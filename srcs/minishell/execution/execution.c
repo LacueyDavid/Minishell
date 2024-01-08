@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/08 11:36:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/08 12:00:51 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,16 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		clear_tree(node->head);
 		exit(exit_status);
 	}
-	if (expand_env_variables(&(node->vector_strs), envs) == false)
-	{
-		(exit_status = 1, perror(RED"Expand env variables failed"WHITE));
-		clear_tree(node->head);
-		exit(exit_status);
-	}
 	wildcards(&(node->vector_strs.values));
 	if (!node->vector_strs.values)
 	{
 		(exit_status = 134, perror(RED"Wildcards failed"));
+		clear_tree(node->head);
+		exit(exit_status);
+	}
+	if (expand_env_variables(&(node->vector_strs), envs) == false)
+	{
+		(exit_status = 1, perror(RED"Expand env variables failed"WHITE));
 		clear_tree(node->head);
 		exit(exit_status);
 	}
