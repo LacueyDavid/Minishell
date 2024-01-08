@@ -12,13 +12,37 @@
 
 #include "wildcards.h"
 #include "colors.h"
+#include "libft.h"
+
+char	*ft_strchr_with_quote(const char *s, int c)
+{
+    bool    single_quote;
+    bool    double_quote;
+
+    single_quote = false;
+    double_quote = false;
+	while (*s)
+	{
+        if (*s == '\'')
+            single_quote = !single_quote;
+        if (*s == '\"')
+            double_quote = !double_quote;
+        if (*s == (char)c && !single_quote && !double_quote)
+            return ((char *)s);
+		s++;
+	}
+	if (*s == (char)c)
+		return ((char *)s);
+	return (NULL);
+}
 
 int hasWildcard(const char *str) 
 {
-    return strchr(str, '*') != NULL;
+
+    return ft_strchr_with_quote(str, '*') != NULL;
 }
 
-int	wildcard_match(const char *dir_file, const char *wildcarded_file) 
+int	wildcard_match(const char *dir_file, char *wildcarded_file) 
 {
     while (*dir_file && *wildcarded_file) 
 	{
@@ -166,7 +190,7 @@ void check_wildcards(char ***values, char *wildcarded_file)
     }
     while ((entry = readdir(dir)) != NULL) 
 	{
-        if (wildcard_match(entry->d_name, wildcarded_file)) 
+        if (wildcard_match(entry->d_name, wildcarded_file) && entry->d_name[0] != '.')
             add_new_files(entry, &new_files);
     }
     closedir(dir);
