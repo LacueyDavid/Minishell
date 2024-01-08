@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:52:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/08 11:02:51 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:30:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void message_command_not_found(char *command)
 		(perror(RED"Dup2 failed"WHITE));
 		return ;
 	}
-	printf(RED"-Wesh: %s: command not found\n"WHITE, command);
+	printf(RED"%s: command not found\n"WHITE, command);
 	if (dup2(stdout_fd, STDOUT_FILENO) < 0)
 	{
 		(perror(RED"Dup2 failed"WHITE));
@@ -46,8 +46,26 @@ bool	check_command(char *command)
 	}
 	else if (command[0] == '.' && command[1] == '\0')
 	{
-		printf(RED"-Wesh: %s: command not found\n"WHITE, command);
+		printf(RED"%s: command not found\n"WHITE, command);
 		exit_status = 2;
+		return (false);
+	}
+	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '/')
+	{
+		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
+		exit_status = 126;
+		return (false);
+	}
+	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '.' && command[ft_strlen(command) - 3] == '/')
+	{
+		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
+		exit_status = 126;
+		return (false);
+	}
+	else if (command[0] == '\0')
+	{
+		printf(RED"Command '' not found\n"WHITE);
+		exit_status = 127;
 		return (false);
 	}
 	return (true);

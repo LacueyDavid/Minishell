@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/06 13:48:18 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:54:24 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	remove_quotes_from_value(char *value)
 
 	while (value[index])
 	{
+		printf("value = %s\n", value);
 		index2 = index;
 		if (value[index] == '\'' && !double_quotes)
 		{
@@ -79,7 +80,17 @@ void	remove_quotes_from_value(char *value)
 				index2++;
 			}
 			value[index2] = value[index2 + 1];
-			index2++;
+			if (single_quotes && value[index] == '\'')
+			{
+				single_quotes = !single_quotes;
+				index2 = index;
+				while (value[index2 + 1])
+				{
+					value[index2] = value[index2 + 1];
+					index2++;
+				}
+				value[index2] = value[index2 + 1];
+			}
 		}
 		else if (value[index] == '"' && !single_quotes)
 		{
@@ -90,10 +101,21 @@ void	remove_quotes_from_value(char *value)
 				index2++;
 			}
 			value[index2] = value[index2 + 1];
-			index2++;
+			if (double_quotes && value[index] == '"')
+			{
+				double_quotes = !double_quotes;
+				index2 = index;
+				while (value[index2 + 1])
+				{
+					value[index2] = value[index2 + 1];
+					index2++;
+				}
+				value[index2] = value[index2 + 1];
+			}
 		}
 		index++;
 	}
+	printf("value = %s\n", value);
 }
 
 void	remove_quotes(char **values)
