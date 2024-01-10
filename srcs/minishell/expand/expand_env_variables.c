@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env_variables.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/08 17:54:24 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/10 15:45:13 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	remove_quotes_from_value(char *value)
 
 	while (value[index])
 	{
-		printf("value = %s\n", value);
 		index2 = index;
 		if (value[index] == '\'' && !double_quotes)
 		{
@@ -115,7 +114,6 @@ void	remove_quotes_from_value(char *value)
 		}
 		index++;
 	}
-	printf("value = %s\n", value);
 }
 
 void	remove_quotes(char **values)

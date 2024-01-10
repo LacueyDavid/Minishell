@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/18 17:01:29 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:31:07 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,7 +278,6 @@ void	update_env(t_envs *envs)
 		fd = open(path, O_RDONLY, 0644);
 		if (fd < 0) 
 		{
-			printf("dans l'update envs\n");
 			perror(RED"Cannot open temporary env file"WHITE);
 			return ;
 		}
@@ -334,6 +333,20 @@ char	**copy_environnement()
 	return (new);
 }
 
+char	*increased_shlvl(char *str)
+{
+	char	*new;
+	int		shlvl;
+	char	*tmp;
+
+	shlvl = ft_atoi(str + 6);
+	shlvl++;
+	tmp = ft_itoa(shlvl);
+	new = ft_strjoin("SHLVL=", tmp);
+	free(tmp);
+	return (new);
+}
+
 //pour pouvoir faire un export seul, difference : c'est dans l'ordre alphabetique, avec la valeur des variables entre doubel quotes et on ne prend pas les _=/usr/bin/env
 char **copy_env_export()
 {
@@ -352,6 +365,16 @@ char **copy_env_export()
 		return NULL;
 	while (environ[index])
 	{
+		if (ft_strncmp(environ[index], "SHLVL=", 6) == 0)
+		{
+			new[index2] = ft_strdup_with_quotes(increased_shlvl(environ[index]));
+			if (!new[index2])
+			{
+				free_strs(new);
+				return NULL;
+			}
+			index2++;
+		}
 		if (!(environ[index][0] == '_' && environ[index][1] == '='))
 		{
 			new[index2] = ft_strdup_with_quotes(environ[index]);
@@ -385,38 +408,3 @@ t_envs	*copy_env_and_export(void)
 	}
 	return (envs);
 }
-
-// int main(void)
-// {
-// 	t_envs	*envs;
-// 	size_t	index;
-
-// 	index = 0;
-// 	envs = copy_env_and_export();
-// 	printf("print de l'env\n");
-// 	while (envs->env[index])
-// 	{
-// 		printf("%s\n", envs->env[index]);
-// 		index++;
-// 	}
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-
-// 	printf("print de l'export\n");
-// 	index = 0;
-// 	while (envs->exports[index])
-// 	{
-// 		printf("%s\n", envs->exports[index]);
-// 		index++;
-// 	}
-// 	free_envs(envs);
-// 	return (0);
-
-// }
