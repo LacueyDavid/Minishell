@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:13:15 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/13 17:09:13 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/08 14:14:29 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ int		ft_unset(t_envs *envs, char **input);
 int		exec_builtin(char **command, t_envs *envs);
 bool	is_a_builtin(char *command);
 char    *ft_getenv(char *name, t_envs *envs);
+void 	remove_environment_variable(char **envs, char *variable_name);
 
 #endif

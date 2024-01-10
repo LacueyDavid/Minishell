@@ -38,8 +38,19 @@ char	*ft_strchr_with_quote(const char *s, int c)
 
 int hasWildcard(const char *str) 
 {
-
     return ft_strchr_with_quote(str, '*') != NULL;
+}
+
+int match_end(char *file) 
+{
+    size_t  index;
+
+    index = 0;
+    while (file[index] == '*')
+        index++;
+    if (file[index] == '\0' || file[index] == '*')
+        return (1);
+    return (0);
 }
 
 int	wildcard_match(const char *dir_file, char *wildcarded_file) 
@@ -65,7 +76,7 @@ int	wildcard_match(const char *dir_file, char *wildcarded_file)
         dir_file++;
         wildcarded_file++;
     }
-	if (*dir_file == '\0' && *wildcarded_file == '\0')
+	if (*dir_file == '\0' && match_end(wildcarded_file))
     	return (1);
 	return 0;
 }
@@ -131,12 +142,12 @@ void remove_file(char ***values, char *file)
     *values = new_values;
 }
 
-void add_new_files(struct dirent *entry, char ***new_files) 
+void add_new_files(char *entry, char ***new_files) 
 {
     char *new_file;
     size_t num_files;
 
-    new_file = ft_strdup(entry->d_name);
+    new_file = ft_strdup(entry);
     if (*new_files == NULL) 
     {
         *new_files = (char **)malloc(sizeof(char *) * 2);
@@ -179,6 +190,7 @@ void check_wildcards(char ***values, char *wildcarded_file)
 {
     DIR 			*dir;
     struct dirent	*entry;
+    char            *name;
     char			**new_files;
 
 	new_files = NULL;
@@ -190,8 +202,18 @@ void check_wildcards(char ***values, char *wildcarded_file)
     }
     while ((entry = readdir(dir)) != NULL) 
 	{
-        if (wildcard_match(entry->d_name, wildcarded_file) && entry->d_name[0] != '.')
-            add_new_files(entry, &new_files);
+        if (ft_strchr(wildcarded_file, '/') == NULL)
+            name = ft_strdup(entry->d_name);
+        else
+        {
+            if (entry->d_type == DT_DIR)
+                name = ft_strjoin(entry->d_name, "/");
+            else
+                name = ft_strdup(entry->d_name);
+        }
+        if (wildcard_match(name, wildcarded_file) && name[0] != '.')
+            add_new_files(name, &new_files);
+        free(name);
     }
     closedir(dir);
     change_files(values, wildcarded_file, new_files);

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/18 16:05:00 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/08 14:16:49 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string.h>
 #include "libft.h"
 #include "environnement.h"
+#include "builtins.h"
 
 // extern char **environ;
 
@@ -56,6 +57,27 @@ int add_var_exp(char ***envs, char **input)
     return EXIT_SUCCESS;
 }
 
+char    *ft_get_name(char *input)
+{
+    size_t  index;
+    char    *name;
+
+    index = 0;
+    while (input[index] && input[index] != '=')
+        index++;
+    name = malloc(sizeof(char) * (index + 1));
+    if (!name)
+        return NULL;
+    index = 0;
+    while (input[index] && input[index] != '=')
+    {
+        name[index] = input[index];
+        index++;
+    }
+    name[index] = '\0';
+    return name;
+}
+
 int add_var_env(char ***envs, char **input)
 {
     size_t index;
@@ -86,6 +108,11 @@ int add_var_env(char ***envs, char **input)
 
 int add_variables(t_envs *envs, char **input)
 {
+    if (ft_getenv(ft_get_name(input[1]), envs))
+    {
+        remove_environment_variable(envs->env, ft_get_name(input[1]));
+        remove_environment_variable(envs->exports, ft_get_name(input[1]));
+    }
     if (add_var_env(&(envs->env), input) == EXIT_FAILURE ||
         add_var_exp(&(envs->exports), input) == EXIT_FAILURE)
     {
@@ -99,6 +126,11 @@ int	ft_export(t_envs *envs, char **input)
 {
 	if (!input[1])
 		return (print_empty_export(envs));
+    else if (input[1][0] == '=')
+    {
+        printf("minishell: export: `%s': not a valid identifier\n", input[1]);
+        return (EXIT_FAILURE);
+    }
     else
         return (add_variables(envs, input));
     return 0;
