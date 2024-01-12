@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/10 16:31:07 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:00:19 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,6 +354,7 @@ char **copy_env_export()
 	size_t	index2;
 	size_t	length;
 	char 	**new;
+	char 	*tmp;
 
 	length = 0;
 	index = 0;
@@ -367,7 +368,9 @@ char **copy_env_export()
 	{
 		if (ft_strncmp(environ[index], "SHLVL=", 6) == 0)
 		{
-			new[index2] = ft_strdup_with_quotes(increased_shlvl(environ[index]));
+			tmp = increased_shlvl(environ[index]);
+			new[index2] = ft_strdup_with_quotes(tmp);
+			free(tmp);
 			if (!new[index2])
 			{
 				free_strs(new);
@@ -375,7 +378,7 @@ char **copy_env_export()
 			}
 			index2++;
 		}
-		if (!(environ[index][0] == '_' && environ[index][1] == '='))
+		else if (!(environ[index][0] == '_' && environ[index][1] == '='))
 		{
 			new[index2] = ft_strdup_with_quotes(environ[index]);
 			if (!new[index2])

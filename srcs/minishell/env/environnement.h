@@ -6,12 +6,14 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:07 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/18 16:03:44 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/12 14:26:59 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENVIRONNEMENT_H
 # define ENVIRONNEMENT_H
+
+# include <stdbool.h>
 
 typedef struct s_envs
 {

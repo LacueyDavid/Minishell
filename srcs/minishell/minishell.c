@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/10 15:56:10 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:03:21 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static void	interactive_mode(void)
 	t_token_list	*token_list;
 	t_node			*tree;
 	t_envs			*envs;
+	int				shlvl;
+	char			*shlvl_str;
 
 	redo_history();
 	envs = copy_env_and_export();
@@ -58,8 +60,19 @@ static void	interactive_mode(void)
 		if (!tree)
 			continue ;
 		execution(tree, envs);
+		shlvl_str = ft_getenv("SHLVL", envs);
+		shlvl = ft_atoi(shlvl_str);
+		free(shlvl_str);
 		update_envs(envs);
 		clear_tree(tree->head);
+		shlvl_str = ft_getenv("SHLVL", envs);
+		if (shlvl > ft_atoi(shlvl_str))
+		{
+			free(shlvl_str);
+			free_envs(envs);
+			exit(exit_status);
+		}
+		free(shlvl_str);
 	}
 	free_envs(envs);
 }
