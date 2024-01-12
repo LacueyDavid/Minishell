@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/10 15:45:13 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:19:32 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,5 +151,6 @@ bool	expand_env_variables(t_vector_strs *vector, t_envs *envs)
 	vector->size = ft_strslen(vector->values);
 	vector->capacity = vector->size;
 	remove_quotes(vector->values);
+	free(value_after_expansion);
 	return true;
 }

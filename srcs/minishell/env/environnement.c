@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/12 15:00:19 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:26:38 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,14 +257,15 @@ void	update_export(t_envs *envs)
 		envs->exports = copy_export_from_file(fd);
 		close(fd);
 		unlink(path);
-		free(path);
 	}
+	free(path);
 }
 
 void	update_env(t_envs *envs)
 {
 	int 	fd;
 	char 	*path;
+	char	*pwd;
 
 	path = getenv("HOME");
 	if (!path)
@@ -279,18 +280,20 @@ void	update_env(t_envs *envs)
 		if (fd < 0) 
 		{
 			perror(RED"Cannot open temporary env file"WHITE);
+			free(path);
 			return ;
 		}
 		free_strs(envs->env);
 		envs->env = copy_environnement_from_file(fd);
 		close(fd);
 		unlink(path);
-		free(path);
-		path = ft_getenv("PWD", envs);
-		if (chdir(path) != 0)
+		//free(path);
+		pwd = ft_getenv("PWD", envs);
+		if (chdir(pwd) != 0)
 			perror(RED"Cannot change directory"WHITE);
-		free(path);
+		free(pwd);
 	}
+	free(path);
 }
 
 void	update_envs(t_envs *envs)

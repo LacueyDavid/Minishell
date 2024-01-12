@@ -6,10 +6,10 @@ FAIRE mettre a jour la version non interactive
 <!-- MODIFIER tout les signaux pour faire des fonctions avec sigaction? -->
 <!-- MODIFIER enlever les exit et ne pas fork pour les builtin -->
 
-FAIRE exit builtin
-FAIRE SHLVL qui diminue quand on exit
-env qui copie pas l'env du Wesh actuel (il copie celui du bash), on sort pas notre env a la fin
+env qui copie pas l'env du Wesh actuel (il copie celui du bash), on sort pas notre env a la fin (je sais pas si c'est un prblm mais en ca incremente pas shlvl quand on wesh dans un wesh)
 MODIFIER mettre un path pour le .minishell_history sinon quand tu cd ca creer le fichier a chaque fois dans le current dir
+
+PROBLEME avec ft_get_command de la libft (je crois c'est le extern exit_status qu'il aime pas)
 
 TEST A FAIRE SI MOTIVÉ
 test gnl avec plus de MAPSIZE fd
