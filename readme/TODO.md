@@ -13,3 +13,6 @@ PROBLEME avec ft_get_command de la libft (je crois c'est le extern exit_status q
 
 TEST A FAIRE SI MOTIVÉ
 test gnl avec plus de MAPSIZE fd
+tests qui ne marchent pas :
+
+echo "        " | cat -e (surement un probleme dans le builtin echo?)

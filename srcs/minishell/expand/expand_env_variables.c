@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/12 15:19:32 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/13 20:25:09 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,59 +60,42 @@ char *ft_strsjoin(char **strs, char *sep)
 	return result;
 }
 
+static void	remove_char(char *value)
+{
+	while (*value)
+	{
+		*value = *(value + 1);
+		value++;
+	}
+}
+
+static void	remove_untile_quote(char **value)
+{
+	remove_char(*value);
+	while (**value && **value != '\'')
+		(*value)++;
+	remove_char(*value);
+	(*value)--;
+}
+
+static void	remove_untile_double_quote(char **value)
+{
+	remove_char(*value);
+	while (**value && **value != '\"')
+		(*value)++;
+	remove_char(*value);
+	(*value)--;
+}
+
 void	remove_quotes_from_value(char *value)
 {
-	bool single_quotes = false;
-	bool double_quotes = false;
-	int index = 0;
-	int index2 = 0;
-
-	while (value[index])
+	while (*value)
 	{
-		index2 = index;
-		if (value[index] == '\'' && !double_quotes)
-		{
-			single_quotes = !single_quotes;
-			while (value[index2 + 1])
-			{
-				value[index2] = value[index2 + 1];
-				index2++;
-			}
-			value[index2] = value[index2 + 1];
-			if (single_quotes && value[index] == '\'')
-			{
-				single_quotes = !single_quotes;
-				index2 = index;
-				while (value[index2 + 1])
-				{
-					value[index2] = value[index2 + 1];
-					index2++;
-				}
-				value[index2] = value[index2 + 1];
-			}
-		}
-		else if (value[index] == '"' && !single_quotes)
-		{
-			double_quotes = !double_quotes;
-			while (value[index2 + 1])
-			{
-				value[index2] = value[index2 + 1];
-				index2++;
-			}
-			value[index2] = value[index2 + 1];
-			if (double_quotes && value[index] == '"')
-			{
-				double_quotes = !double_quotes;
-				index2 = index;
-				while (value[index2 + 1])
-				{
-					value[index2] = value[index2 + 1];
-					index2++;
-				}
-				value[index2] = value[index2 + 1];
-			}
-		}
-		index++;
+		if (*value == '\'')
+			remove_untile_quote(&value);
+		if (*value == '\"')
+			remove_untile_double_quote(&value);
+		value++;
 	}
 }
 
