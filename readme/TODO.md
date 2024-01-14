@@ -22,3 +22,4 @@ tests qui ne marchent pas :
 - echo $hola* marche pas
 - echo ""$HOME*
 - echo "$DONTEXIST" "Makefile" dont work (echo le pb)
+- unset marche juste pas

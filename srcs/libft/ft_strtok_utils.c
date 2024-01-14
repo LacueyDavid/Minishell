@@ -1,4 +1,5 @@
 #include "libft.h"
+#include "../../includes/colors.h"
 
 bool	is_separators(char current_char, char *separators)
 {
@@ -75,9 +76,13 @@ size_t	count_tokens(char *str_to_tokenize, char *separators)
 		{
 			index++;
 			while (str_to_tokenize[index] && str_to_tokenize[index] != '\"')
+			{
 				index++;
+			}
 			if (str_to_tokenize[index] == '\"')
+			{
 				double_quote = !double_quote;
+			}
 			index++;
 			tokens++;
 		}
@@ -97,7 +102,7 @@ size_t	count_tokens(char *str_to_tokenize, char *separators)
 	}
 	if (single_quote || double_quote)
 	{
-		perror("Error: unclosed quote\n");
+		perror(RED"Error: unclosed quote\n"WHITE);
 		return (0);
 	}
 	return (count);

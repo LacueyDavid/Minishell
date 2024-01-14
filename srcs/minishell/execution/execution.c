@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/14 01:02:32 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/14 01:20:07 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 	}
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
+	for (int i = 0; node->vector_strs.values[i]; i++)
+		printf("values[%d] = %s\n", i, node->vector_strs.values[i]);
 	if (!node->vector_strs.values)
 	{
 		(exit_status = 0);
