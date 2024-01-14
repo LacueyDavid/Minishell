@@ -6,13 +6,15 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/08 16:31:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/14 03:51:36 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+extern int	exit_status;
 
 void	print_which_token(int type)
 {
@@ -78,6 +80,7 @@ t_node	*parser(t_token_list *token_list)
 
 	if (!check_token_list(token_list))
 	{
+		exit_status = 2;
 		return (NULL);
 	}
 	if (!init_parser_env(&env))

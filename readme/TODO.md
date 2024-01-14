@@ -23,3 +23,5 @@ tests qui ne marchent pas :
 - echo ""$HOME*
 - echo "$DONTEXIST" "Makefile" dont work (echo le pb)
 - unset marche juste pas
+- export ok puis export ok=a, le nouveau ok remplace pas lancien
+- cd . et cd .. marche pas et mettent pas a jour pwd

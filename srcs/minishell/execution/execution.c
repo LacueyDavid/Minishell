@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/14 01:20:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/14 02:10:38 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,84 @@
 extern char	**environ;
 extern int	exit_status;
 
+extern int exit_status;
+
+void message_command_not_found(char *command)
+{
+	int stdout_fd;
+
+	stdout_fd = dup(STDOUT_FILENO);
+	if (dup2(2, STDOUT_FILENO) < 0)
+	{
+		(perror(RED"Dup2 failed"WHITE));
+		return ;
+	}
+	printf(RED"%s: command not found\n"WHITE, command);
+	if (dup2(stdout_fd, STDOUT_FILENO) < 0)
+	{
+		(perror(RED"Dup2 failed"WHITE));
+		return ;
+	}
+	exit_status = 127;
+}
+
+bool	check_command(char *command)
+{
+	if (command[ft_strlen(command) - 1] == '/')
+	{
+		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
+		exit_status = 126;
+		return (false);
+	}
+	else if (command[0] == '.' && command[1] == '\0')
+	{
+		printf(RED"%s: command not found\n"WHITE, command);
+		exit_status = 2;
+		return (false);
+	}
+	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '/')
+	{
+		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
+		exit_status = 126;
+		return (false);
+	}
+	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '.' && command[ft_strlen(command) - 3] == '/')
+	{
+		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
+		exit_status = 126;
+		return (false);
+	}
+	else if (command[0] == '\0')
+	{
+		printf(RED"Command '' not found\n"WHITE);
+		exit_status = 127;
+		return (false);
+	}
+	return (true);
+}
+
+char	*get_command(char *command, char **paths)
+{
+	char	*tmp;
+	char	*command_full_path;
+
+	if (!check_command(command))
+		return (NULL);
+	if (access(command, X_OK) == 0)
+		return (command);
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		command_full_path = ft_strjoin(tmp, command);
+		free(tmp);
+		if (access(command_full_path, X_OK) == 0)
+			return (command_full_path);
+		free(command_full_path);
+		paths++;
+	}
+	message_command_not_found(command);
+	return (NULL);
+}
 void	exec_in_the_son(t_node *node, t_envs *envs)
 {
 	char	**paths;
@@ -58,8 +136,6 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 	}
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	for (int i = 0; node->vector_strs.values[i]; i++)
-		printf("values[%d] = %s\n", i, node->vector_strs.values[i]);
 	if (!node->vector_strs.values)
 	{
 		(exit_status = 0);

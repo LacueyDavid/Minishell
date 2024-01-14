@@ -143,3 +143,73 @@ stdin: |
   echo toto | wc -c | wc -l
 stdout: |
   1
+---
+name: exec >>>>>
+cmd: ./minishell
+stdin: |
+  >>>>>
+stdout: |
+  wesh: syntax error near unexpected token `>>'
+---
+name: echo "$"""
+cmd: ./minishell
+stdin: |
+  echo "$"""
+stdout: |
+  $
+---
+name: echo $"HOME"
+cmd: ./minishell
+stdin: |
+  echo $"HOME"
+stdout: |
+  HOME
+---
+name: echo $''HOME
+cmd: ./minishell
+stdin: |
+  echo $''HOME
+stdout: |
+  HOME
+---
+name: echo "$HO""ME"
+cmd: ./minishell
+stdin: |
+  echo "$HO""ME"
+stdout: |
+  ME
+---
+name: echo '$HO''ME'
+cmd: ./minishell
+stdin: |
+  echo '$HO''ME'
+stdout: |
+  $HOME
+---
+name: echo "'$HO''ME'"
+cmd: ./minishell
+stdin: |
+  echo "'$HO''ME'"
+stdout: |
+  '''ME'
+---
+name: echo hola""""""""""""
+cmd: ./minishell
+stdin: |
+  echo hola""""""""""""
+stdout: |
+  hola
+---
+name: echo "hola     " | cat -e
+cmd: ./minishell
+stdin: |
+  echo "hola     " | cat -e
+stdout: |
+  hola     $
+---
+name: exec "e"'c'ho 'b'"o"nj"o"'u'r
+cmd: ./minishell
+stdin: |
+  "e"'c'ho 'b'"o"nj"o"'u'r
+stdout: |
+  bonjour

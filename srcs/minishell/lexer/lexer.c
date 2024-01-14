@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:32:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/14 01:52:04 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/14 02:27:48 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static size_t ft_specialstrlen(char *input)
 	i = 0;
 	single_quotes = false;
 	double_quotes = false;
-	printf("input = %s\n", input);
 	while (input[i])
 	{
 		if(input[i] == '\'')
@@ -48,13 +47,10 @@ static size_t ft_specialstrlen(char *input)
 			else if (input[i] == '>' || input[i] == '<')
 				len += 2;
 			len++;
-			printf("bite\n");
-			printf("char = %c\n", input[i]);
 		}
 		else
 			len++;
 		i++;
-		printf("len = %zu\n", len);
 	}
 	return (len);
 }
@@ -64,7 +60,6 @@ static void put_space_between_special_chars(char **input)
 	char *oldinput = *input;
 	size_t newlen = ft_specialstrlen(oldinput);
 	char *newinput = malloc(sizeof(char) * (newlen + 1));
-	printf("newlen = %zu\n", newlen);
 	bool	single_quotes;
 	bool	double_quotes;
 	size_t i = 0;
@@ -98,7 +93,7 @@ static void put_space_between_special_chars(char **input)
 				newinput[j+2] = oldinput[i + 1];
 				newinput[j+3] = ' ';
 				j += 4;
-				i++;
+				i+=2;
 			}
 			else if (oldinput[i] == '>' || oldinput[i] == '<')
 			{
@@ -124,7 +119,6 @@ static void put_space_between_special_chars(char **input)
 	}
 	newinput[newlen] = '\0';
 	*input = newinput;
-	printf("newinput = %s\n", newinput);
 }
 
 t_token_list *lexer(char *input)
@@ -146,10 +140,5 @@ t_token_list *lexer(char *input)
 		return (NULL);
 	free_strs(splited_input);
 	free(input);
-	printf("print all tokens\n");
-	for (size_t i = 0; i < token_list->size; i++)
-	{
-		printf("token %zu: %s\n", i, token_list->tokens[i].value);
-	}
 	return (token_list);
 }
