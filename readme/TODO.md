@@ -15,4 +15,10 @@ TEST A FAIRE SI MOTIVÉ
 test gnl avec plus de MAPSIZE fd
 tests qui ne marchent pas :
 
-echo "        " | cat -e (surement un probleme dans le builtin echo?)
+- echo "        " | cat -e (surement un probleme dans le builtin echo?).
+- dans les exports il ne doit pas y avoir de chiffre. (4=a paspossible, en gros
+  tout ce qui nest pas une lettre pas possible)
+- cd dir/dir marche pas
+- echo $hola* marche pas
+- echo ""$HOME*
+- echo "$DONTEXIST" "Makefile" dont work (echo le pb)

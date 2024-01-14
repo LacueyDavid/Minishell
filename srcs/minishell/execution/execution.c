@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/12 14:27:22 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/14 01:02:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 	}
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
+	if (!node->vector_strs.values)
+	{
+		(exit_status = 0);
+		clear_tree(node->head);
+		exit(exit_status);
+	}
 	if (is_a_builtin(node->vector_strs.values[0]))
 	{
 		free_strs(paths);

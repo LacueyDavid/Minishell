@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/13 20:25:09 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/14 00:52:59 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void	remove_quotes(char **values)
 	int		index;
 
 	index = 0;
+	if (values == NULL)
+		return ;
 	while (values[index])
 	{
 		remove_quotes_from_value(values[index]);
