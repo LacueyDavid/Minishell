@@ -12,8 +12,8 @@ FAIRE mettre a jour la version non interactive
 
 tests qui ne marchent pas :
 
-- echo $hola* marche pas
-- echo ""$HOME*
+- echo $hola* //faut juste, dans l'execution, mettre le bloc wildcards apres celui d'expand mais je crois que ca posais prblm sur un cas c'est pour ca qu'on l'a mit dans cet ordre je crois
+- echo ""$HOME* //c'est pas du tout logique celui la
 - echo "$DONTEXIST" "Makefile" dont work (echo le pb) //je crois ca marche j'arrive pas a pas le faire rater
 
 
