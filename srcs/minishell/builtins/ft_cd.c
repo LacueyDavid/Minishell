@@ -95,7 +95,6 @@ int ft_do_cd(t_envs *envs, char *command)
         perror("cd");
         free(path);
     }
-
     if (access(new_path, F_OK) == -1) 
     {
         perror("cd");
@@ -110,8 +109,25 @@ int ft_do_cd(t_envs *envs, char *command)
 int ft_cd(t_envs *envs, char *command)
 {
     int exit_status;
+    char *pwd;
     
-    exit_status = ft_do_cd(envs, command);
+    exit_status = EXIT_SUCCESS;
+    pwd = ft_getenv("PWD", envs);
+    if (ft_strncmp(command, "cd .", 5) == 0)
+        ft_setenv("OLDPWD", pwd, envs);
+    else if (ft_strncmp(command, "cd ...", 7) == 0)
+        printf("cd: No such file or directory\n");
+    else if (ft_strncmp(command, "cd ..",6) == 0)
+    {
+        free(pwd);
+        pwd = getcwd(NULL, 0);
+        chdir("..");
+        ft_setenv("OLDPWD", pwd, envs);
+        ft_setenv("PWD", pwd, envs);
+    }
+    else
+        exit_status = ft_do_cd(envs, command);
     redo_envs(envs);
+    free(pwd);
     return (exit_status);
 }

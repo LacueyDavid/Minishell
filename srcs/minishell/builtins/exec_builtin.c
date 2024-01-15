@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 08:07:24 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/12 14:22:59 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/15 15:56:14 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ int	exec_builtin(char **command, t_envs *envs)
 	string_command = ft_compact_strs(command);
 	// printf("string_command = %s\n", string_command);
 	if (!ft_strcmp(command[0], "echo"))
-		exit_status = ft_echo(string_command);
+	{
+		// exit_status = ft_echo(string_command);
+		exit_status = ft_echo(command);
+	}
 	if (!ft_strcmp(command[0], "cd"))
 		exit_status = ft_cd(envs, string_command);
 	if (!ft_strcmp(command[0], "pwd"))

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:13:15 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/12 14:26:16 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/15 15:57:03 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # include <stddef.h>
 # include "environnement.h"
 
-int		ft_echo(char *str);
+// int		ft_echo(char *str);
+int		ft_echo(char **str);
 int		ft_pwd(t_envs *envs);
 int 	ft_cd(t_envs *envs, char *command);
 int		ft_env(t_envs *envs);
@@ -31,6 +32,7 @@ void	ft_setenv(char *name, char *value, t_envs *envs);
 int		exec_builtin(char **command, t_envs *envs);
 bool	is_a_builtin(char *command);
 char    *ft_getenv(char *name, t_envs *envs);
+char	*ft_compact_strs(char **strs);
 void 	remove_environment_variable(char **envs, char *variable_name);
 
 #endif

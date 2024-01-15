@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:20:49 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/11 13:15:17 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/15 17:54:02 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ void remove_environment_variable(char **envs, char *variable_name)
 	length = ft_strlen(variable_name);
     while (envs[index]) 
 	{
-        if (strncmp(envs[index], variable_name, length) == 0 && envs[index][length] == '=') 
+        if (strncmp(envs[index], variable_name, length) == 0 && (envs[index][length] == '=' || envs[index][length] == '\0')) 
 		{
+            free(envs[index]);
             while (envs[index] != NULL) {
                 envs[index] = envs[index + 1];
                 ++index;
@@ -48,5 +49,6 @@ int	ft_unset(t_envs *envs, char **input)
         remove_environment_variable(envs->exports, input[index]);
 		index++;
 	}
+    redo_envs(envs);
     return (EXIT_SUCCESS);
 }
