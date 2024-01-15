@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtok.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/15 20:43:12 by jdenis            #+#    #+#             */
+/*   Updated: 2024/01/15 20:43:14 by jdenis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include <stdio.h>
 
 char	*extract_token(char *str_to_tokenize, size_t token_size)
 {
-	char 	*token;
-	size_t 	index;
-	
+	char	*token;
+	size_t	index;
+
 	index = 0;
 	token = malloc(sizeof(char) * (token_size + 1));
 	if (!token)
@@ -39,7 +51,7 @@ static char	**init_tokens(char *str_to_tokenize, char *separators)
 
 char	**ft_strtok(char *str_to_tokenize, char *separators)
 {
-	char 	**tokens;
+	char	**tokens;
 	size_t	token_size;
 	size_t	tokens_index;
 	bool	single_quote;
@@ -54,13 +66,14 @@ char	**ft_strtok(char *str_to_tokenize, char *separators)
 		return (NULL);
 	if (tokens[0] && tokens[1] == NULL)
 	{
-		if(extract_token_malloc_fail(tokens, 0))
+		if (extract_token_malloc_fail(tokens, 0))
 			return (NULL);
 		return (tokens);
 	}
 	while (str_to_tokenize[token_size])
 	{
-		while (str_to_tokenize[token_size] && is_separators(str_to_tokenize[token_size], separators))
+		while (str_to_tokenize[token_size]
+			&& is_separators(str_to_tokenize[token_size], separators))
 			str_to_tokenize++;
 		if (str_to_tokenize[token_size] == '\'' && !double_quote)
 			single_quote = !single_quote;
@@ -69,7 +82,8 @@ char	**ft_strtok(char *str_to_tokenize, char *separators)
 		if (single_quote)
 		{
 			token_size++;
-			while (str_to_tokenize[token_size] && str_to_tokenize[token_size] != '\'')
+			while (str_to_tokenize[token_size]
+				&& str_to_tokenize[token_size] != '\'')
 				token_size++;
 			if (str_to_tokenize[token_size] == '\'')
 				single_quote = !single_quote;
@@ -78,25 +92,31 @@ char	**ft_strtok(char *str_to_tokenize, char *separators)
 		else if (double_quote)
 		{
 			token_size++;
-			while (str_to_tokenize[token_size] && str_to_tokenize[token_size] != '\"')
+			while (str_to_tokenize[token_size]
+				&& str_to_tokenize[token_size] != '\"')
 				token_size++;
 			if (str_to_tokenize[token_size] == '\"')
 				double_quote = !double_quote;
 			token_size++;
 		}
-		if (str_to_tokenize[token_size] && !is_separators(str_to_tokenize[token_size], separators)
-				 && str_to_tokenize[token_size] != '\'' && str_to_tokenize[token_size] != '\"')
+		if (str_to_tokenize[token_size]
+			&& !is_separators(str_to_tokenize[token_size], separators)
+			&& str_to_tokenize[token_size] != '\''
+			&& str_to_tokenize[token_size] != '\"')
 		{
-			while (str_to_tokenize[token_size] && !is_separators(str_to_tokenize[token_size], separators)
-				 && str_to_tokenize[token_size] != '\'' && str_to_tokenize[token_size] != '\"')
+			while (str_to_tokenize[token_size]
+				&& !is_separators(str_to_tokenize[token_size], separators)
+				&& str_to_tokenize[token_size] != '\''
+				&& str_to_tokenize[token_size] != '\"')
 				token_size++;
 		}
-		if (str_to_tokenize[token_size] == '\'' || str_to_tokenize[token_size] == '\"')
+		if (str_to_tokenize[token_size] == '\''
+			|| str_to_tokenize[token_size] == '\"')
 			continue ;
 		if (token_size > 0)
 		{
 			tokens[tokens_index] = extract_token(str_to_tokenize, token_size);
-			if(extract_token_malloc_fail(tokens, tokens_index))
+			if (extract_token_malloc_fail(tokens, tokens_index))
 				return (NULL);
 			str_to_tokenize += token_size;
 			tokens_index++;

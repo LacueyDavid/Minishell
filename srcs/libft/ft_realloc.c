@@ -6,12 +6,12 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 21:15:11 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 01:29:30 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:45:36 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
+#include <stdlib.h>
 
 static size_t	ft_size_min(size_t a, size_t b)
 {
@@ -22,7 +22,7 @@ static size_t	ft_size_min(size_t a, size_t b)
 
 void	*ft_realloc(void *ptr, size_t new_size, size_t old_size)
 {
-	void *new_ptr;
+	void	*new_ptr;
 
 	new_ptr = malloc(new_size);
 	if (!new_ptr)
@@ -34,4 +34,3 @@ void	*ft_realloc(void *ptr, size_t new_size, size_t old_size)
 	}
 	return (new_ptr);
 }
-

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:35:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 17:38:54 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:31:29 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HERE_DOC_H
 # define HERE_DOC_H
 
-#include "execution.h"
+# include "execution.h"
 
 void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS]);
 void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS]);

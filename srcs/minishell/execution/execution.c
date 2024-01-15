@@ -6,82 +6,81 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/15 18:23:42 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/15 21:25:39 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include <readline/readline.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
-
-#include "libft.h"
-#include "execution.h"
-#include "colors.h"
-#include "get_next_line.h"
-#include "wildcards.h"
-#include "minishell_signals.h"
-#include "here_doc.h"
-#include "environnement.h"
 #include "builtins.h"
+#include "colors.h"
+#include "environnement.h"
+#include "execution.h"
+#include "get_next_line.h"
+#include "here_doc.h"
+#include "libft.h"
+#include "minishell_signals.h"
+#include "wildcards.h"
+#include <fcntl.h>
+#include <readline/readline.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 extern char	**environ;
-extern int	exit_status;
+extern int	g_exit_status;
 
-extern int exit_status;
-
-void message_command_not_found(char *command)
+void	message_command_not_found(char *command)
 {
-	int stdout_fd;
+	int	stdout_fd;
 
 	stdout_fd = dup(STDOUT_FILENO);
 	if (dup2(2, STDOUT_FILENO) < 0)
 	{
-		(perror(RED"Dup2 failed"WHITE));
+		(perror(RED "Dup2 failed" WHITE));
 		return ;
 	}
-	printf(RED"%s: command not found\n"WHITE, command);
+	printf(RED "%s: command not found\n" WHITE, command);
 	if (dup2(stdout_fd, STDOUT_FILENO) < 0)
 	{
-		(perror(RED"Dup2 failed"WHITE));
+		(perror(RED "Dup2 failed" WHITE));
 		return ;
 	}
-	exit_status = 127;
+	g_exit_status = 127;
 }
 
 bool	check_command(char *command)
 {
 	if (command[ft_strlen(command) - 1] == '/')
 	{
-		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
-		exit_status = 126;
+		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
+		g_exit_status = 126;
 		return (false);
 	}
 	else if (command[0] == '.' && command[1] == '\0')
 	{
-		printf(RED"%s: command not found\n"WHITE, command);
-		exit_status = 2;
+		printf(RED "%s: command not found\n" WHITE, command);
+		g_exit_status = 2;
 		return (false);
 	}
-	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '/')
+	else if (command[ft_strlen(command) - 1] == '.'
+		&& command[ft_strlen(command) - 2] == '/')
 	{
-		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
-		exit_status = 126;
+		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
+		g_exit_status = 126;
 		return (false);
 	}
-	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '.' && command[ft_strlen(command) - 3] == '/')
+	else if (command[ft_strlen(command) - 1] == '.'
+		&& command[ft_strlen(command) - 2] == '.'
+		&& command[ft_strlen(command) - 3] == '/')
 	{
-		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
-		exit_status = 126;
+		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
+		g_exit_status = 126;
 		return (false);
 	}
 	else if (command[0] == '\0')
 	{
-		printf(RED"Command '' not found\n"WHITE);
-		exit_status = 127;
+		printf(RED "Command '' not found\n" WHITE);
+		g_exit_status = 127;
 		return (false);
 	}
 	return (true);
@@ -109,6 +108,7 @@ char	*get_command(char *command, char **paths)
 	message_command_not_found(command);
 	return (NULL);
 }
+
 void	exec_in_the_son(t_node *node, t_envs *envs)
 {
 	char	**paths;
@@ -117,55 +117,56 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 	paths = find_paths(environ);
 	if (!paths)
 	{
-		(exit_status = -1, perror(RED"No paths found"WHITE));
+		(g_exit_status = -1, perror(RED "No paths found" WHITE));
 		clear_tree(node->head);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 	wildcards(&(node->vector_strs.values));
 	if (!node->vector_strs.values)
 	{
-		(exit_status = 134, perror(RED"Wildcards failed"));
+		(g_exit_status = 134, perror(RED "Wildcards failed"));
 		clear_tree(node->head);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 	if (expand_env_variables(&(node->vector_strs), envs) == false)
 	{
-		(exit_status = 1, perror(RED"Expand env variables failed"WHITE));
+		(g_exit_status = 1, perror(RED "Expand env variables failed" WHITE));
 		clear_tree(node->head);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
 	if (!node->vector_strs.values)
 	{
-		(exit_status = 0);
+		(g_exit_status = 0);
 		clear_tree(node->head);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 	if (is_a_builtin(node->vector_strs.values[0]))
 	{
 		free_strs(paths);
-		exit_status = exec_builtin(node->vector_strs.values, envs);
-		if (exit_status == -1)
-			perror(RED"Exec builtins failed"WHITE);
+		g_exit_status = exec_builtin(node->vector_strs.values, envs);
+		if (g_exit_status == -1)
+			perror(RED "Exec builtins failed" WHITE);
 		clear_tree(node->head);
 		free_envs(envs);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 	else
-	{	
+	{
 		command = get_command(node->vector_strs.values[0], paths);
 		free_strs(paths);
 		if (!command)
 		{
 			clear_tree(node->head);
-			exit(exit_status);
+			exit(g_exit_status);
 		}
 		execve(command, node->vector_strs.values, envs->env);
 		free_envs(envs);
-		(exit_status = -1, free(command), free_envs(envs), perror(RED"Execve failed"WHITE));
+		(g_exit_status = -1, free(command), free_envs(envs),
+					perror(RED "Execve failed" WHITE));
 		clear_tree(node->head);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 }
 
@@ -178,19 +179,22 @@ void	exec_simple_command(t_node *node, t_envs *envs)
 	pid1 = fork();
 	if (pid1 < 0)
 	{
-		(exit_status = -1, perror(RED"Fork failed"WHITE));
+		(g_exit_status = -1, perror(RED "Fork failed" WHITE));
 		return ;
 	}
 	if (pid1 == 0)
 		exec_in_the_son(node, envs);
-	waitpid(pid1, &exit_status, 0);
-	if (WIFEXITED(exit_status))
-		exit_status = WEXITSTATUS(exit_status);
-	else if (WIFSIGNALED(exit_status))
-		exit_status = WTERMSIG(exit_status) + 128;
+	waitpid(pid1, &g_exit_status, 0);
+	if (WIFEXITED(g_exit_status))
+		g_exit_status = WEXITSTATUS(g_exit_status);
+	else if (WIFSIGNALED(g_exit_status))
+		g_exit_status = WTERMSIG(g_exit_status) + 128;
 }
 
-void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS], t_envs *envs)
+void	exec_full_command(t_node *node,
+			t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS],
+			int fds[NUMBER_OF_FDS],
+			t_envs *envs)
 {
 	int		fd;
 	char	*heredoc_name;
@@ -200,7 +204,7 @@ void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], 
 		return ;
 	signal(SIGINT, handler_sigint);
 	signal(SIGQUIT, handler_sigint);
-	if(node->type == HERE_DOCUMENT)
+	if (node->type == HERE_DOCUMENT)
 	{
 		node->head->number_of_here_doc_index++;
 		index_of_here_doc = ft_itoa(node->head->number_of_here_doc_index);
@@ -208,12 +212,12 @@ void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], 
 		fd = open(heredoc_name, O_RDONLY);
 		if (fd < 0)
 		{
-			(exit_status = -1, perror(RED"Open failed"WHITE));
+			(g_exit_status = -1, perror(RED "Open failed" WHITE));
 			return ;
 		}
 		if (dup2(fd, STDIN_FILENO) < 0)
 		{
-			(exit_status = -1, perror(RED"Dup2 failed"WHITE));
+			(g_exit_status = -1, perror(RED "Dup2 failed" WHITE));
 			return ;
 		}
 		close(fd);
@@ -233,7 +237,8 @@ void	exec_full_command(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], 
 	}
 }
 
-void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds[NUMBER_OF_FDS], t_envs *envs)
+void	exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS],
+		int fds[NUMBER_OF_FDS], t_envs *envs)
 {
 	int		pipe_fds[2];
 	pid_t	*pids;
@@ -245,7 +250,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 	pids = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
 	if (!pids)
 	{
-		(exit_status = -1, perror(RED"Malloc failed"WHITE));
+		(g_exit_status = -1, perror(RED "Malloc failed" WHITE));
 		return ;
 	}
 	while (node->type == COMMAND_PIPE)
@@ -256,7 +261,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 		pids[index] = fork();
 		if (pids[index] < 0)
 		{
-			(exit_status = -1, perror(RED"Fork failed"WHITE));
+			(g_exit_status = -1, perror(RED "Fork failed" WHITE));
 			free(pids);
 			return ;
 		}
@@ -268,7 +273,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 			close(pipe_fds[1]);
 			exec_full_command(node->left, exec_map, fds, envs);
 			clear_tree(node->head);
-			exit(exit_status);
+			exit(g_exit_status);
 		}
 		node->head->number_of_here_doc_index += how_many_heredocs(node->left);
 		dup2(pipe_fds[0], STDIN_FILENO);
@@ -280,7 +285,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 	pids[index] = fork();
 	if (pids[index] < 0)
 	{
-		(exit_status = -1, perror(RED"Fork failed"WHITE));
+		(g_exit_status = -1, perror(RED "Fork failed" WHITE));
 		free(pids);
 		return ;
 	}
@@ -291,18 +296,18 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 		close(pipe_fds[1]);
 		exec_full_command(node, exec_map, fds, envs);
 		clear_tree(node->head);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 	dup2(fds[0], STDIN_FILENO);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
 	while (index2 <= index)
 	{
-		waitpid(pids[index2], &exit_status, 0);
-		if (WIFEXITED(exit_status))
-			exit_status = WEXITSTATUS(exit_status);
-		else if (WIFSIGNALED(exit_status))
-			exit_status = WTERMSIG(exit_status) + 128;
+		waitpid(pids[index2], &g_exit_status, 0);
+		if (WIFEXITED(g_exit_status))
+			g_exit_status = WEXITSTATUS(g_exit_status);
+		else if (WIFSIGNALED(g_exit_status))
+			g_exit_status = WTERMSIG(g_exit_status) + 128;
 		index2++;
 	}
 	free(pids);
@@ -310,7 +315,7 @@ void exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS], int fds
 
 void	execution(t_node *tree, t_envs *envs)
 {
-	int fds[NUMBER_OF_FDS];
+	int			fds[NUMBER_OF_FDS];
 	t_exec_map	exec_map[NUMBER_OF_EXEC_FUNCS];
 
 	signal(SIGINT, handler_sigint);

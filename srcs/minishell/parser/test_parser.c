@@ -3,69 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   test_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 05:28:31 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/23 09:19:42 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:32:47 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execution.h"
+#include "fcntl.h"
+#include "lexer.h"
+#include "libft.h"
+#include "parser.h"
+#include "unistd.h"
 #include <cgreen/cgreen.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lexer.h"
-#include "unistd.h"
-#include "fcntl.h"
-#include "execution.h"
-#include "parser.h"
-#include "libft.h"
 
 Describe(parse_full_command);
 
-BeforeEach(parse_full_command) {}
+BeforeEach(parse_full_command)
+{
+}
 
-AfterEach(parse_full_command) {}
+AfterEach(parse_full_command)
+{
+}
 
 Ensure(parse_full_command, can_parse_echo_toto)
 {
-	//GIVEN (etant donné etat initial)
-	t_token_list *token_list = init_token_list();
-	t_token token1;
-	t_token token2;
-	t_node *head = NULL;
+	t_token_list	*token_list;
+	t_token			token1;
+	t_token			token2;
+	t_node			*head;
 
+	//GIVEN (etant donné etat initial)
+	token_list = init_token_list();
+	head = NULL;
 	token1.type = WORD;
 	token1.value = ft_strdup("echo");
 	token2.type = WORD;
 	token2.value = ft_strdup("toto");
-
 	add_token(token_list, token1);
 	add_token(token_list, token2);
-
 	//WHEN (quand)
 	head = parser(token_list);
-
 	//THEN (alors)
 	assert_that(head->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(head->vector_strs.values[0], is_equal_to_string("echo"));
 	assert_that(head->vector_strs.values[1], is_equal_to_string("toto"));
 	assert_that(head->left, is_equal_to(NULL));
 	assert_that(head->right, is_equal_to(NULL));
-
 	destroy_token_list(token_list);
 	clear_tree(head);
 }
 
 Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 {
-	//GIVEN (etant donné etat initial)
-	t_token_list *token_list = init_token_list();
-	t_token token1;
-	t_token token2;
-	t_token token3;
-	t_token token4;
-	t_node *head = NULL;
+	t_token_list	*token_list;
+	t_token			token1;
+	t_token			token2;
+	t_token			token3;
+	t_token			token4;
+	t_node			*head;
+	t_node			*left;
+	t_node			*right;
 
+	//GIVEN (etant donné etat initial)
+	token_list = init_token_list();
+	head = NULL;
 	token1.type = WORD;
 	token1.value = ft_strdup("echo");
 	token2.type = WORD;
@@ -74,19 +80,15 @@ Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 	token3.value = ft_strdup(">");
 	token4.type = WORD;
 	token4.value = ft_strdup("output.txt");
-
 	add_token(token_list, token1);
 	add_token(token_list, token2);
 	add_token(token_list, token3);
 	add_token(token_list, token4);
-
 	//WHEN (quand)
 	head = parser(token_list);
-
 	//THEN (alors)
-	t_node *left = head->left;
-	t_node *right = head->right;
-
+	left = head->left;
+	right = head->right;
 	assert_that(head->type, is_equal_to(COMMAND_O_REDIRECT));
 	assert_that(left->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(left->vector_strs.values[0], is_equal_to_string("echo"));
@@ -98,22 +100,25 @@ Ensure(parse_full_command, can_parse_echo_toto_with_redirection)
 	assert_that(right->vector_strs.values[1], is_equal_to_string(NULL));
 	assert_that(right->left, is_equal_to(NULL));
 	assert_that(right->right, is_equal_to(NULL));
-
 	clear_tree(head);
 	destroy_token_list(token_list);
 }
 
 Ensure(parse_full_command, can_parse_simple_pipe)
 {
-	//GIVEN (etant donné etat initial)
-	t_token_list *token_list = init_token_list();
-	t_token token1;
-	t_token token2;
-	t_token token3;
-	t_token token4;
-	t_token token5;
-	t_node *head = NULL;
+	t_token_list	*token_list;
+	t_token			token1;
+	t_token			token2;
+	t_token			token3;
+	t_token			token4;
+	t_token			token5;
+	t_node			*head;
+	t_node			*left;
+	t_node			*right;
 
+	//GIVEN (etant donné etat initial)
+	token_list = init_token_list();
+	head = NULL;
 	token1.type = WORD;
 	token1.value = ft_strdup("echo");
 	token2.type = WORD;
@@ -124,20 +129,16 @@ Ensure(parse_full_command, can_parse_simple_pipe)
 	token4.value = ft_strdup("wc");
 	token5.type = WORD;
 	token5.value = ft_strdup("-l");
-
 	add_token(token_list, token1);
 	add_token(token_list, token2);
 	add_token(token_list, token3);
 	add_token(token_list, token4);
 	add_token(token_list, token5);
-
 	//WHEN (quand)
 	head = parser(token_list);
-
 	//THEN (alors)
-	t_node *left = head->left;
-	t_node *right = head->right;
-
+	left = head->left;
+	right = head->right;
 	assert_that(head->type, is_equal_to(COMMAND_PIPE));
 	assert_that(left->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(left->vector_strs.values[0], is_equal_to_string("echo"));
@@ -151,25 +152,30 @@ Ensure(parse_full_command, can_parse_simple_pipe)
 	assert_that(right->vector_strs.values[2], is_equal_to_string(NULL));
 	assert_that(right->left, is_equal_to(NULL));
 	assert_that(right->right, is_equal_to(NULL));
-
 	clear_tree(head);
 	destroy_token_list(token_list);
 }
 
 Ensure(parse_full_command, can_parse_2_pipes)
 {
-	//GIVEN (etant donné etat initial)
-	t_token_list *token_list = init_token_list();
-	t_token token1;
-	t_token token2;
-	t_token token3;
-	t_token token4;
-	t_token token5;
-	t_token token6;
-	t_token token7;
-	t_token token8;
-	t_node *head = NULL;
+	t_token_list	*token_list;
+	t_token			token1;
+	t_token			token2;
+	t_token			token3;
+	t_token			token4;
+	t_token			token5;
+	t_token			token6;
+	t_token			token7;
+	t_token			token8;
+	t_node			*head;
+	t_node			*left;
+	t_node			*right;
+	t_node			*right_left;
+	t_node			*right_right;
 
+	//GIVEN (etant donné etat initial)
+	token_list = init_token_list();
+	head = NULL;
 	token1.type = WORD;
 	token1.value = ft_strdup("echo");
 	token2.type = WORD;
@@ -186,7 +192,6 @@ Ensure(parse_full_command, can_parse_2_pipes)
 	token7.value = ft_strdup("tamere");
 	token8.type = WORD;
 	token8.value = ft_strdup("-d");
-
 	add_token(token_list, token1);
 	add_token(token_list, token2);
 	add_token(token_list, token3);
@@ -195,16 +200,13 @@ Ensure(parse_full_command, can_parse_2_pipes)
 	add_token(token_list, token6);
 	add_token(token_list, token7);
 	add_token(token_list, token8);
-
 	//WHEN (quand)
 	head = parser(token_list);
-
 	//THEN (alors)
-	t_node *left = head->left;
-	t_node *right = head->right;
-	t_node *right_left = head->right->left;
-	t_node *right_right = head->right->right;
-
+	left = head->left;
+	right = head->right;
+	right_left = head->right->left;
+	right_right = head->right->right;
 	assert_that(head->type, is_equal_to(COMMAND_PIPE));
 	assert_that(left->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(left->vector_strs.values[0], is_equal_to_string("echo"));
@@ -220,33 +222,37 @@ Ensure(parse_full_command, can_parse_2_pipes)
 	assert_that(right_left->left, is_equal_to(NULL));
 	assert_that(right_left->right, is_equal_to(NULL));
 	assert_that(right_right->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(right_right->vector_strs.values[0], is_equal_to_string("tamere"));
+	assert_that(right_right->vector_strs.values[0],
+			is_equal_to_string("tamere"));
 	assert_that(right_right->vector_strs.values[1], is_equal_to_string("-d"));
 	assert_that(right_right->vector_strs.values[2], is_equal_to_string(NULL));
 	assert_that(right_right->left, is_equal_to(NULL));
 	assert_that(right_right->right, is_equal_to(NULL));
-
 	clear_tree(head);
 	destroy_token_list(token_list);
 }
 
 Ensure(parse_full_command, can_parse_3_pipe)
 {
-	//GIVEN (etant donné etat initial)
-	t_token_list *token_list = init_token_list();
-	t_token token1;
-	t_token token2;
-	t_token token3;
-	t_token token4;
-	t_token token5;
-	t_token token6;
-	t_token token7;
-	t_token token8;
-	t_token token9;
-	t_token token10;
-	t_token token11;
-	t_node *head = NULL;
+	t_token_list	*token_list;
+	t_token			token1;
+	t_token			token2;
+	t_token			token3;
+	t_token			token4;
+	t_token			token5;
+	t_token			token6;
+	t_token			token7;
+	t_token			token8;
+	t_token			token9;
+	t_token			token10;
+	t_token			token11;
+	t_node			*head;
+	t_node			*left;
+	t_node			*right;
 
+	//GIVEN (etant donné etat initial)
+	token_list = init_token_list();
+	head = NULL;
 	token1.type = WORD;
 	token1.value = ft_strdup("echo");
 	token2.type = WORD;
@@ -269,7 +275,6 @@ Ensure(parse_full_command, can_parse_3_pipe)
 	token10.value = ft_strdup("tonpere");
 	token11.type = WORD;
 	token11.value = ft_strdup("fdp");
-
 	add_token(token_list, token1);
 	add_token(token_list, token2);
 	add_token(token_list, token3);
@@ -281,14 +286,11 @@ Ensure(parse_full_command, can_parse_3_pipe)
 	add_token(token_list, token9);
 	add_token(token_list, token10);
 	add_token(token_list, token11);
-
 	//WHEN (quand)
 	head = parser(token_list);
-
 	//THEN (alors)
-	t_node *left = head->left;
-	t_node *right = head->right;
-
+	left = head->left;
+	right = head->right;
 	assert_that(head->type, is_equal_to(COMMAND_PIPE));
 	assert_that(left->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(left->vector_strs.values[0], is_equal_to_string("echo"));
@@ -304,38 +306,47 @@ Ensure(parse_full_command, can_parse_3_pipe)
 	assert_that(right->left->left, is_equal_to(NULL));
 	assert_that(right->right->type, is_equal_to(COMMAND_PIPE));
 	assert_that(right->right->right->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(right->right->right->vector_strs.values[0], is_equal_to_string("tonpere"));
-	assert_that(right->right->right->vector_strs.values[1], is_equal_to_string("fdp"));
-	assert_that(right->right->right->vector_strs.values[2], is_equal_to_string(NULL));
+	assert_that(right->right->right->vector_strs.values[0],
+			is_equal_to_string("tonpere"));
+	assert_that(right->right->right->vector_strs.values[1],
+			is_equal_to_string("fdp"));
+	assert_that(right->right->right->vector_strs.values[2],
+			is_equal_to_string(NULL));
 	assert_that(right->right->right->left, is_equal_to(NULL));
 	assert_that(right->right->right->right, is_equal_to(NULL));
 	assert_that(right->right->left->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(right->right->left->vector_strs.values[0], is_equal_to_string("tamere"));
-	assert_that(right->right->left->vector_strs.values[1], is_equal_to_string("-d"));
-	assert_that(right->right->left->vector_strs.values[2], is_equal_to_string(NULL));
+	assert_that(right->right->left->vector_strs.values[0],
+			is_equal_to_string("tamere"));
+	assert_that(right->right->left->vector_strs.values[1],
+			is_equal_to_string("-d"));
+	assert_that(right->right->left->vector_strs.values[2],
+			is_equal_to_string(NULL));
 	assert_that(right->right->left->left, is_equal_to(NULL));
-
 	clear_tree(head);
 	destroy_token_list(token_list);
 }
 
 Ensure(parse_full_command, can_parse_2_pipe_with_redirections)
 {
-	//GIVEN (etant donné etat initial)
-	t_token_list *token_list = init_token_list();
-	t_token token1;
-	t_token token2;
-	t_token token3;
-	t_token token4;
-	t_token token5;
-	t_token token6;
-	t_token token7;
-	t_token token8;
-	t_token token9;
-	t_token token10;
-	t_token token11;
-	t_node *head = NULL;
+	t_token_list	*token_list;
+	t_token			token1;
+	t_token			token2;
+	t_token			token3;
+	t_token			token4;
+	t_token			token5;
+	t_token			token6;
+	t_token			token7;
+	t_token			token8;
+	t_token			token9;
+	t_token			token10;
+	t_token			token11;
+	t_node			*head;
+	t_node			*left;
+	t_node			*right;
 
+	//GIVEN (etant donné etat initial)
+	token_list = init_token_list();
+	head = NULL;
 	token1.type = I_REDIRECTION;
 	token1.value = ft_strdup("<");
 	token2.type = WORD;
@@ -358,7 +369,6 @@ Ensure(parse_full_command, can_parse_2_pipe_with_redirections)
 	token10.value = ft_strdup("|");
 	token11.type = WORD;
 	token11.value = ft_strdup("fdp");
-
 	add_token(token_list, token1);
 	add_token(token_list, token2);
 	add_token(token_list, token3);
@@ -370,19 +380,17 @@ Ensure(parse_full_command, can_parse_2_pipe_with_redirections)
 	add_token(token_list, token9);
 	add_token(token_list, token10);
 	add_token(token_list, token11);
-
 	//WHEN (quand)
 	head = parser(token_list);
-
 	//THEN (alors)
-	t_node *left = head->left;
-	t_node *right = head->right;
-
+	left = head->left;
+	right = head->right;
 	assert_that(head->type, is_equal_to(COMMAND_PIPE));
 	assert_that(left->type, is_equal_to(COMMAND_I_REDIRECT));
 	assert_that(left->left->type, is_equal_to(SIMPLE_COMMAND));
 	assert_that(left->right->type, is_equal_to(COMMAND_I_REDIRECT));
-	assert_that(left->right->vector_strs.values[0], is_equal_to_string("infile"));
+	assert_that(left->right->vector_strs.values[0],
+			is_equal_to_string("infile"));
 	assert_that(left->right->right, is_equal_to(NULL));
 	assert_that(left->right->left, is_equal_to(NULL));
 	assert_that(left->left->vector_strs.values[0], is_equal_to_string("wc"));
@@ -392,11 +400,15 @@ Ensure(parse_full_command, can_parse_2_pipe_with_redirections)
 	assert_that(left->left->right, is_equal_to(NULL));
 	assert_that(right->type, is_equal_to(COMMAND_PIPE));
 	assert_that(right->left->type, is_equal_to(COMMAND_I_REDIRECT));
-	assert_that(right->left->right->vector_strs.values[0], is_equal_to_string("infile2"));
+	assert_that(right->left->right->vector_strs.values[0],
+			is_equal_to_string("infile2"));
 	assert_that(right->left->left->type, is_equal_to(SIMPLE_COMMAND));
-	assert_that(right->left->left->vector_strs.values[0], is_equal_to_string("wc"));
-	assert_that(right->left->left->vector_strs.values[1], is_equal_to_string("-l"));
-	assert_that(right->left->left->vector_strs.values[2], is_equal_to_string(NULL));
+	assert_that(right->left->left->vector_strs.values[0],
+			is_equal_to_string("wc"));
+	assert_that(right->left->left->vector_strs.values[1],
+			is_equal_to_string("-l"));
+	assert_that(right->left->left->vector_strs.values[2],
+			is_equal_to_string(NULL));
 	assert_that(right->left->left->left, is_equal_to(NULL));
 	assert_that(right->left->left->right, is_equal_to(NULL));
 	assert_that(right->right->type, is_equal_to(SIMPLE_COMMAND));
@@ -404,7 +416,6 @@ Ensure(parse_full_command, can_parse_2_pipe_with_redirections)
 	assert_that(right->right->vector_strs.values[1], is_equal_to_string(NULL));
 	assert_that(right->right->left, is_equal_to(NULL));
 	assert_that(right->right->right, is_equal_to(NULL));
-
 	clear_tree(head);
 	destroy_token_list(token_list);
 }

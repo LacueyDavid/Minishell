@@ -6,35 +6,35 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:49:25 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:07:27 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/15 18:31:57 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "colors.h"
 #include "get_next_line.h"
 #include "libft.h"
+#include <fcntl.h>
 #include <readline/history.h>
-#include "colors.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-
-void add_input_to_history(char *input)
+void	add_input_to_history(char *input)
 {
-	char 	*path;
+	char	*path;
+	int		fd;
 
 	path = getenv("HOME");
 	if (!path)
 	{
-		perror(RED"Cannot find home path"WHITE);
+		perror(RED "Cannot find home path" WHITE);
 		return ;
 	}
 	path = ft_strjoin(path, "/.minishell_history");
-	int fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd < 0) 
+	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
 	{
-		perror(RED"Cannot open History file");
+		perror(RED "Cannot open History file");
 		free(path);
 		return ;
 	}
@@ -48,19 +48,19 @@ void	redo_history(void)
 {
 	int		fd;
 	char	*line;
-	char 	*path;
+	char	*path;
 
 	path = getenv("HOME");
 	if (!path)
 	{
-		perror(RED"Cannot find home path"WHITE);
+		perror(RED "Cannot find home path" WHITE);
 		return ;
 	}
 	path = ft_strjoin(path, "/.minishell_history");
 	fd = open(path, O_RDONLY | O_CREAT, 0644);
 	if (fd < 0)
 	{
-		perror(RED"Cannot open History file");
+		perror(RED "Cannot open History file");
 		free(path);
 		return ;
 	}

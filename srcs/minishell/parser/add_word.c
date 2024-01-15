@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   add_word.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 06:29:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/11/17 11:45:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:33:11 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "libft.h"
+#include "parser.h"
 
 bool	add_word(t_node *node, char *word)
 {

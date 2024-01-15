@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:32:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/14 02:27:48 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 19:23:57 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "lexer.h"
 #include "libft.h"
-
 #include <stdio.h>
-static size_t ft_specialstrlen(char *input)
+#include <stdlib.h>
+
+static size_t	ft_specialstrlen(char *input)
 {
 	size_t	len;
 	size_t	i;
@@ -28,10 +28,10 @@ static size_t ft_specialstrlen(char *input)
 	double_quotes = false;
 	while (input[i])
 	{
-		if(input[i] == '\'')
+		if (input[i] == '\'')
 			if (!double_quotes)
 				single_quotes = !single_quotes;
-		if(input[i] == '"')
+		if (input[i] == '"')
 			if (!single_quotes)
 				double_quotes = !double_quotes;
 		if (!single_quotes && !double_quotes)
@@ -39,7 +39,7 @@ static size_t ft_specialstrlen(char *input)
 			if (input[i] == '|')
 				len += 2;
 			else if ((input[i] == '>' && input[i + 1] == '>')
-					 || (input[i] == '<' && input[i + 1] == '<'))
+				|| (input[i] == '<' && input[i + 1] == '<'))
 			{
 				len += 3;
 				i++;
@@ -55,24 +55,29 @@ static size_t ft_specialstrlen(char *input)
 	return (len);
 }
 
-static void put_space_between_special_chars(char **input)
+static void	put_space_between_special_chars(char **input)
 {
-	char *oldinput = *input;
-	size_t newlen = ft_specialstrlen(oldinput);
-	char *newinput = malloc(sizeof(char) * (newlen + 1));
+	char	*oldinput;
+	size_t	newlen;
+	char	*newinput;
 	bool	single_quotes;
 	bool	double_quotes;
-	size_t i = 0;
-	size_t j = 0;
+	size_t	i;
+	size_t	j;
 
+	oldinput = *input;
+	newlen = ft_specialstrlen(oldinput);
+	newinput = malloc(sizeof(char) * (newlen + 1));
+	i = 0;
+	j = 0;
 	single_quotes = false;
 	double_quotes = false;
 	while (oldinput[i])
 	{
-		if(oldinput[i] == '\'')
+		if (oldinput[i] == '\'')
 			if (!double_quotes)
 				single_quotes = !single_quotes;
-		if(oldinput[i] == '"')
+		if (oldinput[i] == '"')
 			if (!single_quotes)
 				double_quotes = !double_quotes;
 		if (!single_quotes && !double_quotes)
@@ -80,26 +85,26 @@ static void put_space_between_special_chars(char **input)
 			if (oldinput[i] == '|')
 			{
 				newinput[j] = ' ';
-				newinput[j+1] = '|';
-				newinput[j+2] = ' ';
+				newinput[j + 1] = '|';
+				newinput[j + 2] = ' ';
 				j += 3;
 				i++;
 			}
 			else if ((oldinput[i] == '>' && oldinput[i + 1] == '>')
-					 || (oldinput[i] == '<' && oldinput[i + 1] == '<'))
+				|| (oldinput[i] == '<' && oldinput[i + 1] == '<'))
 			{
 				newinput[j] = ' ';
-				newinput[j+1] = oldinput[i];
-				newinput[j+2] = oldinput[i + 1];
-				newinput[j+3] = ' ';
+				newinput[j + 1] = oldinput[i];
+				newinput[j + 2] = oldinput[i + 1];
+				newinput[j + 3] = ' ';
 				j += 4;
-				i+=2;
+				i += 2;
 			}
 			else if (oldinput[i] == '>' || oldinput[i] == '<')
 			{
 				newinput[j] = ' ';
-				newinput[j+1] = oldinput[i];
-				newinput[j+2] = ' ';
+				newinput[j + 1] = oldinput[i];
+				newinput[j + 2] = ' ';
 				j += 3;
 				i++;
 			}
@@ -121,7 +126,7 @@ static void put_space_between_special_chars(char **input)
 	*input = newinput;
 }
 
-t_token_list *lexer(char *input)
+t_token_list	*lexer(char *input)
 {
 	t_token_list	*token_list;
 	char			**splited_input;

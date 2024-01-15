@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:18:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/07 17:44:18 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:55:39 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <readline/readline.h>
 #include <unistd.h>
 
-extern int	exit_status;
+extern int	g_exit_status;
 
-void handler_sigint_main(int sig)
+void	handler_sigint_main(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
@@ -37,5 +37,5 @@ void	handle_heredoc(int sig)
 	(void)sig;
 	close(STDIN_FILENO);
 	write(STDOUT_FILENO, "\n", 2);
-	exit_status = 130;
+	g_exit_status = 130;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_strs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:02:36 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/21 04:34:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:43:47 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_strs(char **strs)
 {
-	size_t index;
+	size_t	index;
 
 	index = 0;
 	if (!strs)

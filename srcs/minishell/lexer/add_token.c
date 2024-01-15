@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:57:27 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/04 04:27:16 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:32:25 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
 #include "lexer.h"
+#include "libft.h"
+#include <stdlib.h>
 
 bool	resize_token_list(t_token_list *token_list)
 {
 	size_t	old_size;
 	size_t	new_size;
-	void *test_realloc;
+	void	*test_realloc;
 
 	old_size = token_list->capacity * sizeof(t_token);
 	if (token_list->capacity == 0)
@@ -36,9 +36,8 @@ bool	resize_token_list(t_token_list *token_list)
 bool	add_token(t_token_list *token_list, t_token token)
 {
 	if (token_list->size == token_list->capacity)
-		if(!resize_token_list(token_list))
+		if (!resize_token_list(token_list))
 			return (false);
 	token_list->tokens[token_list->size++] = token;
 	return (true);
 }
-

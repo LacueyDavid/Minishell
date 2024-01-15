@@ -15,7 +15,7 @@
 // #include <unistd.h>
 // #include "../../includes/colors.h"
 //
-// extern int exit_status;
+// extern int g_exit_status;
 //
 // void message_command_not_found(char *command)
 // {
@@ -33,7 +33,7 @@
 // 		(perror(RED"Dup2 failed"WHITE));
 // 		return ;
 // 	}
-// 	exit_status = 127;
+// 	g_exit_status = 127;
 // }
 //
 // bool	check_command(char *command)
@@ -41,31 +41,31 @@
 // 	if (command[ft_strlen(command) - 1] == '/')
 // 	{
 // 		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
-// 		exit_status = 126;
+// 		g_exit_status = 126;
 // 		return (false);
 // 	}
 // 	else if (command[0] == '.' && command[1] == '\0')
 // 	{
 // 		printf(RED"%s: command not found\n"WHITE, command);
-// 		exit_status = 2;
+// 		g_exit_status = 2;
 // 		return (false);
 // 	}
 // 	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '/')
 // 	{
 // 		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
-// 		exit_status = 126;
+// 		g_exit_status = 126;
 // 		return (false);
 // 	}
 // 	else if (command[ft_strlen(command) - 1] == '.' && command[ft_strlen(command) - 2] == '.' && command[ft_strlen(command) - 3] == '/')
 // 	{
 // 		printf(RED"-Wesh: %s: Can't exec directory\n"WHITE, command);
-// 		exit_status = 126;
+// 		g_exit_status = 126;
 // 		return (false);
 // 	}
 // 	else if (command[0] == '\0')
 // 	{
 // 		printf(RED"Command '' not found\n"WHITE);
-// 		exit_status = 127;
+// 		g_exit_status = 127;
 // 		return (false);
 // 	}
 // 	return (true);

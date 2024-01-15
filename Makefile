@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/06 09:55:08 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/01/15 21:53:09 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,8 @@ OBJS =																		\
 				here_doc.o						)							\
 																			\
 				$(addprefix wildcards/,										\
-				wildcards.o						)							\
+				wildcards.o													\
+				wildcards_utils.o				)							\
 																			\
 				$(addprefix signals/,										\
 				signals.o						)							\
@@ -59,7 +60,6 @@ OBJS =																		\
 				add_token.o													\
 				destroy.o													\
 				init_token_list.o											\
-				lexer.o														\
 				tokenize_splited_input.o		)							\
 																			\
 				$(addprefix parser/,										\
@@ -69,6 +69,9 @@ OBJS =																		\
 				redirection_functions.o										\
 				parser.o													\
 				create_tree.o												\
+				create_tree_utils.o											\
+				create_tree_utils_2.o										\
+				parser_map.o												\
 				update_vector_strs_capacity.o	)							\
 																			\
 				$(addprefix builtins/,										\
@@ -79,6 +82,7 @@ OBJS =																		\
 				ft_export.o													\
 				ft_pwd.o													\
 				exec_builtin.o												\
+				ft_export_utils.o											\
 				ft_unset.o						)							\
 																			\
 				$(addprefix expand/,										\
@@ -87,6 +91,9 @@ OBJS =																		\
 				fill_final_value.o				)							\
 																			\
 				$(addprefix env/,											\
+				environnement_utils.o										\
+				environnement_utils_2.o										\
+				environnement_utils_3.o										\
 				environnement.o					)							\
 																			\
 				$(addprefix execution/,										\

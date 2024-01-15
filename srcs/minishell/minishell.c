@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/12 15:03:21 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/15 21:43:40 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <signal.h>
 
 #include "libft.h"
+#include "builtins.h"
 #include "get_next_line.h"
 #include "lexer.h"
 #include "parser.h"
@@ -26,9 +27,8 @@
 #include "colors.h"
 #include "minishell_signals.h"
 #include "environnement.h"
-#include "builtins.h"
 
-int		exit_status = 0;
+int		g_exit_status = 0;
 
 static void	interactive_mode(void)
 {
@@ -41,7 +41,7 @@ static void	interactive_mode(void)
 
 	redo_history();
 	envs = copy_env_and_export();
-	while(true)
+	while (true)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, handler_sigint_main);
@@ -70,7 +70,7 @@ static void	interactive_mode(void)
 		{
 			free(shlvl_str);
 			free_envs(envs);
-			exit(exit_status);
+			exit(g_exit_status);
 		}
 		free(shlvl_str);
 	}
@@ -84,9 +84,8 @@ static void	non_interactive_mode(void)
 	t_node			*tree;
 	t_envs			*envs;
 
-	//envs mal protégé, a protéger
 	envs = copy_env_and_export();
-	while(true)
+	while (true)
 	{
 		input = get_next_line(STDIN_FILENO);
 		if (!input)
@@ -106,7 +105,7 @@ static void	non_interactive_mode(void)
 	free_envs(envs);
 }
 
-static bool is_interactive_mode(void)
+static bool	is_interactive_mode(void)
 {
 	return (isatty(STDIN_FILENO) && isatty(STDERR_FILENO));
 }

@@ -2,26 +2,34 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   wildcards.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 14:40:03 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/20 14:40:03 by jdenis           ###   ########.fr       */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
+/*   Created: 2024/01/15 18:34:31 by jdenis            #+#    #+#             */
+/*   Updated: 2024/01/15 18:34:31 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WILDCARDS_H
 # define WILDCARDS_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <dirent.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include "libft.h"
+# include "colors.h"
+# include "libft.h"
+# include <dirent.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/types.h>
+# include <unistd.h>
 
-void wildcards(char ***values);
-
+void	wildcards(char ***values);
+char	*ft_strchr_with_quote(const char *s, int c);
+int		match_end(char *file);
+int		wildcard_match(const char *dir_file, char *wildcarded_file);
+void	add_file(char ***values, char *file);
+size_t	count_files(char **values, char *file);
 
 #endif

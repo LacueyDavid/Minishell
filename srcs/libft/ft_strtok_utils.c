@@ -1,5 +1,18 @@
-#include "libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtok_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/15 20:44:38 by jdenis            #+#    #+#             */
+/*   Updated: 2024/01/15 20:45:06 by jdenis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/colors.h"
+#include "libft.h"
+#include <stdio.h>
 
 bool	is_separators(char current_char, char *separators)
 {
@@ -19,12 +32,13 @@ bool	is_separators(char current_char, char *separators)
 
 size_t	current_token_len(char *str_to_tokenize, char *separators)
 {
-	size_t count;
+	size_t	count;
 
 	count = 0;
-	while (str_to_tokenize[count] && is_separators(str_to_tokenize[count], separators) == 0)
+	while (str_to_tokenize[count] && is_separators(str_to_tokenize[count],
+			separators) == 0)
 		count++;
-	return count;
+	return (count);
 }
 
 void	free_all(char **tokens)
@@ -40,14 +54,13 @@ void	free_all(char **tokens)
 	free(tokens);
 }
 
-#include <stdio.h>
 size_t	count_tokens(char *str_to_tokenize, char *separators)
 {
 	size_t	index;
 	size_t	tokens;
 	bool	single_quote;
 	bool	double_quote;
-	size_t count;
+	size_t	count;
 
 	single_quote = false;
 	double_quote = false;
@@ -56,7 +69,8 @@ size_t	count_tokens(char *str_to_tokenize, char *separators)
 	tokens = 0;
 	while (str_to_tokenize[index])
 	{
-		while (str_to_tokenize[index] && is_separators(str_to_tokenize[index], separators))
+		while (str_to_tokenize[index] && is_separators(str_to_tokenize[index],
+				separators))
 			index++;
 		if (str_to_tokenize[index] == '\'' && !double_quote)
 			single_quote = !single_quote;
@@ -86,12 +100,15 @@ size_t	count_tokens(char *str_to_tokenize, char *separators)
 			index++;
 			tokens++;
 		}
-		if (str_to_tokenize[index] && !is_separators(str_to_tokenize[index], separators)
-			&& str_to_tokenize[index] != '\'' && str_to_tokenize[index] != '\"')
+		if (str_to_tokenize[index] && !is_separators(str_to_tokenize[index],
+				separators) && str_to_tokenize[index] != '\''
+			&& str_to_tokenize[index] != '\"')
 		{
 			tokens++;
-			while (str_to_tokenize[index] && !is_separators(str_to_tokenize[index], separators)
-				   && str_to_tokenize[index] != '\'' && str_to_tokenize[index] != '\"')
+			while (str_to_tokenize[index]
+				&& !is_separators(str_to_tokenize[index], separators)
+				&& str_to_tokenize[index] != '\''
+				&& str_to_tokenize[index] != '\"')
 				index++;
 		}
 		if (str_to_tokenize[index] == '\"' || str_to_tokenize[index] == '\'')
@@ -102,7 +119,7 @@ size_t	count_tokens(char *str_to_tokenize, char *separators)
 	}
 	if (single_quote || double_quote)
 	{
-		perror(RED"Error: unclosed quote\n"WHITE);
+		perror(RED "Error: unclosed quote\n" WHITE);
 		return (0);
 	}
 	return (count);
@@ -117,4 +134,3 @@ bool	extract_token_malloc_fail(char **tokens, size_t tokens_index)
 	}
 	return (false);
 }
-

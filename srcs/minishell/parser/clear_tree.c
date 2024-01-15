@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   clear_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:37 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/26 12:26:02 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:33:08 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "parser.h"
 #include <stdlib.h>
-#include "libft.h"
 
 void	clear_tree(t_node *node)
 {

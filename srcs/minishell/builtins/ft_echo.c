@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:19:19 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/15 18:30:24 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 
 bool	is_white_space(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r');
 }
 
 size_t	skip_first_white_space(char *str)
 {
-	size_t index;
+	size_t	index;
 
 	index = 4;
 	while (str[index] != '\0' && is_white_space(str[index]))
@@ -62,21 +63,21 @@ int	skip_n(char **strs, bool *is_flag)
 	return (index);
 }
 
-int ft_echo(char **command) 
+int	ft_echo(char **command)
 {
-    int index;
-    bool is_flag;
+	int		index;
+	bool	is_flag;
 
 	is_flag = false;
-    index = skip_n(command, &is_flag);
-    while (command[index]) 
+	index = skip_n(command, &is_flag);
+	while (command[index])
 	{
 		printf("%s", command[index]);
 		if (command[index + 1])
 			printf(" ");
 		index++;
 	}
-    if (!is_flag)
+	if (!is_flag)
 	{
 		printf("\n");
 	}

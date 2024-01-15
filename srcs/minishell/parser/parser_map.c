@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.h                                           :+:      :+:    :+:   */
+/*   parser_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/27 01:34:27 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/15 18:35:47 by jdenis           ###   ########.fr       */
+/*   Created: 2024/01/15 21:07:39 by jdenis            #+#    #+#             */
+/*   Updated: 2024/01/15 21:08:19 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLORS_H
-# define COLORS_H
+#include "parser.h"
 
-# ifndef WHITE
-#  define WHITE "\001\033[0m\002"
-# endif
-
-# ifndef LIGHT_BLUE
-#  define LIGHT_BLUE "\001\033[38;5;153m\002"
-# endif
-
-# ifndef LIGHT_PINK
-#  define LIGHT_PINK "\001\033[38;5;225m\002"
-# endif
-
-# ifndef RED
-#  define RED "\001\033[0;31m\002"
-# endif
-
-#endif
+void	create_parser_map(t_parser_map parser_map[NUM_OF_TOKEN_TYPES])
+{
+	parser_map[WORD].function = add_simple_command;
+	parser_map[O_REDIRECTION].function = add_o_redirection;
+	parser_map[I_REDIRECTION].function = add_i_redirection;
+	parser_map[APPEND_REDIRECTION].function = add_append;
+	parser_map[HERE_DOC].function = add_here_doc;
+}

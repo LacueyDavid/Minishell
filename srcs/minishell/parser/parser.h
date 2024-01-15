@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/06 14:27:42 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 21:52:44 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef PARSER_H
+# define PARSER_H
 
-#include <stdbool.h>
-#include "lexer.h"
+# include "lexer.h"
+# include <stdbool.h>
 
 typedef enum e_node_type
 {
@@ -24,18 +24,18 @@ typedef enum e_node_type
 	APPEND_REDIRECT,
 	HERE_DOCUMENT,
 	COMMAND_PIPE,
-}   e_node_type;
+}					t_node_type;
 
 typedef struct s_vector_strs
 {
-	size_t	size;
-	size_t	capacity;
-	char	**values;
-}	t_vector_strs;
+	size_t			size;
+	size_t			capacity;
+	char			**values;
+}					t_vector_strs;
 
 typedef struct s_node
 {
-	e_node_type		type;
+	t_node_type		type;
 	t_vector_strs	vector_strs;
 	struct s_node	*head;
 	struct s_node	*parent;
@@ -44,37 +44,51 @@ typedef struct s_node
 	size_t			number_of_pipes;
 	size_t			number_of_here_doc;
 	size_t			number_of_here_doc_index;
-}	t_node;
+}					t_node;
 
-struct s_parser_env;
+struct	s_parser_env;
 
 typedef struct s_parser_map
 {
-	bool			(*function)(struct s_parser_env *env, t_token token);
-}	t_parser_map;
+	bool	(*function)(struct s_parser_env	*env, t_token	token);
+}					t_parser_map;
 
 typedef struct s_parser_env
 {
-	t_parser_map	parser_map[NUMBER_OF_TOKEN_TYPES];
+	t_parser_map	parser_map[NUM_OF_TOKEN_TYPES];
 	t_node			*head;
-	t_node 			*temporary;
+	t_node			*temporary;
 	t_node			*simple_command;
 	size_t			number_of_pipes;
-}	t_parser_env;
+}					t_parser_env;
 
 t_node			*parser(t_token_list *token_list);
 t_node			*init_node(void);
 bool			init_nodes(t_node **left, t_node **right);
 bool			add_word(t_node *node, char *word);
 bool			init_parser_env(t_parser_env *env);
-bool			create_piped_tree(t_parser_env *env, t_token_list *token_list);
-bool			create_redirection_tree(t_parser_env *env, t_token_list *token_list);
+bool			create_piped_tree(t_parser_env *env,
+					t_token_list *token_list);
+bool			create_redirection_tree(t_parser_env *env,
+					t_token_list *token_list);
 bool			update_vector_strs_capacity(t_vector_strs *node);
 void			clear_tree(t_node *node);
-void			create_parser_map(t_parser_map parser_map[NUMBER_OF_TOKEN_TYPES]);
+void			create_parser_map(t_parser_map parser_map[NUM_OF_TOKEN_TYPES]);
 bool			add_pipe(t_parser_env *env);
-t_token_list	*pipeless_token_list(t_token_list *token_list, size_t *index);
+t_token_list	*pipeless_token_list(t_token_list *token_list,
+					size_t *index);
 void			print_parser_env(t_parser_env *env);
 bool			init_simple_command(t_node **simple_command, t_node *head);
+bool			copy_token(t_token_list *token_list, t_token token);
+bool			fill_tmp(t_token_list *token_list, t_token token);
+t_vector_strs	copy_vector_strs(t_vector_strs vector_strs);
+bool			add_last_command(t_parser_env *env);
+bool			copy_tree(t_node *node, t_node *tmp_node);
+
+bool			add_simple_command(t_parser_env *env, t_token token);
+bool			add_append(t_parser_env *env, t_token token);
+bool			add_o_redirection(t_parser_env *env, t_token token);
+bool			add_i_redirection(t_parser_env *env, t_token token);
+bool			add_here_doc(t_parser_env *env, t_token token);
 
 #endif

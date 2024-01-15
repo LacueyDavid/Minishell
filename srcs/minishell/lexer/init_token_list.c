@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   init_token_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:59:45 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/25 03:07:09 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:32:21 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-t_token_list *init_token_list(void)
+t_token_list	*init_token_list(void)
 {
-	t_token_list *token_list;
+	t_token_list	*token_list;
 
 	token_list = malloc(sizeof(t_token_list));
 	if (!token_list)

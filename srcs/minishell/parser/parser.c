@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/14 03:51:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:49:41 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-extern int	exit_status;
+extern int	g_exit_status;
 
 void	print_which_token(int type)
 {
@@ -32,43 +32,53 @@ void	print_which_token(int type)
 		printf("wesh: syntax error near unexpected token `newline'\n");
 }
 
-bool check_token_list(t_token_list *token_list)
+bool	check_token_list(t_token_list *token_list)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < token_list->size)
 	{
 		if (token_list->tokens[i].type == O_REDIRECTION)
+		{
 			if (token_list->tokens[i + 1].type != WORD)
 			{
 				print_which_token(token_list->tokens[i + 1].type);
 				return (false);
 			}
+		}
 		if (token_list->tokens[i].type == I_REDIRECTION)
+		{	
 			if (token_list->tokens[i + 1].type != WORD)
 			{
 				print_which_token(token_list->tokens[i + 1].type);
 				return (false);
 			}
+		}
 		if (token_list->tokens[i].type == APPEND_REDIRECTION)
+		{
 			if (token_list->tokens[i + 1].type != WORD)
 			{
 				print_which_token(token_list->tokens[i + 1].type);
 				return (false);
 			}
+		}
 		if (token_list->tokens[i].type == HERE_DOC)
+		{
 			if (token_list->tokens[i + 1].type != WORD)
 			{
 				print_which_token(token_list->tokens[i + 1].type);
 				return (false);
 			}
+		}
 		if (token_list->tokens[i].type == PIPE)
+		{
 			if (i + 1 >= token_list->size || i == 0)
 			{
 				printf("wesh: syntax error near unexpected token `|'\n");
 				return (false);
 			}
+		}
 		i++;
 	}
 	return (true);
@@ -80,7 +90,7 @@ t_node	*parser(t_token_list *token_list)
 
 	if (!check_token_list(token_list))
 	{
-		exit_status = 2;
+		g_exit_status = 2;
 		return (NULL);
 	}
 	if (!init_parser_env(&env))

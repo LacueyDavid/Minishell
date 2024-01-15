@@ -6,39 +6,43 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/14 00:52:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/15 18:31:20 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "libft.h"
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 static bool	expand_value(char **values, t_envs *envs)
 {
-	char *value = *values;
-	char *final_value;
-	ssize_t size_of_final_value;
+	char	*value;
+	char	*final_value;
+	ssize_t	size_of_final_value;
 
+	value = *values;
 	size_of_final_value = count_final_value_size(value, envs);
 	if (size_of_final_value == -1)
-		return false;
+		return (false);
 	final_value = malloc(size_of_final_value);
 	if (!fill_final_value(final_value, *values, envs))
-		return false;
+		return (false);
 	free(*values);
 	*values = final_value;
-	return true;
+	return (true);
 }
 
-char *ft_strsjoin(char **strs, char *sep)
+char	*ft_strsjoin(char **strs, char *sep)
 {
-	char *result;
-	int i = 0;
-	int size = 0;
-	int sep_size = ft_strlen(sep);
+	char	*result;
+	int		i;
+	int		size;
+	int		sep_size;
 
+	i = 0;
+	size = 0;
+	sep_size = ft_strlen(sep);
 	while (strs[i])
 	{
 		size += ft_strlen(strs[i]);
@@ -48,7 +52,7 @@ char *ft_strsjoin(char **strs, char *sep)
 	result = malloc(size + 1);
 	result[0] = '\0';
 	if (!result)
-		return NULL;
+		return (NULL);
 	i = 0;
 	while (strs[i])
 	{
@@ -57,7 +61,7 @@ char *ft_strsjoin(char **strs, char *sep)
 			ft_strlcat(result, sep, size + 1);
 		i++;
 	}
-	return result;
+	return (result);
 }
 
 static void	remove_char(char *value)
@@ -101,7 +105,7 @@ void	remove_quotes_from_value(char *value)
 
 void	remove_quotes(char **values)
 {
-	int		index;
+	int	index;
 
 	index = 0;
 	if (values == NULL)
@@ -116,26 +120,27 @@ void	remove_quotes(char **values)
 bool	expand_env_variables(t_vector_strs *vector, t_envs *envs)
 {
 	int		index;
-	char	**values = vector->values;
+	char	**values;
 	char	*value_after_expansion;
 
+	values = vector->values;
 	index = 0;
-	if(values == NULL)
-		return true;
+	if (values == NULL)
+		return (true);
 	while (values[index])
 	{
-		if(!expand_value(&(values[index]), envs))
-			return false;
+		if (!expand_value(&(values[index]), envs))
+			return (false);
 		index++;
 	}
 	value_after_expansion = ft_strsjoin(values, " ");
 	if (!value_after_expansion)
-		return false;
+		return (false);
 	free_strs(values);
 	vector->values = ft_strtok(value_after_expansion, " ");
 	vector->size = ft_strslen(vector->values);
 	vector->capacity = vector->size;
 	remove_quotes(vector->values);
 	free(value_after_expansion);
-	return true;
+	return (true);
 }
