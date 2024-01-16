@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:33:18 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 12:57:13 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 13:51:50 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static bool	is_stop_expand_char(char c)
 static ssize_t	exit_status_size(void)
 {
 	char	*exit_status_str;
-	char	*index;
+	size_t	index;
 
 	exit_status_str = ft_itoa(g_exit_status);
 	if (!exit_status_str)

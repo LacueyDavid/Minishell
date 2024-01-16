@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 11:55:19 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 13:48:55 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ struct	s_parser_env;
 
 typedef struct s_parser_map
 {
-	bool	(*function)(struct s_parser_env	*env, t_token	token);
-}					t_parser_map;
+	bool	(*function)(struct s_parser_env *env, t_token token);
+}			t_parser_map;
 
 typedef struct s_parser_env
 {
