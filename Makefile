@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/16 11:52:32 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/01/16 14:11:04 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,6 +93,7 @@ OBJS =																		\
 				$(addprefix expand/,										\
 				expand_env_variables.o										\
 				count_final_value.o											\
+				count_final_value_utils.o									\
 				remove_quotes.o												\
 				fill_final_value.o				)							\
 																			\

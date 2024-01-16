@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:34:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 12:37:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 14:01:12 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,5 @@ bool	fill_final_value(char *final_value, char *value, t_envs *envs)
 		}
 	}
 	final_value[counter.size] = '\0';
-	printf("final_value = %s\n", final_value);
 	return (true);
 }
