@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 06:55:13 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 12:07:31 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ typedef struct pipe_utils
 	int		fds[2];
 	pid_t	*pids;
 }			t_pipe;
+
+typedef struct s_count_size
+{
+	size_t		size;
+	size_t		index;
+	ssize_t		variable_size;
+	bool		double_quote;
+}				t_counter;
 
 void	do_execve(t_node *node, t_envs *envs);
 void	do_builtins(t_node *node, t_envs *envs);
