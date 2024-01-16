@@ -124,8 +124,8 @@ int	ft_cd(t_envs *envs, char *command)
 	else if (ft_strncmp(command, "cd ..", 6) == 0)
 	{
 		free(pwd);
-		pwd = getcwd(NULL, 0);
 		chdir("..");
+		pwd = getcwd(NULL, 0);
 		ft_setenv("OLDPWD", pwd, envs);
 		ft_setenv("PWD", pwd, envs);
 	}
