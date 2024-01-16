@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 10:56:34 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/06/23 10:56:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 01:12:54 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct line_infos
 	int		i;
 }			t_line;
 
+void	add_to_storage_map(int fd, t_storages *storages, int i);
 void	free_everything(t_storage *storage);
 void	double_newlines_size(t_storage *storage);
 void	double_storage_size(t_storage *storage, t_buffer *buffer);

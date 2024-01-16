@@ -44,12 +44,16 @@ OBJS = 			ft_isdigit.o				\
 				ft_print_str.o				\
 				ft_strcmp.o					\
 				ft_find_paths.o				\
-				ft_get_command.o			\
 				ft_free_strs.o				\
 				ft_delete_newline.o			\
 				ft_realloc.o				\
 				ft_strtok.o					\
 				ft_strtok_utils.o			\
+				ft_strtok_utils_2.o			\
+				ft_strtok_utils_3.o			\
+				ft_strtok_utils_4.o			\
+				ft_strtok_utils_5.o			\
+				ft_strsjoin.o				\
 				ft_add_char.o				\
 
 OBJS_BONUS =	ft_lstnew.o					\

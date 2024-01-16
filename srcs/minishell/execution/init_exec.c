@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 09:19:37 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/15 18:58:05 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 04:31:53 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,14 @@
 #include "fcntl.h"
 #include <unistd.h>
 
-void	init_exec_func_map(t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS])
+void	init_exec(t_exec *exec, t_envs *envs)
 {
-	exec_map[COMMAND_O_REDIRECT].function = redirection_output;
-	exec_map[COMMAND_I_REDIRECT].function = redirection_input;
-	exec_map[APPEND_REDIRECT].function = append_output;
-}
-
-void	init_fds(int fds[NUMBER_OF_FDS])
-{
-	fds[1] = dup(1);
-	fds[0] = dup(0);
+	exec->exec_map[COMMAND_O_REDIRECT].function = redirection_output;
+	exec->exec_map[COMMAND_I_REDIRECT].function = redirection_input;
+	exec->exec_map[APPEND_REDIRECT].function = append_output;
+	exec->fds[0] = dup(STDIN_FILENO);
+	exec->fds[1] = dup(STDOUT_FILENO);
+	exec->envs = envs;
 }
 
 void	close_fds(int fds[NUMBER_OF_FDS])

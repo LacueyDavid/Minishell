@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:49:25 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:31:57 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 11:00:31 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,10 @@ void	redo_history(void)
 	line = get_next_line(fd);
 	while (line)
 	{
-		delete_newline(&line);
-		add_history(line);
-		free(line);
+		(delete_newline(&line), add_history(line), free(line));
 		line = get_next_line(fd);
 	}
-	free(line);
-	close(fd);
-	free(path);
+	(free(line), close(fd), free(path));
 }
 
 void	update_history(char *input)

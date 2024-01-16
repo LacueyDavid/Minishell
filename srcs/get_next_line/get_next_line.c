@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 10:56:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/08 12:41:22 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 01:10:50 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ static	t_storage	*actual_fd_storage(int fd, t_storages *storages)
 		i++;
 	if (i >= MAP_SIZE)
 		return (NULL);
-	storages->map[i].key = fd;
-	storages->size += 1;
+	add_to_storage_map(fd, storages, i);
 	return (&(storages->map[i].storage));
 }
 

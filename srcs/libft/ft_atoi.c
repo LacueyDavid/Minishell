@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:21:46 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/05/13 19:42:32 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 07:28:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	skip_space(const char *nptr)
 	int	index;
 
 	index = 0;
-	while (((nptr[index] >= '\t' && nptr[index] <= '\r') || nptr[index] == ' '))
+	while ((nptr[index] >= '\t' && nptr[index] <= '\r') || nptr[index] == ' ')
 		index++;
 	return (index);
 }

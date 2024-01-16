@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:32:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/15 19:23:57 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 06:31:54 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,117 +14,6 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-static size_t	ft_specialstrlen(char *input)
-{
-	size_t	len;
-	size_t	i;
-	bool	single_quotes;
-	bool	double_quotes;
-
-	len = 0;
-	i = 0;
-	single_quotes = false;
-	double_quotes = false;
-	while (input[i])
-	{
-		if (input[i] == '\'')
-			if (!double_quotes)
-				single_quotes = !single_quotes;
-		if (input[i] == '"')
-			if (!single_quotes)
-				double_quotes = !double_quotes;
-		if (!single_quotes && !double_quotes)
-		{
-			if (input[i] == '|')
-				len += 2;
-			else if ((input[i] == '>' && input[i + 1] == '>')
-				|| (input[i] == '<' && input[i + 1] == '<'))
-			{
-				len += 3;
-				i++;
-			}
-			else if (input[i] == '>' || input[i] == '<')
-				len += 2;
-			len++;
-		}
-		else
-			len++;
-		i++;
-	}
-	return (len);
-}
-
-static void	put_space_between_special_chars(char **input)
-{
-	char	*oldinput;
-	size_t	newlen;
-	char	*newinput;
-	bool	single_quotes;
-	bool	double_quotes;
-	size_t	i;
-	size_t	j;
-
-	oldinput = *input;
-	newlen = ft_specialstrlen(oldinput);
-	newinput = malloc(sizeof(char) * (newlen + 1));
-	i = 0;
-	j = 0;
-	single_quotes = false;
-	double_quotes = false;
-	while (oldinput[i])
-	{
-		if (oldinput[i] == '\'')
-			if (!double_quotes)
-				single_quotes = !single_quotes;
-		if (oldinput[i] == '"')
-			if (!single_quotes)
-				double_quotes = !double_quotes;
-		if (!single_quotes && !double_quotes)
-		{
-			if (oldinput[i] == '|')
-			{
-				newinput[j] = ' ';
-				newinput[j + 1] = '|';
-				newinput[j + 2] = ' ';
-				j += 3;
-				i++;
-			}
-			else if ((oldinput[i] == '>' && oldinput[i + 1] == '>')
-				|| (oldinput[i] == '<' && oldinput[i + 1] == '<'))
-			{
-				newinput[j] = ' ';
-				newinput[j + 1] = oldinput[i];
-				newinput[j + 2] = oldinput[i + 1];
-				newinput[j + 3] = ' ';
-				j += 4;
-				i += 2;
-			}
-			else if (oldinput[i] == '>' || oldinput[i] == '<')
-			{
-				newinput[j] = ' ';
-				newinput[j + 1] = oldinput[i];
-				newinput[j + 2] = ' ';
-				j += 3;
-				i++;
-			}
-			else
-			{
-				newinput[j] = oldinput[i];
-				j++;
-				i++;
-			}
-		}
-		else
-		{
-			newinput[j] = oldinput[i];
-			j++;
-			i++;
-		}
-	}
-	newinput[newlen] = '\0';
-	*input = newinput;
-}
 
 t_token_list	*lexer(char *input)
 {

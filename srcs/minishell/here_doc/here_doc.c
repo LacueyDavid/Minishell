@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:55:39 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 10:59:11 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ void	here_doc(t_node *node)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	free(line);
-	free(heredoc_index);
-	free(heredoc_name);
+	(free(line), free(heredoc_index), free(heredoc_name));
 	close(fd);
 }
 

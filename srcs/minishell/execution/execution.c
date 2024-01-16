@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/15 21:25:39 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 04:59:55 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,148 +26,21 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-extern char	**environ;
 extern int	g_exit_status;
-
-void	message_command_not_found(char *command)
-{
-	int	stdout_fd;
-
-	stdout_fd = dup(STDOUT_FILENO);
-	if (dup2(2, STDOUT_FILENO) < 0)
-	{
-		(perror(RED "Dup2 failed" WHITE));
-		return ;
-	}
-	printf(RED "%s: command not found\n" WHITE, command);
-	if (dup2(stdout_fd, STDOUT_FILENO) < 0)
-	{
-		(perror(RED "Dup2 failed" WHITE));
-		return ;
-	}
-	g_exit_status = 127;
-}
-
-bool	check_command(char *command)
-{
-	if (command[ft_strlen(command) - 1] == '/')
-	{
-		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
-		g_exit_status = 126;
-		return (false);
-	}
-	else if (command[0] == '.' && command[1] == '\0')
-	{
-		printf(RED "%s: command not found\n" WHITE, command);
-		g_exit_status = 2;
-		return (false);
-	}
-	else if (command[ft_strlen(command) - 1] == '.'
-		&& command[ft_strlen(command) - 2] == '/')
-	{
-		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
-		g_exit_status = 126;
-		return (false);
-	}
-	else if (command[ft_strlen(command) - 1] == '.'
-		&& command[ft_strlen(command) - 2] == '.'
-		&& command[ft_strlen(command) - 3] == '/')
-	{
-		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
-		g_exit_status = 126;
-		return (false);
-	}
-	else if (command[0] == '\0')
-	{
-		printf(RED "Command '' not found\n" WHITE);
-		g_exit_status = 127;
-		return (false);
-	}
-	return (true);
-}
-
-char	*get_command(char *command, char **paths)
-{
-	char	*tmp;
-	char	*command_full_path;
-
-	if (!check_command(command))
-		return (NULL);
-	if (access(command, X_OK) == 0)
-		return (command);
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		command_full_path = ft_strjoin(tmp, command);
-		free(tmp);
-		if (access(command_full_path, X_OK) == 0)
-			return (command_full_path);
-		free(command_full_path);
-		paths++;
-	}
-	message_command_not_found(command);
-	return (NULL);
-}
 
 void	exec_in_the_son(t_node *node, t_envs *envs)
 {
-	char	**paths;
-	char	*command;
-
-	paths = find_paths(environ);
-	if (!paths)
-	{
-		(g_exit_status = -1, perror(RED "No paths found" WHITE));
-		clear_tree(node->head);
-		exit(g_exit_status);
-	}
+	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
 	wildcards(&(node->vector_strs.values));
+	wildcards_fail_protection(node);
+	if (!expand_env_variables(&(node->vector_strs), envs))
+		expand_fail_protection(node);
 	if (!node->vector_strs.values)
-	{
-		(g_exit_status = 134, perror(RED "Wildcards failed"));
-		clear_tree(node->head);
-		exit(g_exit_status);
-	}
-	if (expand_env_variables(&(node->vector_strs), envs) == false)
-	{
-		(g_exit_status = 1, perror(RED "Expand env variables failed" WHITE));
-		clear_tree(node->head);
-		exit(g_exit_status);
-	}
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_DFL);
-	if (!node->vector_strs.values)
-	{
-		(g_exit_status = 0);
-		clear_tree(node->head);
-		exit(g_exit_status);
-	}
+		vector_null_protection(node);
 	if (is_a_builtin(node->vector_strs.values[0]))
-	{
-		free_strs(paths);
-		g_exit_status = exec_builtin(node->vector_strs.values, envs);
-		if (g_exit_status == -1)
-			perror(RED "Exec builtins failed" WHITE);
-		clear_tree(node->head);
-		free_envs(envs);
-		exit(g_exit_status);
-	}
+		do_builtins(node, envs);
 	else
-	{
-		command = get_command(node->vector_strs.values[0], paths);
-		free_strs(paths);
-		if (!command)
-		{
-			clear_tree(node->head);
-			exit(g_exit_status);
-		}
-		execve(command, node->vector_strs.values, envs->env);
-		free_envs(envs);
-		(g_exit_status = -1, free(command), free_envs(envs),
-					perror(RED "Execve failed" WHITE));
-		clear_tree(node->head);
-		exit(g_exit_status);
-	}
+		do_execve(node, envs);
 }
 
 void	exec_simple_command(t_node *node, t_envs *envs)
@@ -179,7 +52,8 @@ void	exec_simple_command(t_node *node, t_envs *envs)
 	pid1 = fork();
 	if (pid1 < 0)
 	{
-		(g_exit_status = -1, perror(RED "Fork failed" WHITE));
+		g_exit_status = -1;
+		perror(RED "Fork failed" WHITE);
 		return ;
 	}
 	if (pid1 == 0)
@@ -191,143 +65,38 @@ void	exec_simple_command(t_node *node, t_envs *envs)
 		g_exit_status = WTERMSIG(g_exit_status) + 128;
 }
 
-void	exec_full_command(t_node *node,
-			t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS],
-			int fds[NUMBER_OF_FDS],
-			t_envs *envs)
+void	exec_full_command(t_node *node, t_exec *exec)
 {
-	int		fd;
-	char	*heredoc_name;
-	char	*index_of_here_doc;
-
 	if (!node)
 		return ;
-	signal(SIGINT, handler_sigint);
-	signal(SIGQUIT, handler_sigint);
+	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigint));
 	if (node->type == HERE_DOCUMENT)
-	{
-		node->head->number_of_here_doc_index++;
-		index_of_here_doc = ft_itoa(node->head->number_of_here_doc_index);
-		heredoc_name = ft_strjoin("here_doc.minishell", index_of_here_doc);
-		fd = open(heredoc_name, O_RDONLY);
-		if (fd < 0)
-		{
-			(g_exit_status = -1, perror(RED "Open failed" WHITE));
-			return ;
-		}
-		if (dup2(fd, STDIN_FILENO) < 0)
-		{
-			(g_exit_status = -1, perror(RED "Dup2 failed" WHITE));
-			return ;
-		}
-		close(fd);
-		free(index_of_here_doc);
-		free(heredoc_name);
-	}
+		do_here_doc(node);
 	else if (node->type == SIMPLE_COMMAND)
-		exec_simple_command(node, envs);
+		exec_simple_command(node, exec->envs);
 	else
-		exec_map[node->type].function(node);
+		exec->exec_map[node->type].function(node);
 	if (node->type != SIMPLE_COMMAND)
 	{
 		if (!node->left)
-			exec_full_command(node->right, exec_map, fds, envs);
+			exec_full_command(node->right, exec);
 		else
-			exec_full_command(node->left, exec_map, fds, envs);
+			exec_full_command(node->left, exec);
 	}
-}
-
-void	exec_pipes(t_node *node, t_exec_map exec_map[NUMBER_OF_EXEC_FUNCS],
-		int fds[NUMBER_OF_FDS], t_envs *envs)
-{
-	int		pipe_fds[2];
-	pid_t	*pids;
-	int		index;
-	int		index2;
-
-	index = 0;
-	index2 = 0;
-	pids = malloc(sizeof(pid_t) * (node->number_of_pipes + 1));
-	if (!pids)
-	{
-		(g_exit_status = -1, perror(RED "Malloc failed" WHITE));
-		return ;
-	}
-	while (node->type == COMMAND_PIPE)
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		pipe(pipe_fds);
-		pids[index] = fork();
-		if (pids[index] < 0)
-		{
-			(g_exit_status = -1, perror(RED "Fork failed" WHITE));
-			free(pids);
-			return ;
-		}
-		if (pids[index] == 0)
-		{
-			free(pids);
-			dup2(pipe_fds[1], STDOUT_FILENO);
-			close(pipe_fds[0]);
-			close(pipe_fds[1]);
-			exec_full_command(node->left, exec_map, fds, envs);
-			clear_tree(node->head);
-			exit(g_exit_status);
-		}
-		node->head->number_of_here_doc_index += how_many_heredocs(node->left);
-		dup2(pipe_fds[0], STDIN_FILENO);
-		close(pipe_fds[0]);
-		close(pipe_fds[1]);
-		node = node->right;
-		index++;
-	}
-	pids[index] = fork();
-	if (pids[index] < 0)
-	{
-		(g_exit_status = -1, perror(RED "Fork failed" WHITE));
-		free(pids);
-		return ;
-	}
-	if (pids[index] == 0)
-	{
-		free(pids);
-		close(pipe_fds[0]);
-		close(pipe_fds[1]);
-		exec_full_command(node, exec_map, fds, envs);
-		clear_tree(node->head);
-		exit(g_exit_status);
-	}
-	dup2(fds[0], STDIN_FILENO);
-	close(pipe_fds[0]);
-	close(pipe_fds[1]);
-	while (index2 <= index)
-	{
-		waitpid(pids[index2], &g_exit_status, 0);
-		if (WIFEXITED(g_exit_status))
-			g_exit_status = WEXITSTATUS(g_exit_status);
-		else if (WIFSIGNALED(g_exit_status))
-			g_exit_status = WTERMSIG(g_exit_status) + 128;
-		index2++;
-	}
-	free(pids);
 }
 
 void	execution(t_node *tree, t_envs *envs)
 {
-	int			fds[NUMBER_OF_FDS];
-	t_exec_map	exec_map[NUMBER_OF_EXEC_FUNCS];
+	t_exec	exec;
 
-	signal(SIGINT, handler_sigint);
-	signal(SIGQUIT, handler_sigint);
-	init_fds(fds);
-	init_exec_func_map(exec_map);
-	fork_heredocs(tree, fds);
+	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigint));
+	init_exec(&exec, envs);
+	fork_heredocs(tree, exec.fds);
 	if (tree->number_of_pipes > 0)
-		exec_pipes(tree, exec_map, fds, envs);
+		exec_pipes(tree, &exec);
 	else
-		exec_full_command(tree, exec_map, fds, envs);
-	reset_standard_streams(fds);
-	close_fds(fds);
+		exec_full_command(tree, &exec);
+	reset_standard_streams(exec.fds);
+	close_fds(exec.fds);
 	unlink_heredoc_files(tree);
 }

@@ -6,122 +6,69 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:43:12 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 20:43:14 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 10:57:59 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
+#include "../../includes/colors.h"
 
-char	*extract_token(char *str_to_tokenize, size_t token_size)
+void	update_quotes_to_extract_tokens(t_extract_token *extract_tokens,
+			char *str_to_tokenize)
 {
-	char	*token;
-	size_t	index;
-
-	index = 0;
-	token = malloc(sizeof(char) * (token_size + 1));
-	if (!token)
-		return (NULL);
-	while (index < token_size)
-	{
-		token[index] = str_to_tokenize[index];
-		index++;
-	}
-	token[index] = '\0';
-	return (token);
+	if (str_to_tokenize[extract_tokens->token_len] == '\''
+		&& !extract_tokens->double_quote)
+		extract_tokens->single_quote = !extract_tokens->single_quote;
+	if (str_to_tokenize[extract_tokens->token_len] == '\"'
+		&& !extract_tokens->single_quote)
+		extract_tokens->double_quote = !extract_tokens->double_quote;
 }
 
-static char	**init_tokens(char *str_to_tokenize, char *separators)
+static void	skip_separator(char **str_to_tokenize, char *separators,
+				size_t token_len)
 {
-	char	**tokens;
-	size_t	tokens_counted;
+	while (str_to_tokenize[token_len]
+		&& is_separators((*str_to_tokenize)[token_len], separators))
+		*str_to_tokenize += 1;
+}
 
-	if (!str_to_tokenize || !separators)
-		return (NULL);
-	tokens_counted = count_tokens(str_to_tokenize, separators);
-	if (tokens_counted == 0)
-		return (NULL);
-	tokens = malloc(sizeof(char *) * (tokens_counted + 1));
-	if (!tokens)
-		return (NULL);
-	tokens[tokens_counted] = NULL;
-	tokens[0] = NULL;
-	return (tokens);
+static bool	fill_tokens(t_extract_token *extract_tokens, char **str_to_tokenize)
+{
+	if (extract_tokens->token_len > 0)
+	{
+		extract_tokens->tokens[extract_tokens->index]
+			= extract_token(*str_to_tokenize, extract_tokens->token_len);
+		if (extract_token_malloc_fail(extract_tokens->tokens,
+				extract_tokens->index))
+			return (false);
+		(*str_to_tokenize) += extract_tokens->token_len;
+		extract_tokens->index++;
+		extract_tokens->token_len = 0;
+	}
+	return (true);
 }
 
 char	**ft_strtok(char *str_to_tokenize, char *separators)
 {
-	char	**tokens;
-	size_t	token_size;
-	size_t	tokens_index;
-	bool	single_quote;
-	bool	double_quote;
+	t_extract_token	extract_tokens;
 
-	single_quote = false;
-	double_quote = false;
-	tokens_index = 0;
-	token_size = 0;
-	tokens = init_tokens(str_to_tokenize, separators);
-	if (!tokens)
+	if (!init_extract_tokens(&extract_tokens, str_to_tokenize, separators))
 		return (NULL);
-	if (tokens[0] && tokens[1] == NULL)
+	while (str_to_tokenize[extract_tokens.token_len])
 	{
-		if (extract_token_malloc_fail(tokens, 0))
-			return (NULL);
-		return (tokens);
-	}
-	while (str_to_tokenize[token_size])
-	{
-		while (str_to_tokenize[token_size]
-			&& is_separators(str_to_tokenize[token_size], separators))
-			str_to_tokenize++;
-		if (str_to_tokenize[token_size] == '\'' && !double_quote)
-			single_quote = !single_quote;
-		if (str_to_tokenize[token_size] == '\"' && !single_quote)
-			double_quote = !double_quote;
-		if (single_quote)
-		{
-			token_size++;
-			while (str_to_tokenize[token_size]
-				&& str_to_tokenize[token_size] != '\'')
-				token_size++;
-			if (str_to_tokenize[token_size] == '\'')
-				single_quote = !single_quote;
-			token_size++;
-		}
-		else if (double_quote)
-		{
-			token_size++;
-			while (str_to_tokenize[token_size]
-				&& str_to_tokenize[token_size] != '\"')
-				token_size++;
-			if (str_to_tokenize[token_size] == '\"')
-				double_quote = !double_quote;
-			token_size++;
-		}
-		if (str_to_tokenize[token_size]
-			&& !is_separators(str_to_tokenize[token_size], separators)
-			&& str_to_tokenize[token_size] != '\''
-			&& str_to_tokenize[token_size] != '\"')
-		{
-			while (str_to_tokenize[token_size]
-				&& !is_separators(str_to_tokenize[token_size], separators)
-				&& str_to_tokenize[token_size] != '\''
-				&& str_to_tokenize[token_size] != '\"')
-				token_size++;
-		}
-		if (str_to_tokenize[token_size] == '\''
-			|| str_to_tokenize[token_size] == '\"')
+		skip_separator(&str_to_tokenize, separators, extract_tokens.token_len);
+		update_quotes_to_extract_tokens(&extract_tokens, str_to_tokenize);
+		if (extract_tokens.single_quote)
+			count_token_quoted_len(str_to_tokenize, &extract_tokens);
+		else if (extract_tokens.double_quote)
+			count_token_double_quoted_len(str_to_tokenize, &extract_tokens);
+		count_token_len(str_to_tokenize, &extract_tokens, separators);
+		if (str_to_tokenize[extract_tokens.token_len] == '\''
+			|| str_to_tokenize[extract_tokens.token_len] == '\"')
 			continue ;
-		if (token_size > 0)
-		{
-			tokens[tokens_index] = extract_token(str_to_tokenize, token_size);
-			if (extract_token_malloc_fail(tokens, tokens_index))
-				return (NULL);
-			str_to_tokenize += token_size;
-			tokens_index++;
-			token_size = 0;
-		}
+		if (!fill_tokens(&extract_tokens, &str_to_tokenize))
+			return (NULL);
 	}
-	return (tokens);
+	return (extract_tokens.tokens);
 }

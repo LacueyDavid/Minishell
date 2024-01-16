@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/15 21:53:09 by jdenis           ###   ########.fr        #
+#    Updated: 2024/01/16 11:52:32 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ OBJS =																		\
 																			\
 				$(addprefix get_next_line/,									\
 				get_next_line.o												\
+				get_next_line_secure.o										\
 				get_next_line_utils.o			)							\
 																			\
 				$(addprefix minishell/,										\
@@ -46,6 +47,7 @@ OBJS =																		\
 				history.o						)							\
 																			\
 				$(addprefix here_doc/,										\
+				do_here_doc.o												\
 				here_doc.o						)							\
 																			\
 				$(addprefix wildcards/,										\
@@ -57,6 +59,8 @@ OBJS =																		\
 																			\
 				$(addprefix lexer/,											\
 				lexer.o														\
+				ft_specialstrlen.o											\
+				put_space_between_special_chars.o							\
 				add_token.o													\
 				destroy.o													\
 				init_token_list.o											\
@@ -69,6 +73,7 @@ OBJS =																		\
 				redirection_functions.o										\
 				parser.o													\
 				create_tree.o												\
+				create_piped_tree.o											\
 				create_tree_utils.o											\
 				create_tree_utils_2.o										\
 				parser_map.o												\
@@ -88,6 +93,7 @@ OBJS =																		\
 				$(addprefix expand/,										\
 				expand_env_variables.o										\
 				count_final_value.o											\
+				remove_quotes.o												\
 				fill_final_value.o				)							\
 																			\
 				$(addprefix env/,											\
@@ -97,8 +103,13 @@ OBJS =																		\
 				environnement.o					)							\
 																			\
 				$(addprefix execution/,										\
+				do_builtin_or_execve.o										\
+				exec_pipe.o													\
+				protection.o												\
+				wait_pids.o													\
 				execution.o													\
 				init_exec.o													\
+				ft_get_command.o											\
 				redirections.o					)))							\
 																			\
 

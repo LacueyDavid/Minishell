@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/15 21:52:44 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 11:55:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,20 @@ typedef struct s_parser_env
 	size_t			number_of_pipes;
 }					t_parser_env;
 
+typedef struct s_tmp_envs
+{
+	t_parser_env	tmp_env;
+	t_token_list	*tmp1;
+	t_token_list	*tmp2;
+	size_t			index;
+}					t_tmp_envs;
+
 t_node			*parser(t_token_list *token_list);
 t_node			*init_node(void);
 bool			init_nodes(t_node **left, t_node **right);
 bool			add_word(t_node *node, char *word);
 bool			init_parser_env(t_parser_env *env);
-bool			create_piped_tree(t_parser_env *env,
-					t_token_list *token_list);
+bool			create_full_tree(t_parser_env *env, t_token_list *token_list);
 bool			create_redirection_tree(t_parser_env *env,
 					t_token_list *token_list);
 bool			update_vector_strs_capacity(t_vector_strs *node);
@@ -90,5 +97,9 @@ bool			add_append(t_parser_env *env, t_token token);
 bool			add_o_redirection(t_parser_env *env, t_token token);
 bool			add_i_redirection(t_parser_env *env, t_token token);
 bool			add_here_doc(t_parser_env *env, t_token token);
+bool			copy_env(const t_parser_env *env, t_parser_env *tmp_env_ptr);
+bool			add_nodes_to_piped_tree(t_parser_env *env, t_tmp_envs *tmps,
+					t_token_list *token_list);
+bool			init_parser_env_piped_tree(t_tmp_envs *tmps, t_parser_env *env);
 
 #endif

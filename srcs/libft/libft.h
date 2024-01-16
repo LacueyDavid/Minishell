@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/06 11:52:02 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/16 10:52:08 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
-char	*get_command(char *command, char **paths);
 int		ft_isprint(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
@@ -63,15 +62,49 @@ void	ft_bubble_sort(int *array, size_t size);
 void	ft_swap(int *a, int *b);
 void	print_str(char *str);
 void	*ft_realloc(void *ptr, size_t new_size, size_t old_size);
+char	*ft_strsjoin(char **strs, char *sep);
 // STRTOK
+typedef struct s_count
+{
+	size_t	count;
+	size_t	tokens;
+	size_t	index;
+	bool	single_quote;
+	bool	double_quote;
+}	t_count;
+
+typedef struct s_extract_token
+{
+	char	**tokens;
+	bool	single_quote;
+	bool	double_quote;
+	size_t	index;
+	size_t	token_len;
+}	t_extract_token;
+
 char	**ft_strtok(char *str_to_tokenise, char *separators);
 size_t	current_token_len(char *str_to_tokenize, char *separators);
-size_t	count_tokens(char *str_to_tokenize, char *separators);
+ssize_t	count_tokens(char *str_to_tokenize, char *separators);
 void	free_all(char **tokens);
 bool	is_separators(char current_char, char *separators);
 bool	extract_token_malloc_fail(char **tokens, size_t tokens_index);
 bool	ft_add_char(char **str, char c);
+void	init_count(t_count *count);
+void	update_quotes_to_count_tokens(bool *single_quote, bool *double_quote,
+			char current_char);
+bool	init_extract_tokens(t_extract_token *extract_token,
+			char *str_to_tokenize, char *separators);
+void	update_quotes_to_extract_tokens(t_extract_token *extract_tokens,
+			char *str_to_tokenize);
+void	count_token_quoted_len(char *str_to_tokenize,
+			t_extract_token *extract_tokens);
+void	count_token_double_quoted_len(char *str_to_tokenize,
+			t_extract_token *extract_tokens);
+void	count_token_len(char *str_to_tokenize,
+			t_extract_token *extract_tokens, char *separators);
+char	*extract_token(char *str_to_tokenize, size_t token_size);
 
+//
 typedef struct s_list
 {
 	void			*content;
