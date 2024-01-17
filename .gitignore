@@ -3,3 +3,4 @@
 .nfs*
 .minishell_history
 *.txt
+*.a

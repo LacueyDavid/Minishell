@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 13:38:24 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:26:58 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,8 @@ size_t	count_result_of_variable(size_t *index, size_t *index2,
 			char **dup_value, t_envs *envs);
 ssize_t	count_actual_variable_size(char *value, t_envs *envs);
 bool	is_stop_expand_char_to_count(char c);
+bool	fill_variables(char *final_value, char *value, t_envs *envs,
+			t_counter *counter);
+bool	is_stop_expand_char(char c);
 
 #endif

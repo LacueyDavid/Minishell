@@ -6,11 +6,11 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/17 12:13:59 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/01/17 15:12:44 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
+CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -g3 -fPIC
 
@@ -95,6 +95,7 @@ OBJS =																		\
 				count_final_value.o											\
 				count_final_value_utils.o									\
 				remove_quotes.o												\
+				fill_final_value_utils.o									\
 				fill_final_value.o				)							\
 																			\
 				$(addprefix env/,											\
