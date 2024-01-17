@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:34:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 08:31:19 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:05:02 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static ssize_t	dup_the_value_with_equal_at_end(char **dup_value,
 		return (-1);
 	while (!is_stop_expand_char_to_count(value[*index2]))
 		(*index2)++;
-	*dup_value[*index2] = '\0';
+	(*dup_value)[*index2] = '\0';
 	if (*index2 == 0)
 	{
 		free(*dup_value);
@@ -113,7 +113,7 @@ static void	init_counter(t_counter *counter)
 }
 
 bool	fill_variables(char *final_value, char *value, t_envs *envs,
-					   t_counter *counter)
+			t_counter *counter)
 {
 	counter->variable_size = fill_actual_variable(final_value + counter->size,
 												  value + counter->index, envs);

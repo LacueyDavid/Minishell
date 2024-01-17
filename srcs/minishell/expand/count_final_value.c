@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:33:18 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 14:17:25 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:02:52 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,33 +64,29 @@ static void	skip_single_quote(char *value, t_counter *counter)
 
 ssize_t	count_final_value_size(char *value, t_envs *envs)
 {
-	t_counter	*counter;
+	t_counter	counter;
 
-	counter = malloc(sizeof(t_counter));
-	init_counter(counter);
-	while (value[counter->index])
+	init_counter(&counter);
+	while (value[counter.index])
 	{
-		if (value[counter->index] == '$')
+		if (value[counter.index] == '$')
 		{
-			if (count_variables(counter, value, envs) == -1)
+			if (count_variables(&counter, value, envs) == -1)
 				return (-1);
 		}
-		else if (value[counter->index] == '\'' && !counter->double_quote)
+		else if (value[counter.index] == '\'' && !counter.double_quote)
+			skip_single_quote(value, &counter);
+		else if (value[counter.index] == '"')
 		{
-			skip_single_quote(value, counter);
-		}
-		else if (value[counter->index] == '"')
-		{
-			counter->double_quote = !counter->double_quote;
-			counter->index++;
-			counter->size++;
+			counter.double_quote = !counter.double_quote;
+			counter.index++;
+			counter.size++;
 		}
 		else
 		{
-			counter->size++;
-			counter->index++;
+			counter.size++;
+			counter.index++;
 		}
 	}
-	// free(counter);
-	return (counter->size + 1);
+	return (counter.size + 1);
 }
