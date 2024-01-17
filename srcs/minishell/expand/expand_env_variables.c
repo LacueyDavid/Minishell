@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:31:05 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 13:41:03 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 14:17:25 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static bool	expand_value(char **values, t_envs *envs)
 	size_of_final_value = count_final_value_size(value, envs);
 	if (size_of_final_value == -1)
 		return (false);
-	printf("size_of_final_value = %zu\n", size_of_final_value);
 	final_value = malloc(size_of_final_value);
 	if (!fill_final_value(final_value, *values, envs))
 		return (false);
