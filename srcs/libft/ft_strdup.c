@@ -6,26 +6,28 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:48:50 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/10/21 01:32:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:14:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup(const char *str)
 {
 	size_t	index;
-	char	*sdup;
+	char	*strdup;
 
-	sdup = malloc(ft_strlen(s) + 1);
-	if (!sdup)
+	if (!str)
+		return (NULL);
+	strdup = malloc(ft_strlen(str) + 1);
+	if (!strdup)
 		return (NULL);
 	index = 0;
-	while (s && s[index])
+	while (str[index])
 	{
-		sdup[index] = s[index];
+		strdup[index] = str[index];
 		index++;
 	}
-	sdup[index] = '\0';
-	return (sdup);
+	strdup[index] = '\0';
+	return (strdup);
 }

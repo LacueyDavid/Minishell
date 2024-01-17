@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 14:10:10 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 08:33:00 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:38:00 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,18 @@ static ssize_t	dup_the_value_with_equal_at_end(char **dup_value,
 }
 
 size_t	count_result_of_variable(size_t *index, size_t *index2,
-			char *dup_value, t_envs *envs)
+			char **dup_value, t_envs *envs)
 {
-	while (envs->env[*index] && !ft_strnstr(envs->env[*index], dup_value,
+	while (envs->env[*index] && !ft_strnstr(envs->env[*index], *dup_value,
 			ft_strlen(envs->env[*index])))
 		(*index)++;
-	free(dup_value);
+	free(*dup_value);
 	if (!envs->env[*index])
 		return (0);
 	*index2 = 0;
 	while (envs->env[*index][*index2] != '=')
 		(*index2)++;
-	dup_value = envs->env[*index] + *index2 + 1;
+	*dup_value = envs->env[*index] + *index2 + 1;
 	return (1);
 }
 
@@ -94,7 +94,7 @@ ssize_t	count_actual_variable_size(char *value, t_envs *envs)
 	return_value = dup_the_value_with_equal_at_end(&dup_value, value, &index2);
 	if (return_value)
 		return (return_value);
-	if (!count_result_of_variable(&index, &index2, dup_value, envs))
+	if (!count_result_of_variable(&index, &index2, &dup_value, envs))
 		return (0);
 	return (ft_strlen(dup_value));
 }

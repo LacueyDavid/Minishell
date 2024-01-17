@@ -6,20 +6,20 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:49:18 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/12/11 12:45:49 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/17 13:13:23 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen(const char *str)
 {
 	size_t	len;
 
-	if (!s)
-		return (0);
 	len = 0;
-	while (s[len])
+	if (!str)
+		return (0);
+	while (str[len])
 		len++;
 	return (len);
 }

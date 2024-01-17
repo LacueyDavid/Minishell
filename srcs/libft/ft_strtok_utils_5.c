@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:51:53 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 10:51:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:04:57 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*extract_token(char *str_to_tokenize, size_t token_size)
 	size_t	index;
 
 	index = 0;
+	printf("token_size: %zu\n", token_size);
+	printf("str_to_tokenize: %s\n", str_to_tokenize);
 	token = malloc(sizeof(char) * (token_size + 1));
 	if (!token)
 		return (NULL);
@@ -29,5 +31,6 @@ char	*extract_token(char *str_to_tokenize, size_t token_size)
 		index++;
 	}
 	token[index] = '\0';
+	printf("token: %s\n", token);
 	return (token);
 }

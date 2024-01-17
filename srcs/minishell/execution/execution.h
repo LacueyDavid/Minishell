@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 14:12:56 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:38:24 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	path_fail_protection(t_node *node);
 void	vector_null_protection(t_node *node);
 void	remove_quotes(char **values);
 size_t	count_result_of_variable(size_t *index, size_t *index2,
-			char *dup_value, t_envs *envs);
+			char **dup_value, t_envs *envs);
 ssize_t	count_actual_variable_size(char *value, t_envs *envs);
 bool	is_stop_expand_char_to_count(char c);
 

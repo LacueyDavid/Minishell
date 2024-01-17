@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/16 14:11:04 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/01/17 12:13:59 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,7 +136,7 @@ libft: $(LIBFT)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFTPATH)
-	$(CC) -o $(NAME) $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJS) $(OBJS_BONUS) $(TEST_OBJS)
