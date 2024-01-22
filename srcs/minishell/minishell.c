@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 17:23:29 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:52:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static void	non_interactive_mode(t_envs *envs)
 	t_token_list	*token_list;
 	t_node			*tree;
 
-	envs = copy_env_and_export();
 	while (true)
 	{
 		input = get_next_line(STDIN_FILENO);
@@ -97,10 +96,8 @@ static void	non_interactive_mode(t_envs *envs)
 		destroy_token_list(token_list);
 		if (!tree)
 			continue ;
-		execution(tree, envs);
-		clear_tree(tree);
+		(execution(tree, envs), clear_tree(tree));
 	}
-	free_envs(envs);
 }
 
 static bool	is_interactive_mode(void)
