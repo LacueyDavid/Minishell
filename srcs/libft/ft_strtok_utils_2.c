@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 08:10:19 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 10:05:50 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 15:36:51 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	count_quote(char *str_to_tokenize, size_t *index,
 		(*index)++;
 	if (str_to_tokenize[*index] == '\'')
 		*single_quote = !*single_quote;
-	(*index)++;
+	if (str_to_tokenize[*index] != '\0')
+		(*index)++;
 	(*tokens)++;
 }
 
@@ -34,7 +35,8 @@ static void	count_double_quote(char *str_to_tokenize, size_t *index,
 		(*index)++;
 	if (str_to_tokenize[*index] == '\"')
 		*double_quote = !*double_quote;
-	(*index)++;
+	if (str_to_tokenize[*index] != '\0')
+		(*index)++;
 	(*tokens)++;
 }
 
