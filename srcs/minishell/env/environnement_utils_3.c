@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:47:03 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:51:27 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 17:28:44 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,14 @@ char	*increased_shlvl(char *str)
 	shlvl = ft_atoi(str + 6);
 	shlvl++;
 	tmp = ft_itoa(shlvl);
+	if (!tmp)
+		return (NULL);
 	new = ft_strjoin("SHLVL=", tmp);
+	if (!new)
+	{
+		free(tmp);
+		return (NULL);
+	}
 	free(tmp);
 	return (new);
 }

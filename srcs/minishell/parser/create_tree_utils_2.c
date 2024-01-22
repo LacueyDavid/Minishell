@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:59:21 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:53:21 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 17:25:04 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ bool	copy_token(t_token_list *token_list, t_token token)
 bool	fill_tmp(t_token_list *token_list, t_token token)
 {
 	if (token_list->size == token_list->capacity)
-		resize_token_list(token_list);
+	{
+		if (!resize_token_list(token_list))
+			return (false);
+	}
 	if (!token_list->tokens)
 		return (false);
 	copy_token(token_list, token);

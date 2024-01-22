@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 15:27:06 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 17:34:23 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ size_t	copy_shlvl_var(char *shlvl_var, char **new, size_t index)
 	char	*tmp;
 
 	tmp = increased_shlvl(shlvl_var);
+	if (!tmp)
+	{
+		free_strs(new);
+		exit(EXIT_FAILURE);
+	}
 	new[index] = ft_strdup_with_quotes(tmp);
 	free(tmp);
 	if (!new[index])

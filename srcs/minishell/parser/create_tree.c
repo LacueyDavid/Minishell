@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:20:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 11:54:53 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:56:08 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ bool	create_piped_tree(t_parser_env *env, t_token_list *token_list)
 bool	create_full_tree(t_parser_env *env, t_token_list *token_list)
 {
 	if (is_pipes(token_list->tokens, token_list->size))
-		create_piped_tree(env, token_list);
+	{
+		if (!create_piped_tree(env, token_list))
+			return (false);
+	}
 	else
 		if (!create_redirection_tree(env, token_list))
 			return (false);

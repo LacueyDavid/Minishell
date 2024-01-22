@@ -13,6 +13,7 @@ tests qui ne marchent pas :
 - echo $hola* //faut juste, dans l'execution, mettre le bloc wildcards apres celui d'expand mais je crois que ca posais prblm sur un cas c'est pour ca qu'on l'a mit dans cet ordre je crois
 
 - export_utils.c recoder realloc
+- voir sans env command : valgrind --suppressions=.readline_suppressions.supp --trace-children=yes env -i ./minishell
 
 
 A FAIRE: check les retour dexit status pour les tests
