@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 04:59:05 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 15:03:31 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	do_execve(t_node *node, t_envs *envs)
 	free_strs(paths);
 	if (!command)
 	{
-		clear_tree(node->head);
+		(clear_tree(node->head), free_envs(envs));
 		exit(g_exit_status);
 	}
 	execve(command, node->vector_strs.values, envs->env);
