@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:43:40 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 17:14:15 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,37 @@
 
 int		g_exit_status = 0;
 
+void	envs_handler(t_envs	*envs)
+{
+	char			*shlvl_str;
+	int				shlvl;
+
+	shlvl_str = ft_getenv("SHLVL", envs);
+	shlvl = ft_atoi(shlvl_str);
+	free(shlvl_str);
+	update_envs(envs);
+	shlvl_str = ft_getenv("SHLVL", envs);
+	if (shlvl > ft_atoi(shlvl_str))
+	{
+		free(shlvl_str);
+		free_envs(envs);
+		exit(g_exit_status);
+	}
+	free(shlvl_str);
+}
+
 static void	interactive_mode(void)
 {
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
 	t_envs			*envs;
-	int				shlvl;
-	char			*shlvl_str;
 
 	redo_history();
 	envs = copy_env_and_export();
 	while (true)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, handler_sigint_main);
+		(signal(SIGQUIT, SIG_IGN), signal(SIGINT, handler_sigint_main));
 		input = readline(LIGHT_BLUE "Wesh: " LIGHT_PINK);
 		write(STDOUT_FILENO, WHITE, 5);
 		if (!input)
@@ -59,20 +75,7 @@ static void	interactive_mode(void)
 		destroy_token_list(token_list);
 		if (!tree)
 			continue ;
-		execution(tree, envs);
-		shlvl_str = ft_getenv("SHLVL", envs);
-		shlvl = ft_atoi(shlvl_str);
-		free(shlvl_str);
-		update_envs(envs);
-		clear_tree(tree->head);
-		shlvl_str = ft_getenv("SHLVL", envs);
-		if (shlvl > ft_atoi(shlvl_str))
-		{
-			free(shlvl_str);
-			free_envs(envs);
-			exit(g_exit_status);
-		}
-		free(shlvl_str);
+		(execution(tree, envs), clear_tree(tree->head), envs_handler(envs));
 	}
 	free_envs(envs);
 }
