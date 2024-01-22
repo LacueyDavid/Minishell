@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:49:25 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/16 11:00:31 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 20:20:58 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,28 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	add_input_to_history(char *input)
+char	*history_path(void)
 {
 	char	*path;
-	int		fd;
 
 	path = getenv("HOME");
 	if (!path)
 	{
 		perror(RED "Cannot find home path" WHITE);
-		return ;
+		return (NULL);
 	}
 	path = ft_strjoin(path, "/.minishell_history");
+	return (path);
+}
+
+void	add_input_to_history(char *input)
+{
+	char	*path;
+	int		fd;
+
+	path = history_path();
+	if (!path)
+		return ;
 	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
@@ -44,25 +54,21 @@ void	add_input_to_history(char *input)
 	free(path);
 }
 
-void	redo_history(void)
+int	redo_history(void)
 {
 	int		fd;
 	char	*line;
 	char	*path;
 
-	path = getenv("HOME");
+	path = history_path();
 	if (!path)
-	{
-		perror(RED "Cannot find home path" WHITE);
-		return ;
-	}
-	path = ft_strjoin(path, "/.minishell_history");
+		return (EXIT_FAILURE);
 	fd = open(path, O_RDONLY | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		perror(RED "Cannot open History file");
 		free(path);
-		return ;
+		return (EXIT_FAILURE);
 	}
 	line = get_next_line(fd);
 	while (line)
@@ -71,6 +77,7 @@ void	redo_history(void)
 		line = get_next_line(fd);
 	}
 	(free(line), close(fd), free(path));
+	return (EXIT_SUCCESS);
 }
 
 void	update_history(char *input)

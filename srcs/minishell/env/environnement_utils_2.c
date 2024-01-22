@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:44:16 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 16:47:49 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 18:40:48 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**copy_export_from_file(int fd)
 	char	**new;
 	char	*str;
 
-	length = 100;
+	length = size_of_new_exp();
 	index = 0;
 	new = malloc(sizeof(char *) * (length + 1));
 	if (!new)

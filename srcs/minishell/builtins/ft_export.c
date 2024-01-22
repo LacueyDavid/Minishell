@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:16:58 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 18:22:53 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,31 +75,3 @@ int	ft_export(t_envs *envs, char **input)
 	}
 	return (add_variables(envs, input));
 }
-
-// int main(void)
-// {
-// 	char *input[] = {"export", "TEST=OKBRO", "QIYANA=MAFEMME", NULL};
-// 	char *input2[] = {"export", NULL};
-// 	t_envs *envs;
-// 	envs = copy_env_and_export();
-// 	// ft_export(input2, envs);
-// 	print_envs(envs->env);
-// 	printf("\n");
-// 	print_envs(envs->exports);
-// 	ft_export(envs, input);
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-// 	printf("\n");
-
-// 	print_envs(envs->env);
-// 	printf("\n");
-// 	print_envs(envs->exports);
-// 	free_envs(envs);
-// 	return (0);
-// }

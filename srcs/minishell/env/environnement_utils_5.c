@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:44:22 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 16:49:04 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 18:40:44 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**copy_environnement_from_file(int fd)
 	char	**new;
 	char	*str;
 
-	length = 100;
+	length = size_of_new_env();
 	index = 0;
 	new = malloc(sizeof(char *) * (length + 1));
 	if (!new)

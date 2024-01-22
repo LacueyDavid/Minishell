@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:14:13 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:15:02 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 19:25:08 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	add_var_exp(char ***envs, char **input)
 	size_t	index2;
 
 	index = ft_strslen(*envs);
-	*envs = realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
-				+ ft_strslen(input)));
+	*envs = ft_realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
+				+ ft_strslen(input)), sizeof(char *) * ft_strslen(*envs));
 	if (!*envs)
 		return (EXIT_FAILURE);
 	index2 = 1;
@@ -78,8 +78,8 @@ int	add_var_env(char ***envs, char **input)
 	size_t	index2;
 
 	index = ft_strslen(*envs);
-	*envs = realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
-				+ ft_strslen(input)));
+	*envs = ft_realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
+				+ ft_strslen(input)), sizeof(char *) * ft_strslen(*envs));
 	if (!*envs)
 		return (EXIT_FAILURE);
 	index2 = 1;
