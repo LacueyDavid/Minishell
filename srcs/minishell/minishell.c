@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 17:52:19 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 18:11:31 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	minishell(void)
 
 	redo_history();
 	envs = copy_env_and_export();
+	if (!envs)
+		return ;
 	if (is_interactive_mode())
 		interactive_mode(envs);
 	else
