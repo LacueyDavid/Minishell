@@ -98,20 +98,14 @@ void	check_wildcards(char ***values, char *wildcarded_file)
 		perror(RED "opendir");
 		exit(1);
 	}
-	while ((entry = readdir(dir)) != NULL)
+	entry = readdir(dir);
+	while ((entry) != NULL)
 	{
-		if (ft_strchr(wildcarded_file, '/') == NULL)
-			name = ft_strdup(entry->d_name);
-		else
-		{
-			if (entry->d_type == DT_DIR)
-				name = ft_strjoin(entry->d_name, "/");
-			else
-				name = ft_strdup(entry->d_name);
-		}
+		name = name_file_or_dir(entry, wildcarded_file);
 		if (wildcard_match(name, wildcarded_file) && name[0] != '.')
 			add_new_files(name, &new_files);
 		free(name);
+		entry = readdir(dir);
 	}
 	closedir(dir);
 	change_files(values, wildcarded_file, new_files);

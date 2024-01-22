@@ -21,57 +21,43 @@
 #include <string.h>
 #include <unistd.h>
 
-char	*ft_getenv(char *name, t_envs *envs)
+char	*create_new_path(char *path, char *home_dir)
 {
-	size_t	index;
-	size_t	length;
-	char	*value;
+	char	*new_path;
 
-	index = 0;
-	length = ft_strlen(name);
-	while (envs->env[index])
-	{
-		if (!ft_strncmp(envs->env[index], name, length))
-		{
-			value = ft_strdup(envs->env[index] + length + 1);
-			return (value);
-		}
-		index++;
-	}
-	return (NULL);
+	new_path = malloc(ft_strlen(home_dir) + ft_strlen(path) + 2);
+	ft_strlcpy(new_path, home_dir, ft_strlen(home_dir) + 1);
+	ft_strlcat(new_path, "/", ft_strlen(new_path) + 2);
+	ft_strlcat(new_path, path, ft_strlen(new_path) + ft_strlen(path));
+	free(path);
+	free(home_dir);
+	return (new_path);
 }
 
-void	ft_setenv(char *name, char *value, t_envs *envs)
+char	*ft_strdup_end(char *str, int start)
 {
-	size_t	index;
-	size_t	length;
+	char	*new;
+	int		index;
 
-	index = 0;
-	length = ft_strlen(name);
-	while (envs->env[index])
+	index = start;
+	new = malloc(ft_strlen(str) - start + 1);
+	if (!new)
+		return (NULL);
+	while (str[index])
 	{
-		if (ft_strncmp(envs->env[index], name, length) == 0)
-		{
-			free(envs->env[index]);
-			envs->env[index] = malloc(sizeof(char) * (length + ft_strlen(value)
-						+ 2));
-			strcpy(envs->env[index], name);
-			strcat(envs->env[index], "=");
-			strcat(envs->env[index], value);
-			return ;
-		}
+		new[index - start] = str[index];
 		index++;
 	}
+	new[index - start] = '\0';
+	free(str);
+	return (new);
 }
 
-void	change_pwd_in_env(char *path, t_envs *envs)
+int	error_access(char *new_path)
 {
-	char	*current_pwd;
-
-	current_pwd = ft_getenv("PWD", envs);
-	ft_setenv("OLDPWD", current_pwd, envs);
-	ft_setenv("PWD", path, envs);
-	free(current_pwd);
+	perror("cd");
+	free(new_path);
+	return (EXIT_FAILURE);
 }
 
 int	ft_do_cd(t_envs *envs, char *command)
@@ -84,27 +70,19 @@ int	ft_do_cd(t_envs *envs, char *command)
 	if (path[0] != '~')
 		home_dir = ft_getenv("PWD", envs);
 	else
-		home_dir = ft_getenv("HOME", envs);
-	if (home_dir != NULL)
 	{
-		new_path = malloc(ft_strlen(home_dir) + ft_strlen(path) + 2);
-		ft_strlcpy(new_path, home_dir, ft_strlen(home_dir) + 1);
-		ft_strlcat(new_path, "/", ft_strlen(new_path) + 2);
-		ft_strlcat(new_path, path, ft_strlen(new_path) + ft_strlen(path));
-		free(path);
-		free(home_dir);
+		home_dir = ft_getenv("HOME", envs);
+		path = ft_strdup_end(path, 2);
 	}
+	if (home_dir != NULL)
+		new_path = create_new_path(path, home_dir);
 	else
 	{
 		perror("cd");
 		free(path);
 	}
 	if (access(new_path, F_OK) == -1)
-	{
-		perror("cd");
-		free(new_path);
-		return (EXIT_FAILURE);
-	}
+		return (error_access(new_path));
 	change_pwd_in_env(new_path, envs);
 	free(new_path);
 	return (EXIT_SUCCESS);

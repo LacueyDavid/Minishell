@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/17 15:12:44 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/01/22 14:25:29 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,8 @@ OBJS =																		\
 																			\
 				$(addprefix wildcards/,										\
 				wildcards.o													\
+				wildcards_utils.o											\
+				wildcards_utils_2.o											\
 				wildcards_utils.o				)							\
 																			\
 				$(addprefix signals/,										\
@@ -81,6 +83,7 @@ OBJS =																		\
 																			\
 				$(addprefix builtins/,										\
 				ft_cd.o														\
+				ft_cd_utils.o												\
 				ft_echo.o													\
 				ft_env.o													\
 				ft_exit.o													\

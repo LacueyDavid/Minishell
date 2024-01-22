@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 08:07:24 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:20:44 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 18:35:28 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,7 @@ char	*ft_compact_strs(char **strs)
 		ft_strlcat(string, strs[index], ft_strlen(string)
 			+ ft_strlen(strs[index]) + 1);
 		if (strs[index + 1])
-		{
-			strcat(string, " ");
-		}
+			ft_strcat(string, " ");
 		index++;
 	}
 	return (string);

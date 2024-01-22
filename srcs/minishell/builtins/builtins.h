@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:13:15 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:50:41 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/16 18:35:24 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	remove_environment_variable(char **envs, char *variable_name);
 bool	ft_is_in_env(char *name, char **envs);
 int		add_var_env(char ***envs, char **input);
 char	*ft_get_name(char *input);
+char	*ft_strcat(char *dest, char *src);
 int		add_var_exp(char ***envs, char **input);
 int		print_empty_export(t_envs *envs);
+char	*ft_getenv(char *name, t_envs *envs);
+void	change_pwd_in_env(char *path, t_envs *envs);
 
 #endif
