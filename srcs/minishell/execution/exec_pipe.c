@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:36:12 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 05:05:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:59:50 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static void	exec_pipe_except_last(t_node **node, t_exec *exec,
 			free(pipe_utils->pids);
 			dup2(pipe_utils->fds[1], STDOUT_FILENO);
 			(close(pipe_utils->fds[0]), close(pipe_utils->fds[1]));
-			exec_full_command((*node)->left, exec);
-			(clear_tree((*node)->head), exit(g_exit_status));
+			(exec_full_command((*node)->left, exec), clear_tree((*node)->head));
+			(free_envs(exec->envs), exit(g_exit_status));
 		}
 		update_here_doc_index(node);
 		dup2(pipe_utils->fds[0], STDIN_FILENO);
@@ -77,7 +77,7 @@ static void	exec_last_pipe(t_node *node, t_exec *exec,
 	{
 		free(pipe_utils->pids);
 		exec_full_command(node, exec);
-		(clear_tree(node->head), exit(g_exit_status));
+		(clear_tree(node->head), free_envs(exec->envs), exit(g_exit_status));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:39:37 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 21:51:19 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/22 16:48:56 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,41 +38,10 @@ void	sort(char **exports)
 	}
 }
 
-char	*ft_strdup_with_quotes(char *str)
+void	error_message(char *str)
 {
-	char	*new;
-	size_t	index;
-	size_t	index2;
-	size_t	index3;
-	bool	equal;
-
-	index = 0;
-	index2 = 0;
-	index3 = 0;
-	equal = false;
-	new = malloc(ft_strlen(str) + 3);
-	if (!new)
-		return (NULL);
-	while (str[index])
-	{
-		new[index2] = str[index];
-		if (str[index] == '=' && !equal)
-		{
-			equal = true;
-			index2++;
-			new[index2] = '"';
-			index3 = index2;
-		}
-		index++;
-		index2++;
-	}
-	if (new[index3] == '"')
-	{
-		new[index2] = '"';
-		index2++;
-	}
-	new[index2] = '\0';
-	return (new);
+	perror(str);
+	return ;
 }
 
 void	redo_export(t_envs *envs)
@@ -84,17 +53,11 @@ void	redo_export(t_envs *envs)
 	index = 0;
 	path = getenv("HOME");
 	if (!path)
-	{
-		perror(RED "Cannot find home path" WHITE);
-		return ;
-	}
+		return (error_message("Cannot find home path"));
 	path = ft_strjoin(path, "/.temporary_export_minishell");
 	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-	{
-		perror(RED "Cannot open temporary export file" WHITE);
-		return ;
-	}
+		return (error_message("Cannot open temporary export file"));
 	while (envs->exports[index])
 	{
 		write(fd, envs->exports[index], ft_strlen(envs->exports[index]));
@@ -114,17 +77,11 @@ void	redo_env(t_envs *envs)
 	index = 0;
 	path = getenv("HOME");
 	if (!path)
-	{
-		perror(RED "Cannot find home path" WHITE);
-		return ;
-	}
+		return (error_message("Cannot find home path"));
 	path = ft_strjoin(path, "/.temporary_env_minishell");
 	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-	{
-		perror(RED "Cannot open temporary env file" WHITE);
-		return ;
-	}
+		return (error_message("Cannot open temporary env file"));
 	while (envs->env[index])
 	{
 		write(fd, envs->env[index], ft_strlen(envs->env[index]));
