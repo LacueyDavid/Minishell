@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 17:14:15 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:23:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,12 @@ void	envs_handler(t_envs	*envs)
 	free(shlvl_str);
 }
 
-static void	interactive_mode(void)
+static void	interactive_mode(t_envs *envs)
 {
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
-	t_envs			*envs;
 
-	redo_history();
-	envs = copy_env_and_export();
 	while (true)
 	{
 		(signal(SIGQUIT, SIG_IGN), signal(SIGINT, handler_sigint_main));
@@ -77,15 +74,13 @@ static void	interactive_mode(void)
 			continue ;
 		(execution(tree, envs), clear_tree(tree->head), envs_handler(envs));
 	}
-	free_envs(envs);
 }
 
-static void	non_interactive_mode(void)
+static void	non_interactive_mode(t_envs *envs)
 {
 	char			*input;
 	t_token_list	*token_list;
 	t_node			*tree;
-	t_envs			*envs;
 
 	envs = copy_env_and_export();
 	while (true)
@@ -115,8 +110,13 @@ static bool	is_interactive_mode(void)
 
 void	minishell(void)
 {
+	t_envs			*envs;
+
+	redo_history();
+	envs = copy_env_and_export();
 	if (is_interactive_mode())
-		interactive_mode();
+		interactive_mode(envs);
 	else
-		non_interactive_mode();
+		non_interactive_mode(envs);
+	free_envs(envs);
 }
