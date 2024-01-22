@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 06:53:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/22 14:49:12 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:50:14 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	remove_untile_quote(char **value)
 		index++;
 	}
 	remove_char(*value);
-	if (index > 0)
+	if (index > 0 && **value)
 		(*value)--;
 }
 
@@ -51,7 +51,7 @@ static void	remove_untile_double_quote(char **value)
 		index++;
 	}
 	remove_char(*value);
-	if (index > 0)
+	if (index > 0 && **value)
 		(*value)--;
 }
 
