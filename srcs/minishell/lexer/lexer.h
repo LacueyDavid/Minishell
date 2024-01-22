@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:23:51 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 06:44:48 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 10:51:38 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 # ifndef MINISHELL_IFS
-#  define MINISHELL_IFS " \t\n\r\v\f"
+#  define MINISHELL_IFS " \t\n\r\v\f\0"
 # endif
 
 # ifndef NUM_OF_TOKEN_TYPES
@@ -55,7 +55,7 @@ bool				tokenize_splited_input(t_token_list *token_list,
 bool				resize_token_list(t_token_list *token_list);
 void				destroy_token_list(t_token_list *token_list);
 size_t				ft_specialstrlen(char *input);
-void				put_space_between_special_chars(char **input);
+char				*put_space_between_special_chars(char *input);
 void				update_quotes(char *input, bool *single_quotes,
 						bool *double_quotes, size_t i);
 

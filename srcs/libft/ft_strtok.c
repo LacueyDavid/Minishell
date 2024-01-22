@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:43:12 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/16 10:57:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 10:09:07 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	skip_separator(char **str_to_tokenize, char *separators,
 {
 	while (str_to_tokenize[token_len]
 		&& is_separators((*str_to_tokenize)[token_len], separators))
-		*str_to_tokenize += 1;
+		(*str_to_tokenize)++;
 }
 
 static bool	fill_tokens(t_extract_token *extract_tokens, char **str_to_tokenize)

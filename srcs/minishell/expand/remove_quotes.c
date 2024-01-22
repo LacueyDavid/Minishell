@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 06:53:23 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 06:54:16 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 11:26:57 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,34 @@ static void	remove_char(char *value)
 
 static void	remove_untile_quote(char **value)
 {
+	int index;
+
+	index = 0;
 	remove_char(*value);
 	while (**value && **value != '\'')
+	{
 		(*value)++;
+		index++;
+	}
 	remove_char(*value);
-	(*value)--;
+	if (index > 0)
+		(*value)--;
 }
 
 static void	remove_untile_double_quote(char **value)
 {
+	int index;
+
+	index = 0;
 	remove_char(*value);
 	while (**value && **value != '\"')
+	{
 		(*value)++;
+		index++;
+	}
 	remove_char(*value);
-	(*value)--;
+	if (index > 0)
+		(*value)--;
 }
 
 static void	remove_quotes_from_value(char *value)
@@ -49,7 +63,8 @@ static void	remove_quotes_from_value(char *value)
 			remove_untile_quote(&value);
 		if (*value == '\"')
 			remove_untile_double_quote(&value);
-		value++;
+		if (*value)
+			value++;
 	}
 }
 

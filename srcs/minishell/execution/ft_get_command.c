@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:17:50 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 01:31:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 11:22:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ static void	message_command_not_found(char *command)
 
 static bool	check_one(char *command)
 {
-	if (command[ft_strlen(command) - 1] == '/')
+	if (command[0] == '\0')
 	{
-		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
-		g_exit_status = 126;
+		printf(RED "Command '' not found\n" WHITE);
+		g_exit_status = 127;
 		return (false);
 	}
 	else if (command[0] == '.' && command[1] == '\0')
@@ -81,10 +81,10 @@ static bool	check_two(char *command)
 		g_exit_status = 126;
 		return (false);
 	}
-	else if (command[0] == '\0')
+	else if (command[ft_strlen(command) - 1] == '/')
 	{
-		printf(RED "Command '' not found\n" WHITE);
-		g_exit_status = 127;
+		printf(RED "-Wesh: %s: Can't exec directory\n" WHITE, command);
+		g_exit_status = 126;
 		return (false);
 	}
 	return (true);

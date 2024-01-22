@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:44:38 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/16 08:10:38 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/22 10:50:56 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	is_separators(char current_char, char *separators)
 	size_t	index;
 
 	index = 0;
-	if (!separators)
+	if (!separators || !current_char)
 		return (false);
 	while (separators[index] != '\0')
 	{
