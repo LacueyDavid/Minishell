@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 11:16:00 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/23 15:08:55 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,11 @@ bool	check_token_list(t_token_list *token_list)
 	i = 0;
 	while (i < token_list->size)
 	{
+		if (token_list->size == 1 && token_list->tokens[i].type != WORD)
+		{
+			print_which_token(token_list->tokens[0].type);
+			return (false);
+		}
 		if (!protect_redirections(token_list, i))
 			return (false);
 		if (!protect_pipe_and_here_doc(token_list, i))

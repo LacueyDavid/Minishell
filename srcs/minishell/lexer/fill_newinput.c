@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 06:19:36 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 06:47:51 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/23 15:23:39 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,4 @@ static void	fill_newinput(char *oldinput, char *newinput, size_t newlen)
 		}
 	}
 	newinput[newlen] = '\0';
-}
-
-void	put_space_between_special_chars(char **input)
-{
-	char	*oldinput;
-	size_t	newlen;
-	char	*newinput;
-
-	oldinput = *input;
-	newlen = ft_specialstrlen(oldinput);
-	newinput = malloc(sizeof(char) * (newlen + 1));
-	fill_newinput(oldinput, newinput, newlen);
-	printf("newinput = %s\n", newinput);
-	*input = newinput;
 }

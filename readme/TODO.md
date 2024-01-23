@@ -12,7 +12,6 @@ tests qui ne marchent pas :
 
 - echo $hola* //faut juste, dans l'execution, mettre le bloc wildcards apres celui d'expand mais je crois que ca posais prblm sur un cas c'est pour ca qu'on l'a mit dans cet ordre je crois
 
-- utiliser l'env de minishell pour un shell dans un shell ? 
 - voir sans env command : valgrind --suppressions=.readline_suppressions.supp --trace-children=yes env -i ./minishell
 
 
@@ -24,7 +23,6 @@ QUESTION: extern environ dans do_builtin_or_execve.c , t'es sur que ya besoin da
 AVANT DE PUSH:
 
 0: check les mallocs entre les pipes manuellement
-
 1: faire les tests de pleins de cas (ceux dans le pdf) avec funcheck et valgrind
 2: remove les test
 3: refaire le makefile
