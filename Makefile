@@ -6,13 +6,13 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/24 12:51:14 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/01/24 15:18:23 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fPIC
+CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = $(LIBFT) -lreadline
 
@@ -122,15 +122,6 @@ OBJS =																		\
 				redirections.o					)))							\
 																			\
 
-TEST_OBJS =																	\
-																			\
-				srcs/minishell/lexer/test_lexer.o							\
-				srcs/minishell/execution/test_exec.o						\
-				srcs/minishell/parser/test_parser.o							\
-				srcs/minishell/parser/test_pipeless_token_list.o			\
-				srcs/minishell/builtins/test_echo.o							\
-																			\
-
 NAME = minishell
 LIBFT = srcs/libft/libft.a
 LIBFTPATH = srcs/libft/
@@ -147,7 +138,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
 
 clean:
-	$(RM) $(OBJS) $(OBJS_BONUS) $(TEST_OBJS)
+	$(RM) $(OBJS)
 	$(MAKE) clean -C $(LIBFTPATH)
 
 fclean: clean
@@ -156,16 +147,5 @@ fclean: clean
 	$(RM) libtest.so
 
 re: fclean all
-
-check_func: all
-	pharaoh tests_e2e/
-
-check_unit: libtest.so
-	cgreen-runner $^
-
-check: check_unit check_func
-
-libtest.so: $(TEST_OBJS) $(OBJS) $(LIBFT)
-	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 .PHONY: all clean fclean re libft check check_func check_unit
