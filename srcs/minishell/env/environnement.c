@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/24 14:48:48 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/24 15:13:40 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	**copy_env_export(void)
 	index2 = 0;
 	while (environ[index])
 	{
-		new[index2 + 1] = NULL;
+		new[index2] = NULL;
 		if (ft_strncmp(environ[index], "SHLVL=", 6) == 0)
 			index2 = copy_shlvl_var(environ[index], new, index2);
 		else if (!(environ[index][0] == '_' && environ[index][1] == '='))
