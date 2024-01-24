@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:19:29 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:18:58 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,3 @@ bool	ft_strbstr(char *str, char *bstr, size_t len_bstr)
 	}
 	return (true);
 }
-

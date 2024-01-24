@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:17:50 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/23 17:19:52 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:21:02 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	message_command_not_found(char *command)
 	g_exit_status = 127;
 }
 
-static bool check_if_its_a_directory(char *command)
+static bool	check_if_its_a_directory(char *command)
 {
 	DIR	*dir;
 

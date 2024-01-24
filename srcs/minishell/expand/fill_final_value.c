@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:34:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:07:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:20:38 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ bool	fill_final_value(char *final_value, char *value, t_envs *envs)
 		if (!check_validity_of_dollar(value, final_value, &counter, envs))
 			return (false);
 		else if (value[counter.index] && value[counter.index] == '\''
-				&& !counter.double_quote)
+			&& !counter.double_quote)
 			copy_single_quote(final_value, value, &counter);
 		else if (value[counter.index] && value[counter.index] == '"')
 			copy_double_quote(final_value, value, &counter);
