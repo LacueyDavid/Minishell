@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 02:00:47 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/22 16:54:20 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/24 12:50:28 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,7 @@ bool			copy_env(const t_parser_env *env, t_parser_env *tmp_env_ptr);
 bool			add_nodes_to_piped_tree(t_parser_env *env, t_tmp_envs *tmps,
 					t_token_list *token_list);
 bool			init_parser_env_piped_tree(t_tmp_envs *tmps, t_parser_env *env);
+void			print_which_token(int type);
+bool			check_token_list(t_token_list *token_list);
 
 #endif

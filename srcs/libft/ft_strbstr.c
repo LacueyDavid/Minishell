@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   ft_strbstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:47:09 by dlacuey          ###   ########.fr       */
+/*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
+/*   Updated: 2024/01/24 12:19:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "libft.h"
 
-extern int	g_exit_status;
-
-t_node	*parser(t_token_list *token_list)
+bool	ft_strbstr(char *str, char *bstr, size_t len_bstr)
 {
-	t_parser_env	env;
+	size_t	index;
 
-	if (!check_token_list(token_list))
+	index = 0;
+	while (str[index] && bstr[index] && index < len_bstr)
 	{
-		g_exit_status = 2;
-		return (NULL);
+		if (str[index] != bstr[index])
+			return (false);
+		index++;
 	}
-	if (!init_parser_env(&env))
-		return (NULL);
-	if (!create_full_tree(&env, token_list))
-	{
-		clear_tree(env.head);
-		return (NULL);
-	}
-	return (env.head);
+	return (true);
 }
+

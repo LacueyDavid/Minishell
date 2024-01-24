@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:20:07 by dlacuey           #+#    #+#             */
-/*   Updated: 2023/05/12 18:20:09 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/24 13:59:34 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_itoa(int n)
 		long_n = -long_n;
 	}
 	size += size_of_n(long_n);
-	str = ft_calloc(size + 1, 1);
+	str = malloc(size + 1);
 	if (str == NULL)
 		return (NULL);
 	str_filler(sign, size, str, long_n);

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:33:18 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 15:02:52 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/24 12:06:01 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static ssize_t	count_variables(t_counter *counter, char *value, t_envs *envs)
 		&& value[counter->index] == '"')
 		counter->size++;
 	counter->size += counter->variable_size;
-	while (!is_stop_expand_char_to_count(value[counter->index]))
+	while (ft_isalnum(value[counter->index]))
 		counter->index++;
 	if (value[counter->index] == '?')
 		counter->index++;
@@ -62,6 +62,24 @@ static void	skip_single_quote(char *value, t_counter *counter)
 	counter->size++;
 }
 
+static bool	check_validity_of_dollar(char *value, t_counter *counter,
+				t_envs *envs)
+{
+	if (value[counter->index] == '$' && !ft_isalnum(value[counter->index + 1])
+		&& value[counter->index + 1] != '?')
+	{
+		counter->index++;
+		counter->size++;
+		return (true);
+	}
+	if (value[counter->index] == '$')
+	{
+		if (count_variables(counter, value, envs) == -1)
+			return (false);
+	}
+	return (true);
+}
+
 ssize_t	count_final_value_size(char *value, t_envs *envs)
 {
 	t_counter	counter;
@@ -69,20 +87,18 @@ ssize_t	count_final_value_size(char *value, t_envs *envs)
 	init_counter(&counter);
 	while (value[counter.index])
 	{
-		if (value[counter.index] == '$')
-		{
-			if (count_variables(&counter, value, envs) == -1)
-				return (-1);
-		}
-		else if (value[counter.index] == '\'' && !counter.double_quote)
+		if (!check_validity_of_dollar(value, &counter, envs))
+			return (-1);
+		else if (value[counter.index] && value[counter.index] == '\''
+				&& !counter.double_quote)
 			skip_single_quote(value, &counter);
-		else if (value[counter.index] == '"')
+		else if (value[counter.index] && value[counter.index] == '"')
 		{
 			counter.double_quote = !counter.double_quote;
 			counter.index++;
 			counter.size++;
 		}
-		else
+		else if (value[counter.index])
 		{
 			counter.size++;
 			counter.index++;

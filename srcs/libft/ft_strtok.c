@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:43:12 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 10:09:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:34:07 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	update_quotes_to_extract_tokens(t_extract_token *extract_tokens,
 static void	skip_separator(char **str_to_tokenize, char *separators,
 				size_t token_len)
 {
-	while (str_to_tokenize[token_len]
+	while ((*str_to_tokenize)[token_len]
 		&& is_separators((*str_to_tokenize)[token_len], separators))
 		(*str_to_tokenize)++;
 }

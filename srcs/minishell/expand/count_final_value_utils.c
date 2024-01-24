@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 14:10:10 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 15:01:53 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/24 12:20:56 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,6 @@
 #include "libft.h"
 
 extern int		g_exit_status;
-
-bool	is_stop_expand_char_to_count(char c)
-{
-	char	i;
-
-	i = 'A';
-	while (i < 'z')
-	{
-		if (c == i)
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 static ssize_t	exit_status_size(void)
 {
@@ -48,7 +34,7 @@ static ssize_t	dup_the_value_with_equal_at_end(char **dup_value,
 	*dup_value = ft_strdup(value);
 	if (!dup_value)
 		return (-1);
-	while (value[*index2] && !is_stop_expand_char_to_count(value[*index2]))
+	while (value[*index2] && ft_isalnum(value[*index2]))
 		(*index2)++;
 	(*dup_value)[*index2] = '\0';
 	if (*index2 == 0)
@@ -67,7 +53,7 @@ static ssize_t	dup_the_value_with_equal_at_end(char **dup_value,
 size_t	count_result_of_variable(size_t *index, size_t *index2,
 			char **dup_value, t_envs *envs)
 {
-	while (envs->env[*index] && !ft_strnstr(envs->env[*index], *dup_value,
+	while (envs->env[*index] && !ft_strbstr(envs->env[*index], *dup_value,
 			ft_strlen(envs->env[*index])))
 		(*index)++;
 	free(*dup_value);

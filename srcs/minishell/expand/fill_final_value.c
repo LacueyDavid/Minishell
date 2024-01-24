@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:34:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 15:26:35 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/24 12:07:59 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,6 @@
 #include <stdio.h>
 
 extern int		g_exit_status;
-
-bool	is_stop_expand_char(char c)
-{
-	char	i;
-
-	i = 'A';
-	while (i < 'z')
-	{
-		if (c == i)
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 static void	copy_single_quote(char *final_value, char *value,
 				t_counter *counter)
@@ -64,6 +50,27 @@ static void	init_counter(t_counter *counter)
 	counter->variable_size = 0;
 }
 
+static bool	check_validity_of_dollar(char *value, char *final_value,
+				t_counter *counter, t_envs *envs)
+{
+	if (value[counter->index] == '$' && !ft_isalnum(value[counter->index + 1])
+		&& value[counter->index + 1] != '?')
+	{
+		final_value[counter->size] = value[counter->index];
+		counter->size++;
+		counter->index++;
+		return (true);
+	}
+	if (value[counter->index] == '$')
+	{
+		counter->index++;
+		if (counter->variable_size == -1)
+			return (false);
+		fill_variables(final_value, value, envs, counter);
+	}
+	return (true);
+}
+
 bool	fill_final_value(char *final_value, char *value, t_envs *envs)
 {
 	t_counter	counter;
@@ -71,18 +78,14 @@ bool	fill_final_value(char *final_value, char *value, t_envs *envs)
 	init_counter(&counter);
 	while (value[counter.index])
 	{
-		if (value[counter.index] == '$')
-		{
-			counter.index++;
-			if (counter.variable_size == -1)
-				return (false);
-			fill_variables(final_value, value, envs, &counter);
-		}
-		else if (value[counter.index] == '\'' && !counter.double_quote)
+		if (!check_validity_of_dollar(value, final_value, &counter, envs))
+			return (false);
+		else if (value[counter.index] && value[counter.index] == '\''
+				&& !counter.double_quote)
 			copy_single_quote(final_value, value, &counter);
-		else if (value[counter.index] == '"')
+		else if (value[counter.index] && value[counter.index] == '"')
 			copy_double_quote(final_value, value, &counter);
-		else
+		else if (value[counter.index])
 		{
 			final_value[counter.size] = value[counter.index];
 			counter.size++;

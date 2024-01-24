@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/22 16:50:10 by jdenis           ###   ########.fr        #
+#    Updated: 2024/01/24 12:51:14 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,8 @@ OBJS =																		\
 				add_word.o													\
 				clear_tree.o												\
 				inits.o														\
+				protections.o												\
+				protections_2.o												\
 				redirection_functions.o										\
 				parser.o													\
 				create_tree.o												\
