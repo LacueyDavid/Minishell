@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fPIC
+CFLAGS = -Wall -Wextra -Werror
 
 OBJS = 			ft_isdigit.o				\
 				ft_isalpha.o				\
