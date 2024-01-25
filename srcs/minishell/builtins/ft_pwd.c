@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:31 by jdenis            #+#    #+#             */
-/*   Updated: 2023/12/13 16:00:18 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/25 13:03:06 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	ft_pwd(t_envs *envs)
 	path = ft_getenv("PWD", envs);
 	if (path == NULL)
 		return (EXIT_FAILURE);
-	printf("%s", path);
+	printf("%s\n", path);
 	free(path);
-	printf("\n");
 	return (EXIT_SUCCESS);
 }

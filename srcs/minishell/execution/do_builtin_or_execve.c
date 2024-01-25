@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/22 15:03:31 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:49:05 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-extern char	**environ;
 extern int	g_exit_status;
 
 void	do_builtins(t_node *node, t_envs *envs)
@@ -44,9 +43,7 @@ void	do_execve(t_node *node, t_envs *envs)
 	char	*command;
 	char	**paths;
 
-	paths = find_paths(environ);
-	if (!paths)
-		path_fail_protection(node);
+	paths = find_paths(envs->env);
 	command = get_command(node->vector_strs.values[0], paths);
 	free_strs(paths);
 	if (!command)
@@ -55,10 +52,8 @@ void	do_execve(t_node *node, t_envs *envs)
 		exit(g_exit_status);
 	}
 	execve(command, node->vector_strs.values, envs->env);
-	free_envs(envs);
 	g_exit_status = -1;
-	(free(command), free_envs(envs)),
+	(free(command), free_envs(envs), clear_tree(node->head));
 	perror(RED "Execve failed" WHITE);
-	clear_tree(node->head);
 	exit(g_exit_status);
 }

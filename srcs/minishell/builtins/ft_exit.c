@@ -40,7 +40,7 @@ void	decrease_shlvl(t_envs *envs)
 
 int	ft_exit(t_envs *envs, char *status)
 {
-	if (!status || ft_atoi(status + 5) == 0)
+	if (!status || ft_atoi(status + 4) == 0)
 		g_exit_status = 0;
 	else
 		g_exit_status = ft_atoi(status + 5);

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:17:50 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 15:21:02 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:56:40 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,11 @@ char	*get_command(char *command, char **paths)
 		return (NULL);
 	if (access(command, X_OK) == 0)
 		return (command);
+	if (paths == NULL)
+	{
+		printf(RED "wesh: %s: No such file or directory\n" WHITE, command);
+		return (NULL);
+	}
 	while (*paths)
 	{
 		tmp = ft_strjoin(*paths, "/");

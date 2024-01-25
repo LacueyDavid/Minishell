@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:34:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/16 04:57:33 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:45:35 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,6 @@ void	wildcards_fail_protection(t_node *node)
 		perror(RED "Wildcards failed"WHITE);
 		(clear_tree(node->head), exit(g_exit_status));
 	}
-}
-
-void	path_fail_protection(t_node *node)
-{
-	g_exit_status = -1;
-	perror(RED "No paths found" WHITE);
-	(clear_tree(node->head), exit(g_exit_status));
 }
 
 void	vector_null_protection(t_node *node)
