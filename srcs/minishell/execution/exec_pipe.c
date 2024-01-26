@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:36:12 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/22 16:59:50 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/25 15:35:52 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	exec_pipe_except_last(t_node **node, t_exec *exec,
 {
 	while ((*node)->type == COMMAND_PIPE)
 	{
-		(signal(SIGINT, SIG_IGN), signal(SIGQUIT, SIG_IGN));
 		pipe(pipe_utils->fds);
 		pipe_utils->pids[*index] = fork();
 		if (pipe_utils->pids[*index] < 0)
@@ -94,9 +93,11 @@ void	exec_pipes(t_node *node, t_exec *exec)
 		perror(RED "Malloc failed" WHITE);
 		return ;
 	}
+	(signal(SIGINT, SIG_IGN), signal(SIGQUIT, SIG_IGN));
 	exec_pipe_except_last(&node, exec, &pipe_utils, &index);
 	exec_last_pipe(node, exec, &pipe_utils, index);
 	dup2(exec->fds[0], STDIN_FILENO);
 	(close(pipe_utils.fds[0]), close(pipe_utils.fds[1]));
+	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigquit));
 	(wait_all_pids(pipe_utils.pids, index), free(pipe_utils.pids));
 }

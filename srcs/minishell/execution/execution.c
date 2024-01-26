@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/22 15:08:32 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/25 15:31:18 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	exec_full_command(t_node *node, t_exec *exec)
 {
 	if (!node)
 		return ;
-	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigint));
 	if (node->type == HERE_DOCUMENT)
 		do_here_doc(node);
 	else if (node->type == SIMPLE_COMMAND)
@@ -89,13 +88,15 @@ void	execution(t_node *tree, t_envs *envs)
 {
 	t_exec	exec;
 
-	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigint));
+	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigquit));
 	init_exec(&exec, envs);
 	fork_heredocs(tree, exec.fds);
+	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigquit));
 	if (tree->number_of_pipes > 0)
 		exec_pipes(tree, &exec);
 	else
 		exec_full_command(tree, &exec);
+	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigquit));
 	reset_standard_streams(exec.fds);
 	close_fds(exec.fds);
 	unlink_heredoc_files(tree);

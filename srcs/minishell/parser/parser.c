@@ -6,13 +6,15 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:47:09 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/25 14:51:15 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
+#include "minishell_signals.h"
 
 extern int	g_exit_status;
 
