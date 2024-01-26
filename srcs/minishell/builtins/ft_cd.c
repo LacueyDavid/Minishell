@@ -23,19 +23,18 @@
 
 int	change_pwds(char *pwd, t_envs *envs, char *new_path)
 {
-	ft_setenv("OLDPWD", pwd, envs);
-	free(pwd);
 	if (chdir(new_path))
 	{
 		perror("cd");
 		return (EXIT_FAILURE);
 	}
+	ft_setenv("OLDPWD", pwd, envs);
+	free(pwd);
 	pwd = getcwd(NULL, 0);
 	ft_setenv("PWD", pwd, envs);
 	free(pwd);
 	return (EXIT_SUCCESS);
 }
-
 
 int	ft_cd(t_envs *envs, char *command)
 {
@@ -50,7 +49,7 @@ int	ft_cd(t_envs *envs, char *command)
 		ft_setenv("OLDPWD", pwd, envs);
 		free(pwd);
 	}
-	else 
+	else
 	{
 		if (command[2] == '\0')
 			new_path = ft_getenv("HOME", envs);

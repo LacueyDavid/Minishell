@@ -6,11 +6,17 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:44:22 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 18:40:44 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/26 16:06:34 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environnement.h"
+
+void	close_and_free(int fd, char *str)
+{
+	close(fd);
+	free(str);
+}
 
 char	*get_line(char *str)
 {

@@ -6,13 +6,13 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:44:25 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 16:45:26 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/26 16:11:33 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environnement.h"
 
-size_t	error_message_fd(char *path, char *str)
+size_t	error_fd(char *path, char *str)
 {
 	free(path);
 	perror(str);
@@ -62,8 +62,7 @@ size_t	size_of_new_exp(void)
 	{
 		fd = open(path, O_RDONLY, 0644);
 		if (fd < 0)
-			return (error_message_fd(path,
-					RED "Cannot open temporary export file" WHITE));
+			return (error_fd(path, "Cannot open temporary export file"));
 		str = get_next_line(fd);
 		while (str)
 		{
@@ -71,6 +70,7 @@ size_t	size_of_new_exp(void)
 			str = get_next_line(fd);
 			length++;
 		}
+		close_and_free(fd, str);
 	}
 	free(path);
 	return (length);
@@ -91,8 +91,7 @@ size_t	size_of_new_env(void)
 	{
 		fd = open(path, O_RDONLY, 0644);
 		if (fd < 0)
-			return (error_message_fd(path,
-					RED "Cannot open temporary env file" WHITE));
+			return (error_fd(path, "Cannot open temporary env file"));
 		str = get_next_line(fd);
 		while (str)
 		{
@@ -100,6 +99,7 @@ size_t	size_of_new_env(void)
 			str = get_next_line(fd);
 			length++;
 		}
+		close_and_free(fd, str);
 	}
 	free(path);
 	return (length);
