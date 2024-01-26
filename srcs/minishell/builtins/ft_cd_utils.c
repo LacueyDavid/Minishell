@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:45:13 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/16 18:52:24 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/26 13:47:15 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,4 @@ void	ft_setenv(char *name, char *value, t_envs *envs)
 		}
 		index++;
 	}
-}
-
-void	change_pwd_in_env(char *path, t_envs *envs)
-{
-	char	*current_pwd;
-
-	current_pwd = ft_getenv("PWD", envs);
-	ft_setenv("OLDPWD", current_pwd, envs);
-	ft_setenv("PWD", path, envs);
-	free(current_pwd);
 }
