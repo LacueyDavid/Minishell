@@ -52,26 +52,26 @@ int	is_number(char *str)
 	return (0);
 }
 
-int	end_exit(t_envs *envs)
+int	end_exit(t_envs *envs, t_node *node)
 {
 	decrease_shlvl(envs);
 	free_envs(envs);
-	return (g_exit_status);
-	// exit(g_exit_status);
+	clear_tree(node->head);
+	exit(g_exit_status);
 }
 
-int	ft_exit(t_envs *envs, char **command)
+int	ft_exit(t_envs *envs, char **command, t_node *node)
 {
 	printf("exit WeShell\n");
 	if (!command[1] || (ft_atoi(command[1]) == 0 && is_number(command[1]) == 0))
 	{
-		return (end_exit(envs));
+		return (end_exit(envs, node));
 	}
 	else if (is_number(command[1]) == -1)
 	{
 		printf("WeShell: exit: %s: numeric argument required\n", command[1]);
 		g_exit_status = 2;
-		return (end_exit(envs));
+		return (end_exit(envs, node));
 	}
 	else if (ft_strslen(command) > 2)
 	{
@@ -82,6 +82,6 @@ int	ft_exit(t_envs *envs, char **command)
 	else
 	{
 		g_exit_status = ft_atoi(command[1]);
-		return (end_exit(envs));
+		return (end_exit(envs, node));
 	}
 }

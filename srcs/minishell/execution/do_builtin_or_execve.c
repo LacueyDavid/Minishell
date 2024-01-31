@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 22:42:51 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 22:48:27 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ extern int	g_exit_status;
 
 void	do_builtins(t_node *node, t_envs *envs)
 {
-	g_exit_status = exec_builtin(node->vector_strs.values, envs);
+	g_exit_status = exec_builtin(node->vector_strs.values, envs, node);
 	if (g_exit_status == -1)
 		perror(RED "Exec builtins failed" WHITE);
 }

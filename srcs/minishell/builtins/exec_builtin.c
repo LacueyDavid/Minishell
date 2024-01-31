@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 08:07:24 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 15:13:01 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 23:02:33 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*ft_compact_strs(char **strs)
 	return (string);
 }
 
-int	exec_builtin(char **command, t_envs *envs)
+int	exec_builtin(char **command, t_envs *envs, t_node *node)
 {
 	int		g_exit_status;
 	char	*string_command;
@@ -78,10 +78,11 @@ int	exec_builtin(char **command, t_envs *envs)
 	g_exit_status = EXIT_FAILURE;
 	string_command = NULL;
 	string_command = ft_compact_strs(command);
-	if (!ft_strcmp(command[0], "echo"))
-		g_exit_status = ft_echo(command);
 	if (!ft_strcmp(command[0], "cd"))
 		g_exit_status = ft_cd(envs, string_command);
+	free(string_command);
+	if (!ft_strcmp(command[0], "echo"))
+		g_exit_status = ft_echo(command);
 	if (!ft_strcmp(command[0], "pwd"))
 		g_exit_status = ft_pwd(envs);
 	if (!ft_strcmp(command[0], "export"))
@@ -91,7 +92,6 @@ int	exec_builtin(char **command, t_envs *envs)
 	if (!ft_strcmp(command[0], "env"))
 		g_exit_status = ft_env(envs, command);
 	if (!ft_strcmp(command[0], "exit"))
-		g_exit_status = ft_exit(envs, command);
-	free(string_command);
+		g_exit_status = ft_exit(envs, command, node);
 	return (g_exit_status);
 }
