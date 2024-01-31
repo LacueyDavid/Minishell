@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/25 15:01:49 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 19:12:46 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ void	envs_handler(t_envs	*envs)
 	int				shlvl;
 
 	shlvl_str = ft_getenv("SHLVL", envs);
+	if (!shlvl_str)
+		return ;
 	shlvl = ft_atoi(shlvl_str);
 	free(shlvl_str);
 	update_envs(envs);
 	shlvl_str = ft_getenv("SHLVL", envs);
+	if (!shlvl_str)
+		return ;
 	if (shlvl > ft_atoi(shlvl_str))
 	{
 		free(shlvl_str);

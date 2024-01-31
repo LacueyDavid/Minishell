@@ -17,11 +17,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int	ft_env(t_envs *envs)
+extern int	g_exit_status;
+
+int	ft_env(t_envs *envs, char **command)
 {
 	int	i;
 
 	i = 0;
+	if (command[1])
+	{
+		printf("env: \'%s\': Permission denied\n", command[1]);
+		g_exit_status = 126;
+		return (EXIT_FAILURE);
+	}
 	while (envs->env[i])
 	{
 		printf("%s\n", envs->env[i]);

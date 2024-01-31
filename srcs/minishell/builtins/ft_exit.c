@@ -38,14 +38,49 @@ void	decrease_shlvl(t_envs *envs)
 	free(shlvl_str);
 }
 
-int	ft_exit(t_envs *envs, char *status)
+int	is_number(char *str)
 {
-	if (!status || ft_atoi(status + 4) == 0)
-		g_exit_status = 0;
-	else
-		g_exit_status = ft_atoi(status + 5);
-	printf("exit WeShell\n");
+	int	index;
+
+	index = 0;
+	while (str[index])
+	{
+		if (str[index] < '0' || str[index] > '9')
+			return (-1);
+		index++;
+	}
+	return (0);
+}
+
+int	end_exit(t_envs *envs)
+{
 	decrease_shlvl(envs);
 	redo_envs(envs);
 	return (g_exit_status);
+}
+
+int	ft_exit(t_envs *envs, char **command)
+{
+	printf("exit WeShell\n");
+	if (!command[1] || (ft_atoi(command[1]) == 0 && is_number(command[1]) == 0))
+	{
+		return (end_exit(envs));
+	}
+	else if (is_number(command[1]) == -1)
+	{
+		printf("WeShell: exit: %s: numeric argument required\n", command[1]);
+		g_exit_status = 2;
+		return (end_exit(envs));
+	}
+	else if (ft_strslen(command) > 2)
+	{
+		printf("WeShell: exit: too many arguments\n");
+		g_exit_status = 127;
+		return (g_exit_status);
+	}
+	else
+	{
+		g_exit_status = ft_atoi(command[1]);
+		return (end_exit(envs));
+	}
 }

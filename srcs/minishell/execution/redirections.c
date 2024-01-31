@@ -6,53 +6,57 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 08:37:16 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/15 18:31:02 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 19:44:23 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "colors.h"
+#include "libft.h"
 #include "parser.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
 
-void	redirection_output(t_node *node)
+bool	redirection_output(t_node *node)
 {
 	int	fd;
 
 	fd = open(node->right->vector_strs.values[0], O_WRONLY | O_CREAT | O_TRUNC,
 			0644);
 	if (fd < 0)
-		(perror(RED "Open ici failed" WHITE), exit(1));
+		return (perror(RED "Open failed" WHITE), false);
 	if (dup2(fd, STDOUT_FILENO) < 0)
-		(perror(RED "Dup2 failed" WHITE), exit(1));
+		return (perror(RED "Dup2 failed" WHITE), false);
 	if (close(fd) < 0)
-		(perror(RED "Close failed" WHITE), exit(1));
+		return (perror(RED "Close failed" WHITE), false);
+	return (true);
 }
 
-void	append_output(t_node *node)
+bool	append_output(t_node *node)
 {
 	int	fd;
 
 	fd = open(node->right->vector_strs.values[0], O_WRONLY | O_CREAT | O_APPEND,
 			0644);
 	if (fd < 0)
-		(perror(RED "Open failed" WHITE), exit(1));
+		return (perror(RED "Open failed" WHITE), false);
 	if (dup2(fd, STDOUT_FILENO) < 0)
-		(perror(RED "Dup2 failed" WHITE), exit(1));
+		return (perror(RED "Dup2 failed" WHITE), false);
 	if (close(fd) < 0)
-		(perror(RED "Close failed" WHITE), exit(1));
+		return (perror(RED "Close failed" WHITE), false);
+	return (true);
 }
 
-void	redirection_input(t_node *node)
+bool	redirection_input(t_node *node)
 {
 	int	fd;
 
 	fd = open(node->right->vector_strs.values[0], O_RDONLY);
 	if (fd < 0)
-		(perror(RED "Open failed" WHITE), exit(1));
+		return (perror(RED "Open failed" WHITE), false);
 	if (dup2(fd, STDIN_FILENO) < 0)
-		(perror(RED "Dup2 failed" WHITE), exit(1));
+		return (perror(RED "Dup2 failed" WHITE), false);
 	if (close(fd) < 0)
-		(perror(RED "Close failed" WHITE), exit(1));
+		return (perror(RED "Close failed" WHITE), false);
+	return (true);
 }

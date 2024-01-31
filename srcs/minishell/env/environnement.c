@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/24 15:13:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 19:17:25 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**copy_env_export(void)
 	size_t	index2;
 	char	**new;
 
-	new = malloc(sizeof(char *) * ft_strslen(environ));
+	new = malloc(sizeof(char *) * (ft_strslen(environ) + 1));
 	if (!new)
 		return (NULL);
 	index = 0;

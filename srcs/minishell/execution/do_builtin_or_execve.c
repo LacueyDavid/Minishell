@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/25 16:22:00 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:07:39 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ extern int	g_exit_status;
 
 void	do_builtins(t_node *node, t_envs *envs)
 {
-	exec_builtin(node->vector_strs.values, envs);
+	g_exit_status = exec_builtin(node->vector_strs.values, envs);
 	if (g_exit_status == -1)
 		perror(RED "Exec builtins failed" WHITE);
 	clear_tree(node->head);

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/25 15:19:58 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/26 20:34:17 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	fill_heredocs(node->right, fds);
 }
 
-void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
+void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS], t_envs *env)
 {
 	pid_t	pid;
 
@@ -85,6 +85,7 @@ void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 		(perror(RED "Fork in fork heredocs failed" WHITE), exit(1));
 	if (pid == 0)
 	{
+		free_envs(env);
 		signal(SIGINT, handle_heredoc);
 		fill_heredocs(node, fds);
 		clear_tree(node->head);

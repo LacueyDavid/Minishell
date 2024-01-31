@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:44:16 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/26 16:00:54 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 16:37:42 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	update_export(t_envs *envs)
 	free(path);
 }
 
-void	error_message_update_env(char *path, char *str)
+void	err_msg_update_env(char *path, char *str)
 {
 	free(path);
 	perror(str);
@@ -94,13 +94,13 @@ void	update_env(t_envs *envs)
 	{
 		fd = open(path, O_RDONLY, 0644);
 		if (fd < 0)
-			return (error_message_update_env(path,
-					RED "Cannot open temporary env file" WHITE));
+			return (err_msg_update_env(path, RED "Can't open env file" WHITE));
 		free_strs(envs->env);
 		envs->env = copy_environnement_from_file(fd);
-		close(fd);
-		unlink(path);
+		(close(fd), unlink(path));
 		pwd = ft_getenv("PWD", envs);
+		if (!pwd)
+			return (inutile_return(path));
 		if (chdir(pwd) != 0)
 			perror(RED "Cannot change directory" WHITE);
 		free(pwd);

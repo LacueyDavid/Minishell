@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 08:07:24 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/16 18:35:28 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 15:13:01 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ int	exec_builtin(char **command, t_envs *envs)
 	if (!ft_strcmp(command[0], "unset"))
 		g_exit_status = ft_unset(envs, command);
 	if (!ft_strcmp(command[0], "env"))
-		g_exit_status = ft_env(envs);
+		g_exit_status = ft_env(envs, command);
 	if (!ft_strcmp(command[0], "exit"))
-		g_exit_status = ft_exit(envs, string_command);
+		g_exit_status = ft_exit(envs, command);
 	free(string_command);
 	return (g_exit_status);
 }

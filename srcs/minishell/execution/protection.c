@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:34:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/25 12:45:35 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 18:29:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,30 @@
 
 extern int	g_exit_status;
 
-void	expand_fail_protection(t_node *node)
+void	expand_fail_protection(t_node *node, t_envs *envs)
 {
 	if (!node->vector_strs.values)
 	{
 		g_exit_status = 1;
 		perror(RED "Expand env variables failed" WHITE);
-		(clear_tree(node->head), exit(g_exit_status));
+		(clear_tree(node->head), free_envs(envs), exit(g_exit_status));
 	}
 }
 
-void	wildcards_fail_protection(t_node *node)
+void	wildcards_fail_protection(t_node *node, t_envs *envs)
 {
 	if (!node->vector_strs.values)
 	{
 		g_exit_status = 134;
 		perror(RED "Wildcards failed"WHITE);
-		(clear_tree(node->head), exit(g_exit_status));
+		(clear_tree(node->head), free_envs(envs), exit(g_exit_status));
 	}
 }
 
-void	vector_null_protection(t_node *node)
+void	vector_null_protection(t_node *node, t_envs *envs)
 {
 	(g_exit_status = 0);
 	clear_tree(node->head);
+	free_envs(envs);
 	exit(g_exit_status);
 }

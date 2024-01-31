@@ -58,8 +58,8 @@ void	add_new_files(char *entry, char ***new_files)
 		num_files = 0;
 		while ((*new_files)[num_files] != NULL)
 			num_files++;
-		*new_files = (char **)realloc(*new_files, sizeof(char *) * (num_files
-					+ 2));
+		*new_files = (char **)ft_realloc(*new_files, sizeof(char *) * (num_files
+					+ 2), sizeof(char *) * (num_files + 1));
 		if (!new_files)
 			(free_strs(*new_files), exit(1));
 		(*new_files)[num_files] = new_file;

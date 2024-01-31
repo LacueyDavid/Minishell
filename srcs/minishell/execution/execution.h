@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:08:04 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 19:47:22 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 typedef struct s_exec_map
 {
-	void	(*function)(t_node *node);
+	bool	(*function)(t_node	*node);
 }			t_exec_map;
 
 typedef struct exec_utils
@@ -56,9 +56,9 @@ void	exec_full_command(t_node *node, t_exec *exec);
 void	exec_simple_command(t_node *value, t_envs *envs);
 void	exec_pipes(t_node *node, t_exec *exec);
 void	execution(t_node *node, t_envs *envs);
-void	redirection_output(t_node *node);
-void	append_output(t_node *node);
-void	redirection_input(t_node *node);
+bool	redirection_output(t_node *node);
+bool	append_output(t_node *node);
+bool	redirection_input(t_node *node);
 void	close_fds(int fds[NUMBER_OF_FDS]);
 void	init_exec(t_exec *exec, t_envs *envs);
 void	reset_standard_streams(int fds[NUMBER_OF_FDS]);
@@ -67,10 +67,10 @@ bool	fill_final_value(char *final_value, char *value, t_envs *envs);
 ssize_t	count_final_value_size(char *value, t_envs *envs);
 char	*get_command(char *command, char **paths);
 void	wait_all_pids(pid_t *pids, int number_of_pipes);
-void	expand_fail_protection(t_node *node);
-void	wildcards_fail_protection(t_node *node);
+void	expand_fail_protection(t_node *node, t_envs *envs);
+void	wildcards_fail_protection(t_node *node, t_envs *envs);
 void	path_fail_protection(t_node *node);
-void	vector_null_protection(t_node *node);
+void	vector_null_protection(t_node *node, t_envs *envs);
 void	remove_quotes(char **values);
 size_t	count_result_of_variable(size_t *index, size_t *index2,
 			char **dup_value, t_envs *envs);

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:47:03 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 17:28:44 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 19:46:22 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 
 extern char	**environ;
 
-void	update_envs(t_envs *envs)
-{
-	update_env(envs);
-	update_export(envs);
-}
-
 void	free_envs(t_envs *envs)
 {
 	free_strs(envs->env);
@@ -28,30 +22,58 @@ void	free_envs(t_envs *envs)
 	free(envs);
 }
 
+size_t	copy_shlvl_var_env(char *shlvl_var, char **new, size_t index)
+{
+	char	*tmp;
+
+	tmp = increased_shlvl(shlvl_var);
+	if (!tmp)
+	{
+		free_strs(new);
+		exit(EXIT_FAILURE);
+	}
+	new[index] = ft_strdup(tmp);
+	free(tmp);
+	if (!new[index])
+	{
+		free_strs(new);
+		exit(EXIT_FAILURE);
+	}
+	return (index + 1);
+}
+
+size_t	copy_other_var_env(char *other_var, char **new, size_t index)
+{
+	new[index] = ft_strdup(other_var);
+	if (!new[index])
+	{
+		free_strs(new);
+		exit(EXIT_FAILURE);
+	}
+	return (index + 1);
+}
+
 char	**copy_environnement(void)
 {
 	size_t	index;
-	size_t	length;
+	size_t	index2;
 	char	**new;
 
-	length = 0;
-	index = 0;
-	while (environ[length])
-		length++;
-	new = malloc(sizeof(char *) * (length + 1));
+	new = malloc(sizeof(char *) * (ft_strslen(environ) + 1));
 	if (!new)
 		return (NULL);
+	index = 0;
+	index2 = 0;
 	while (environ[index])
 	{
-		new[index] = ft_strdup(environ[index]);
-		if (!new[index])
-		{
-			free_strs(new);
-			return (NULL);
-		}
+		new[index2] = NULL;
+		if (ft_strncmp(environ[index], "SHLVL=", 6) == 0)
+			index2 = copy_shlvl_var_env(environ[index], new, index2);
+		else
+			index2 = copy_other_var_env(environ[index], new, index2);
 		index++;
 	}
-	new[index] = NULL;
+	new[index2] = NULL;
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:07 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/26 16:06:46 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/26 20:41:03 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ size_t		size_of_new_exp(void);
 size_t		size_of_new_env(void);
 char		*get_line(char *str);
 void		close_and_free(int fd, char *str);
+void		inutile_return(char *path);
 
 #endif
