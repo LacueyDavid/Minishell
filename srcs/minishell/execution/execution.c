@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 21:28:57 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 21:40:32 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,14 @@ void	exec_builtin_command(t_node *node, t_envs *envs)
 {
 	if (!node || !node->vector_strs.values)
 		return ;
-	exec_in_the_son(node, envs);
+	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
+	wildcards(&(node->vector_strs.values));
+	wildcards_fail_protection(node, NULL);
+	if (!expand_env_variables(&(node->vector_strs), envs))
+		expand_fail_protection(node, NULL);
+	if (!node->vector_strs.values)
+		vector_null_protection(node, NULL);
+	do_builtins(node, envs);
 }
 
 void	exec_simple_command(t_node *node, t_envs *envs)

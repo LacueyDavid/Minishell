@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:47:03 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 19:46:22 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 21:41:15 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ extern char	**environ;
 
 void	free_envs(t_envs *envs)
 {
+	if (!envs)
+		return ;
 	free_strs(envs->env);
 	free_strs(envs->exports);
 	free(envs);
