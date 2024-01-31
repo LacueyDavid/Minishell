@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 18:22:53 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 21:05:31 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	add_variables(t_envs *envs, char **input)
 		return (EXIT_FAILURE);
 	}
 	free(name);
-	redo_envs(envs);
+	// redo_envs(envs);
 	return (EXIT_SUCCESS);
 }
 

@@ -55,7 +55,7 @@ int	is_number(char *str)
 int	end_exit(t_envs *envs)
 {
 	decrease_shlvl(envs);
-	redo_envs(envs);
+	// redo_envs(envs);
 	return (g_exit_status);
 }
 
