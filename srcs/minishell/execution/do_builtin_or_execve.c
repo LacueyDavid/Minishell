@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_builtin_or_execve.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 21:29:35 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 22:42:51 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	do_builtins(t_node *node, t_envs *envs)
 	g_exit_status = exec_builtin(node->vector_strs.values, envs);
 	if (g_exit_status == -1)
 		perror(RED "Exec builtins failed" WHITE);
-	clear_tree(node->head);
-	free_envs(envs);
 }
 
 void	do_execve(t_node *node, t_envs *envs)
@@ -47,7 +45,8 @@ void	do_execve(t_node *node, t_envs *envs)
 	free_strs(paths);
 	if (!command)
 	{
-		(clear_tree(node->head), free_envs(envs));
+		(clear_tree(node->head));
+		free_envs(envs);
 		exit(g_exit_status);
 	}
 	execve(command, node->vector_strs.values, envs->env);

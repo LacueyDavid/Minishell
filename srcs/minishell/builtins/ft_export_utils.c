@@ -6,11 +6,12 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:14:13 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/22 19:25:08 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 22:32:15 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "environnement.h"
 
 int	print_empty_export(t_envs *envs)
 {
@@ -29,7 +30,6 @@ int	add_var_exp(char ***envs, char **input)
 {
 	size_t	index;
 	size_t	index2;
-
 	index = ft_strslen(*envs);
 	*envs = ft_realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
 				+ ft_strslen(input)), sizeof(char *) * ft_strslen(*envs));
@@ -38,6 +38,13 @@ int	add_var_exp(char ***envs, char **input)
 	index2 = 1;
 	while (input[index2])
 	{
+		if (input[index2][0] == '=' || !is_alpha_name(input[index2]))
+		{
+			printf("minishell: export: `%s': not a valid identifier\n",
+				input[index2]);
+			index2++;
+			continue ;
+		}
 		(*envs)[index] = ft_strdup_with_quotes(input[index2]);
 		if (!(*envs)[index])
 		{
@@ -48,6 +55,7 @@ int	add_var_exp(char ***envs, char **input)
 		index2++;
 	}
 	(*envs)[index] = NULL;
+	sort(*envs);
 	return (EXIT_SUCCESS);
 }
 
@@ -85,6 +93,11 @@ int	add_var_env(char ***envs, char **input)
 	index2 = 1;
 	while (input[index2])
 	{
+		if (input[index2][0] == '=' || !is_alpha_name(input[index2]))
+		{
+			index2++;
+			continue ;
+		}
 		if (ft_strchr(input[index2], '='))
 		{
 			(*envs)[index] = ft_strdup(input[index2]);

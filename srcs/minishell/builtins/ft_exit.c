@@ -55,8 +55,9 @@ int	is_number(char *str)
 int	end_exit(t_envs *envs)
 {
 	decrease_shlvl(envs);
-	// redo_envs(envs);
+	free_envs(envs);
 	return (g_exit_status);
+	// exit(g_exit_status);
 }
 
 int	ft_exit(t_envs *envs, char **command)

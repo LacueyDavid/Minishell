@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 21:05:31 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/01/31 22:31:05 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,43 +35,48 @@ int	add_variables(t_envs *envs, char **input)
 		return (EXIT_FAILURE);
 	}
 	free(name);
-	// redo_envs(envs);
 	return (EXIT_SUCCESS);
 }
 
 bool	is_alpha_name(char *name)
 {
 	size_t	index;
+	char 	*tmp;
 
+	tmp = ft_get_name(name);
 	index = 0;
-	while (name[index])
+	while (tmp[index])
 	{
-		if (!ft_isalpha(name[index]))
+		if (!ft_isalpha(tmp[index]))
+		{
+			free(tmp);
 			return (false);
+		}
 		index++;
 	}
+	free(tmp);
 	return (true);
 }
 
 int	ft_export(t_envs *envs, char **input)
 {
-	char	*name;
+	// char	*name;
 
 	if (!input[1])
 	{
 		return (print_empty_export(envs));
 	}
-	else
-	{
-		name = ft_get_name(input[1]);
-		if (input[1][0] == '=' || !is_alpha_name(name))
-		{
-			printf("minishell: export: `%s': not a valid identifier\n",
-				input[1]);
-			free(name);
-			return (EXIT_FAILURE);
-		}
-		free(name);
-	}
+	// else
+	// {
+	// 	name = ft_get_name(input[1]);
+	// 	if (input[1][0] == '=' || !is_alpha_name(name))
+	// 	{
+	// 		printf("minishell: export: `%s': not a valid identifier\n",
+	// 			input[1]);
+	// 		free(name);
+	// 		return (EXIT_FAILURE);
+	// 	}
+	// 	free(name);
+	// }
 	return (add_variables(envs, input));
 }
