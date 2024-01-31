@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 18:28:28 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 21:28:57 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ void	exec_in_the_son(t_node *node, t_envs *envs)
 		do_builtins(node, envs);
 	else
 		do_execve(node, envs);
+}
+
+void	exec_builtin_command(t_node *node, t_envs *envs)
+{
+	if (!node || !node->vector_strs.values)
+		return ;
+	exec_in_the_son(node, envs);
 }
 
 void	exec_simple_command(t_node *node, t_envs *envs)
@@ -84,6 +91,8 @@ void	exec_full_command(t_node *node, t_exec *exec)
 		return ;
 	if (node->type == HERE_DOCUMENT)
 		do_here_doc(node);
+	else if (node->type == SIMPLE_COMMAND && is_a_builtin(node->vector_strs.values[0]))
+		exec_builtin_command(node, exec->envs);
 	else if (node->type == SIMPLE_COMMAND)
 		exec_simple_command(node, exec->envs);
 	else

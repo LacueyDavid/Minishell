@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/29 16:07:39 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/01/31 21:29:35 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	do_builtins(t_node *node, t_envs *envs)
 		perror(RED "Exec builtins failed" WHITE);
 	clear_tree(node->head);
 	free_envs(envs);
-	exit(g_exit_status);
 }
 
 void	do_execve(t_node *node, t_envs *envs)
