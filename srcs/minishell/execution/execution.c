@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 21:40:32 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:07:23 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ void	exec_full_command(t_node *node, t_exec *exec)
 		return ;
 	if (node->type == HERE_DOCUMENT)
 		do_here_doc(node);
-	else if (node->type == SIMPLE_COMMAND && is_a_builtin(node->vector_strs.values[0]))
+	else if (node->type == SIMPLE_COMMAND && node->vector_strs.values
+		&& is_a_builtin(node->vector_strs.values[0]))
 		exec_builtin_command(node, exec->envs);
 	else if (node->type == SIMPLE_COMMAND)
 		exec_simple_command(node, exec->envs);
