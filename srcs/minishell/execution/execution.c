@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/05 18:07:23 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/05 19:19:43 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,12 @@ void	execution(t_node *tree, t_envs *envs)
 
 	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigquit));
 	init_exec(&exec, envs);
-	fork_heredocs(tree, exec.fds, envs);
+	fork_heredocs(tree, exec.fds);
+	if (g_exit_status == 4444)
+	{
+		unlink_heredoc_files(tree);
+		return ;
+	}
 	(signal(SIGINT, handler_sigint), signal(SIGQUIT, handler_sigquit));
 	if (tree->number_of_pipes > 0)
 		exec_pipes(tree, &exec);

@@ -6,12 +6,14 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:18:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/25 15:12:06 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/05 19:14:01 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <readline/readline.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
 
 extern int	g_exit_status;
 
@@ -46,7 +48,10 @@ void	handler_sigint(int sig)
 void	handle_heredoc(int sig)
 {
 	(void)sig;
+
 	close(STDIN_FILENO);
-	write(STDOUT_FILENO, "\n", 2);
-	g_exit_status = 130;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "\n", 1);
+	g_exit_status = 4444;
 }

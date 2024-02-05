@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/26 20:34:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/05 19:18:13 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	here_doc(t_node *node)
 	int		fd;
 	char	*heredoc_name;
 	char	*heredoc_index;
+	int fd_stdin;
 
+	fd_stdin = dup(STDIN_FILENO);
 	heredoc_index = ft_itoa(node->head->number_of_here_doc_index);
 	heredoc_name = ft_strjoin("here_doc.minishell", heredoc_index);
 	eof = node->right->vector_strs.values[0];
@@ -48,6 +50,7 @@ void	here_doc(t_node *node)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	dup2(fd_stdin, STDIN_FILENO);
 	(free(line), free(heredoc_index), free(heredoc_name));
 	close(fd);
 }
@@ -60,42 +63,24 @@ void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 	{
 		node->head->number_of_here_doc_index++;
 		here_doc(node);
-		if (g_exit_status == 130)
-		{
-			clear_tree(node->head);
-			exit(130);
-		}
+		if (g_exit_status == 4444)
+			return ;
 	}
 	fill_heredocs(node->left, fds);
 	fill_heredocs(node->right, fds);
 }
 
-void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS], t_envs *env)
+void	fork_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
 {
-	pid_t	pid;
-
 	if (!node)
 		return ;
 	(signal(SIGINT, SIG_IGN), signal(SIGQUIT, SIG_IGN));
 	node->head->number_of_here_doc = how_many_heredocs(node);
 	if (node->head->number_of_here_doc == 0)
 		return ;
-	pid = fork();
-	if (pid < 0)
-		(perror(RED "Fork in fork heredocs failed" WHITE), exit(1));
-	if (pid == 0)
-	{
-		free_envs(env);
-		signal(SIGINT, handle_heredoc);
-		fill_heredocs(node, fds);
-		clear_tree(node->head);
-		exit(EXIT_SUCCESS);
-	}
-	waitpid(pid, &g_exit_status, 0);
-	if (WIFEXITED(g_exit_status))
-		g_exit_status = WEXITSTATUS(g_exit_status);
-	else if (WIFSIGNALED(g_exit_status))
-		g_exit_status = WTERMSIG(g_exit_status) + 128;
+	signal(SIGINT, handle_heredoc);
+	fill_heredocs(node, fds);
+	node->head->number_of_here_doc_index = 0;
 }
 
 void	unlink_heredoc_files(t_node *node)
@@ -130,5 +115,5 @@ size_t	how_many_heredocs(t_node *node)
 	if (node->right == NULL && node->type == HERE_DOCUMENT)
 		return (0);
 	return (how_many_heredocs(node->left) + how_many_heredocs(node->right)
-		+ value);
+			+ value);
 }

@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/02 13:50:12 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/05 18:19:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void	interactive_mode(t_envs *envs)
 
 	while (true)
 	{
+		if (g_exit_status == 4444)
+			g_exit_status = 4442;
 		(signal(SIGQUIT, SIG_IGN), signal(SIGINT, handler_sigint_main));
 		input = readline(LIGHT_BLUE "Wesh: " LIGHT_PINK);
 		write(STDOUT_FILENO, WHITE, 5);

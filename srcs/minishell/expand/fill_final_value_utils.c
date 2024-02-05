@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:08:37 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:19:29 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:52:24 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static ssize_t	fill_final_value_with_exit_status(char **final_value)
 	char	*exit_status_str;
 	size_t	index;
 
+	if (g_exit_status == 4442)
+		g_exit_status = 130;
 	exit_status_str = ft_itoa(g_exit_status);
 	if (!exit_status_str)
 		return (-1);
