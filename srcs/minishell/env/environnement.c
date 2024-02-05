@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:05 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 19:17:25 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:45:55 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,17 @@ char	**copy_env_export(void)
 	}
 	new[index2] = NULL;
 	sort(new);
+	return (new);
+}
+
+char	**create_env(void)
+{
+	char	**new;
+
+	new = malloc(sizeof(char *) * 1);
+	if (!new)
+		return (NULL);
+	new[0] = NULL;
 	return (new);
 }
 

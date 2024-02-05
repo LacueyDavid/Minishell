@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/31 14:00:35 by jdenis           ###   ########.fr        #
+#    Updated: 2024/02/05 16:47:15 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,9 +107,6 @@ OBJS =																		\
 				environnement_utils.o										\
 				environnement_utils_2.o										\
 				environnement_utils_3.o										\
-				environnement_utils_4.o										\
-				environnement_utils_5.o										\
-				environnement_utils_6.o										\
 				environnement.o					)							\
 																			\
 				$(addprefix execution/,										\

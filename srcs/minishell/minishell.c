@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 22:37:30 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/02 13:50:12 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,9 @@ void	minishell(void)
 {
 	t_envs			*envs;
 
-	if (redo_history() == EXIT_FAILURE)
-		return ;
+	// if (redo_history() == EXIT_FAILURE)
+	// 	return ;
+	redo_history();
 	envs = copy_env_and_export();
 	if (!envs)
 		return ;

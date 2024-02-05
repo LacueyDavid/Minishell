@@ -1,109 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environnement_utils_2.c                            :+:      :+:    :+:   */
+/*   environnement_utils_5.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 18:44:16 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 16:37:42 by jdenis           ###   ########.fr       */
+/*   Created: 2024/01/22 16:44:22 by jdenis            #+#    #+#             */
+/*   Updated: 2024/02/02 14:25:35 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environnement.h"
-#include "builtins.h"
 
-char	**copy_export_exit(char **new)
+void	put_last_quotes(char *new, size_t index2, bool equal)
 {
-	free_strs(new);
-	return (NULL);
+	if (equal)
+	{
+		new[index2] = '"';
+		(index2)++;
+	}
+	new[index2] = '\0';
 }
 
-char	**copy_export_from_file(int fd)
+char	*ft_strdup_with_quotes(char *str)
 {
+	char	*new;
 	size_t	index;
-	size_t	length;
-	char	**new;
-	char	*str;
+	size_t	index2;
+	bool	equal;
 
-	length = size_of_new_exp();
 	index = 0;
-	new = malloc(sizeof(char *) * (length + 1));
+	index2 = 0;
+	equal = false;
+	new = malloc(ft_strlen(str) + 3);
 	if (!new)
 		return (NULL);
-	str = get_next_line(fd);
-	while (str)
+	while (str[index])
 	{
-		new[index] = get_line(str);
-		if (!new[index])
-			return (copy_export_exit(new));
-		str = get_next_line(fd);
-		index++;
-	}
-	free(str);
-	new[index] = NULL;
-	sort(new);
-	return (new);
-}
-
-void	update_export(t_envs *envs)
-{
-	int		fd;
-	char	*path;
-
-	path = getenv("HOME");
-	if (!path)
-	{
-		perror(RED "Cannot find home path" WHITE);
-		return ;
-	}
-	path = ft_strjoin(path, "/.temporary_export_minishell");
-	if (access(path, F_OK) != -1)
-	{
-		fd = open(path, O_RDONLY, 0644);
-		if (fd < 0)
+		new[index2] = str[index];
+		if (str[index] == '=' && !equal)
 		{
-			perror(RED "Cannot open temporary export file" WHITE);
-			return ;
+			equal = true;
+			++(index2);
+			new[index2] = '"';
 		}
-		free_strs(envs->exports);
-		envs->exports = copy_export_from_file(fd);
-		close(fd);
-		unlink(path);
+		index++;
+		index2++;
 	}
-	free(path);
-}
-
-void	err_msg_update_env(char *path, char *str)
-{
-	free(path);
-	perror(str);
-	return ;
-}
-
-void	update_env(t_envs *envs)
-{
-	int		fd;
-	char	*path;
-	char	*pwd;
-
-	path = env_path();
-	if (!path)
-		return ;
-	if (access(path, F_OK) != -1)
-	{
-		fd = open(path, O_RDONLY, 0644);
-		if (fd < 0)
-			return (err_msg_update_env(path, RED "Can't open env file" WHITE));
-		free_strs(envs->env);
-		envs->env = copy_environnement_from_file(fd);
-		(close(fd), unlink(path));
-		pwd = ft_getenv("PWD", envs);
-		if (!pwd)
-			return (inutile_return(path));
-		if (chdir(pwd) != 0)
-			perror(RED "Cannot change directory" WHITE);
-		free(pwd);
-	}
-	free(path);
+	put_last_quotes(new, index2, equal);
+	return (new);
 }

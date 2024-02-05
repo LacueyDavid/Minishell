@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:13:15 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 22:50:51 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/05 15:56:21 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ char	*ft_get_name(char *input);
 char	*ft_strcat(char *dest, char *src);
 int		add_var_exp(char ***envs, char **input);
 int		print_empty_export(t_envs *envs);
-char	*ft_getenv(char *name, t_envs *envs);
 void	change_pwd_in_env(char *path, t_envs *envs);
 bool	is_alpha_name(char *name);
 
