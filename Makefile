@@ -6,13 +6,13 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/02/06 16:54:50 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/02/06 19:32:20 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -fPIC
 
 LDFLAGS = $(LIBFT) -lreadline
 
@@ -121,6 +121,52 @@ OBJS =																		\
 				wait_pids.o						)))							\
 																			\
 
+# ///// version without tests /////
+#
+# NAME = minishell
+# LIBFT = srcs/libft/libft.a
+# LIBFTPATH = srcs/libft/
+#
+# all: $(NAME)
+#
+# $(LIBFT):
+# 	$(MAKE) -C $(LIBFTPATH)
+#
+# libft: $(LIBFT)
+#
+# $(NAME): $(OBJS)
+# 	$(MAKE) -C $(LIBFTPATH)
+# 	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
+#
+# clean:
+# 	$(RM) $(OBJS)
+# 	$(MAKE) clean -C $(LIBFTPATH)
+#
+# fclean: clean
+# 	$(RM) $(NAME)
+# 	$(MAKE) fclean -C $(LIBFTPATH)
+# 	$(RM) libtest.so
+#
+# re: fclean all
+#
+# .PHONY: all clean fclean re libft check check_func check_unit
+#
+
+# //// version with tests /////
+
+TEST_OBJS =																	\
+																			\
+				$(addprefix tests/,											\
+																			\
+				$(addprefix unit/,											\
+				test_lexer.o												\
+				test_parser.o												\
+				test_exec.o													\
+				test_pipeless_token_list.o									\
+													)						\
+													)						\
+																			\
+
 NAME = minishell
 LIBFT = srcs/libft/libft.a
 LIBFTPATH = srcs/libft/
@@ -130,14 +176,12 @@ all: $(NAME)
 $(LIBFT):
 	$(MAKE) -C $(LIBFTPATH)
 
-libft: $(LIBFT)
-
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFTPATH)
 	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(TEST_OBJS)
 	$(MAKE) clean -C $(LIBFTPATH)
 
 fclean: clean
@@ -146,5 +190,16 @@ fclean: clean
 	$(RM) libtest.so
 
 re: fclean all
+
+check_func: all
+	pharaoh tests/tests_e2e/
+
+check_unit: libtest.so
+	cgreen-runner $^
+
+check: check_unit check_func
+
+libtest.so: $(OBJS) $(TEST_OBJS) $(LIBFT)
+	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 .PHONY: all clean fclean re libft check check_func check_unit

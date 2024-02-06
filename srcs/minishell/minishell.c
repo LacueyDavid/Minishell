@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/05 18:19:30 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/06 19:26:51 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static void	non_interactive_mode(t_envs *envs)
 		destroy_token_list(token_list);
 		if (!tree)
 			continue ;
-		(execution(tree, envs), clear_tree(tree));
+		(execution(tree, envs), clear_tree(tree->head), envs_handler(envs));
 	}
 }
 
@@ -117,12 +117,14 @@ void	minishell(void)
 
 	// if (redo_history() == EXIT_FAILURE)
 	// 	return ;
-	redo_history();
 	envs = copy_env_and_export();
 	if (!envs)
 		return ;
 	if (is_interactive_mode())
+	{
+		redo_history();
 		interactive_mode(envs);
+	}
 	else
 		non_interactive_mode(envs);
 	free_envs(envs);

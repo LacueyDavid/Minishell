@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/06 16:52:27 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/06 18:58:24 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	execution(t_node *tree, t_envs *envs)
 	fork_heredocs(tree, exec.fds);
 	if (g_exit_status == 4444)
 	{
+		reset_standard_streams(exec.fds);
+		close_fds(exec.fds);
 		unlink_heredoc_files(tree);
 		return ;
 	}
