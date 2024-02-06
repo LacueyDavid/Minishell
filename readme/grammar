@@ -1,0 +1,11 @@
+%token WORD			:	anything thats not among other tokens
+%token REDIRECT_O	:	>
+%token follow by + "WORD+" mean one or more same Token (one or n WORD)
+
+full_command	:	o_redirect+
+				|	simple_command
+
+o_redirect		:	(REDIRECT_O simple_command)+
+				|	(simple_command REDIRECT_O)+
+
+simple_command	:	WORD+
