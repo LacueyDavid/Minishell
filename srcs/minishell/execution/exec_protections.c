@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   protection.c                                       :+:      :+:    :+:   */
+/*   exec_protections.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:34:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 18:29:29 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/06 16:49:48 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@
 #include <unistd.h>
 
 extern int	g_exit_status;
+
+bool	protect_redirection(t_node *node, t_envs *envs)
+{
+	if (!expand_env_variables(&(node->vector_strs), envs))
+		return (false);
+	if (node->vector_strs.values)
+		if (!node->vector_strs.values[0])
+			return (perror(RED "wesh: ambiguous redirect" WHITE), false);
+	return (true);
+}
 
 void	expand_fail_protection(t_node *node, t_envs *envs)
 {

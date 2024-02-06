@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:35:20 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/05 18:22:47 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/06 16:34:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 # define HERE_DOC_H
 
 # include "execution.h"
+
+typedef struct here_doc
+{
+	char	*eof;
+	char	*line;
+	int		fd;
+	char	*heredoc_name;
+	char	*heredoc_index;
+	int		fd_stdin;
+}	t_here_doc;
 
 void	do_here_doc(t_node *node);
 void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS]);

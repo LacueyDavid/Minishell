@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/05 19:18:13 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/06 16:39:20 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,29 @@ extern int	g_exit_status;
 
 void	here_doc(t_node *node)
 {
-	char	*eof;
-	char	*line;
-	int		fd;
-	char	*heredoc_name;
-	char	*heredoc_index;
-	int fd_stdin;
+	t_here_doc	data;
 
-	fd_stdin = dup(STDIN_FILENO);
-	heredoc_index = ft_itoa(node->head->number_of_here_doc_index);
-	heredoc_name = ft_strjoin("here_doc.minishell", heredoc_index);
-	eof = node->right->vector_strs.values[0];
-	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
+	data.fd_stdin = dup(STDIN_FILENO);
+	data.heredoc_index = ft_itoa(node->head->number_of_here_doc_index);
+	data.heredoc_name = ft_strjoin("here_doc.minishell", data.heredoc_index);
+	data.eof = node->right->vector_strs.values[0];
+	data.fd = open(data.heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (data.fd < 0)
 		(perror(RED "Open failed"), exit(EXIT_SUCCESS));
 	while (true)
 	{
-		line = readline(LIGHT_BLUE "> " LIGHT_PINK);
-		if (!line)
+		data.line = readline(LIGHT_BLUE "> " LIGHT_PINK);
+		if (!data.line)
 			break ;
-		if (ft_strcmp(eof, line) == 0)
+		if (ft_strcmp(data.eof, data.line) == 0)
 			break ;
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
+		write(data.fd, data.line, ft_strlen(data.line));
+		write(data.fd, "\n", 1);
+		free(data.line);
 	}
-	dup2(fd_stdin, STDIN_FILENO);
-	(free(line), free(heredoc_index), free(heredoc_name));
-	close(fd);
+	dup2(data.fd_stdin, STDIN_FILENO);
+	(free(data.line), free(data.heredoc_index), free(data.heredoc_name));
+	close(data.fd);
 }
 
 void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])
@@ -115,5 +110,5 @@ size_t	how_many_heredocs(t_node *node)
 	if (node->right == NULL && node->type == HERE_DOCUMENT)
 		return (0);
 	return (how_many_heredocs(node->left) + how_many_heredocs(node->right)
-			+ value);
+		+ value);
 }

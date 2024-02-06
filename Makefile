@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/02/05 16:47:15 by jdenis           ###   ########.fr        #
+#    Updated: 2024/02/06 16:54:50 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,12 +112,13 @@ OBJS =																		\
 				$(addprefix execution/,										\
 				do_builtin_or_execve.o										\
 				exec_pipe.o													\
-				protection.o												\
-				wait_pids.o													\
 				execution.o													\
-				init_exec.o													\
 				ft_get_command.o											\
-				redirections.o					)))							\
+				redirections.o												\
+				exec_builtin_and_non_builtin.o								\
+				exec_protections.o											\
+				init_exec.o													\
+				wait_pids.o						)))							\
 																			\
 
 NAME = minishell

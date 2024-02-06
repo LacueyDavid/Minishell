@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 22:48:27 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:52:27 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,35 @@
 #include <unistd.h>
 
 extern int	g_exit_status;
+
+void	exec_non_builtin_command(t_node *node, t_envs *envs)
+{
+	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
+	wildcards(&(node->vector_strs.values));
+	wildcards_fail_protection(node, envs);
+	if (!expand_env_variables(&(node->vector_strs), envs))
+		expand_fail_protection(node, envs);
+	if (!node->vector_strs.values)
+		vector_null_protection(node, envs);
+	// if (is_a_builtin(node->vector_strs.values[0]))
+	// 	do_builtins(node, envs);
+	// else
+	do_execve(node, envs);
+}
+
+void	exec_builtin_command(t_node *node, t_envs *envs)
+{
+	if (!node || !node->vector_strs.values)
+		return ;
+	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
+	wildcards(&(node->vector_strs.values));
+	wildcards_fail_protection(node, NULL);
+	if (!expand_env_variables(&(node->vector_strs), envs))
+		expand_fail_protection(node, NULL);
+	if (!node->vector_strs.values)
+		vector_null_protection(node, NULL);
+	do_builtins(node, envs);
+}
 
 void	do_builtins(t_node *node, t_envs *envs)
 {

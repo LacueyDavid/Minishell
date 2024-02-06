@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 21:53:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/05 19:19:43 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/06 16:52:27 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,6 @@
 
 extern int	g_exit_status;
 
-void	exec_in_the_son(t_node *node, t_envs *envs)
-{
-	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
-	wildcards(&(node->vector_strs.values));
-	wildcards_fail_protection(node, envs);
-	if (!expand_env_variables(&(node->vector_strs), envs))
-		expand_fail_protection(node, envs);
-	if (!node->vector_strs.values)
-		vector_null_protection(node, envs);
-	if (is_a_builtin(node->vector_strs.values[0]))
-		do_builtins(node, envs);
-	else
-		do_execve(node, envs);
-}
-
-void	exec_builtin_command(t_node *node, t_envs *envs)
-{
-	if (!node || !node->vector_strs.values)
-		return ;
-	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
-	wildcards(&(node->vector_strs.values));
-	wildcards_fail_protection(node, NULL);
-	if (!expand_env_variables(&(node->vector_strs), envs))
-		expand_fail_protection(node, NULL);
-	if (!node->vector_strs.values)
-		vector_null_protection(node, NULL);
-	do_builtins(node, envs);
-}
-
 void	exec_simple_command(t_node *node, t_envs *envs)
 {
 	pid_t	pid1;
@@ -71,7 +42,7 @@ void	exec_simple_command(t_node *node, t_envs *envs)
 		return ;
 	}
 	if (pid1 == 0)
-		exec_in_the_son(node, envs);
+		exec_non_builtin_command(node, envs);
 	waitpid(pid1, &g_exit_status, 0);
 	if (WIFEXITED(g_exit_status))
 		g_exit_status = WEXITSTATUS(g_exit_status);
@@ -79,14 +50,15 @@ void	exec_simple_command(t_node *node, t_envs *envs)
 		g_exit_status = WTERMSIG(g_exit_status) + 128;
 }
 
-static bool	protect_redirection(t_node *node, t_envs *envs)
+static void	redo_full_command(t_node *node, t_exec *exec)
 {
-	if (!expand_env_variables(&(node->vector_strs), envs))
-		return (false);
-	if (node->vector_strs.values)
-		if (!node->vector_strs.values[0])
-			return (perror(RED "wesh: ambiguous redirect" WHITE), false);
-	return (true);
+	if (node->type != SIMPLE_COMMAND)
+	{
+		if (!node->left)
+			exec_full_command(node->right, exec);
+		else
+			exec_full_command(node->left, exec);
+	}
 }
 
 void	exec_full_command(t_node *node, t_exec *exec)
@@ -111,13 +83,7 @@ void	exec_full_command(t_node *node, t_exec *exec)
 		if (!catch)
 			return ;
 	}
-	if (node->type != SIMPLE_COMMAND)
-	{
-		if (!node->left)
-			exec_full_command(node->right, exec);
-		else
-			exec_full_command(node->left, exec);
-	}
+	redo_full_command(node, exec);
 }
 
 void	execution(t_node *tree, t_envs *envs)

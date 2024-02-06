@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:18:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/05 19:14:01 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/06 16:40:33 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	handler_sigint(int sig)
 void	handle_heredoc(int sig)
 {
 	(void)sig;
-
 	close(STDIN_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);

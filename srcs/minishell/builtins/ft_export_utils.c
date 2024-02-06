@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:14:13 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 22:32:15 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/06 17:00:21 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	add_var_exp(char ***envs, char **input)
 {
 	size_t	index;
 	size_t	index2;
+
 	index = ft_strslen(*envs);
 	*envs = ft_realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
 				+ ft_strslen(input)), sizeof(char *) * ft_strslen(*envs));

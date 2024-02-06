@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 19:47:22 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:52:27 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,8 @@ size_t	count_result_of_variable(size_t *index, size_t *index2,
 ssize_t	count_actual_variable_size(char *value, t_envs *envs);
 bool	fill_variables(char *final_value, char *value, t_envs *envs,
 			t_counter *counter);
+bool	protect_redirection(t_node *node, t_envs *envs);
+void	exec_non_builtin_command(t_node *node, t_envs *envs);
+void	exec_builtin_command(t_node *node, t_envs *envs);
 
 #endif

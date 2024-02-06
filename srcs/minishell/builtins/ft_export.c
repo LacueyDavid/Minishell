@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 22:31:05 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:59:40 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	add_variables(t_envs *envs, char **input)
 bool	is_alpha_name(char *name)
 {
 	size_t	index;
-	char 	*tmp;
+	char	*tmp;
 
 	tmp = ft_get_name(name);
 	index = 0;
@@ -61,7 +61,6 @@ bool	is_alpha_name(char *name)
 int	ft_export(t_envs *envs, char **input)
 {
 	// char	*name;
-
 	if (!input[1])
 	{
 		return (print_empty_export(envs));
