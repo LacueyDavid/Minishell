@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:12:36 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:30:24 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/07 10:05:06 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,17 @@ int	ft_echo(char **command)
 	index = skip_n(command, &is_flag);
 	while (command[index])
 	{
-		printf("%s", command[index]);
+		// printf("%s", command[index]);
+		write(1, command[index], ft_strlen(command[index]));
 		if (command[index + 1])
-			printf(" ");
+			write(1, " ", 1);
+			// printf(" ");
 		index++;
 	}
 	if (!is_flag)
 	{
-		printf("\n");
+		write(1, "\n", 1);
+		// printf("\n");
 	}
 	return (EXIT_SUCCESS);
 }

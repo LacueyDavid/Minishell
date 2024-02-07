@@ -6,13 +6,15 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:48:24 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/17 13:14:55 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 13:23:13 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 #include "../../includes/colors.h"
+
+extern int	g_exit_status;
 
 static char	**init_tokens(char *str_to_tokenize, char *separators)
 {
@@ -24,7 +26,10 @@ static char	**init_tokens(char *str_to_tokenize, char *separators)
 	tokens_counted = count_tokens(str_to_tokenize, separators);
 	if (tokens_counted == -1)
 	{
-		perror(RED "Error: unclosed quote\n" WHITE);
+		write(2, RED, ft_strlen(RED));
+		write(2,"Error: unclosed quote\n", 22);
+		write(2, WHITE, ft_strlen(WHITE));
+		g_exit_status = 2;
 		return (NULL);
 	}
 	tokens = malloc(sizeof(char *) * (tokens_counted + 1));

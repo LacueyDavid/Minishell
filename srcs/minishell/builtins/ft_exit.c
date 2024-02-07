@@ -13,6 +13,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execution.h"
 #include "builtins.h"
 #include "environnement.h"
 #include "libft.h"
@@ -52,26 +53,28 @@ int	is_number(char *str)
 	return (0);
 }
 
-int	end_exit(t_envs *envs, t_node *node)
+int	end_exit(t_exec *exec, t_node *node)
 {
-	decrease_shlvl(envs);
-	free_envs(envs);
+	decrease_shlvl(exec->envs);
+	free_envs(exec->envs);
 	clear_tree(node->head);
+	reset_standard_streams(exec->fds);
+	close_fds(exec->fds);
 	exit(g_exit_status);
 }
 
-int	ft_exit(t_envs *envs, char **command, t_node *node)
+int	ft_exit(t_exec *exec, char **command, t_node *node)
 {
 	printf("exit WeShell\n");
 	if (!command[1] || (ft_atoi(command[1]) == 0 && is_number(command[1]) == 0))
 	{
-		return (end_exit(envs, node));
+		return (end_exit(exec, node));
 	}
 	else if (is_number(command[1]) == -1)
 	{
 		printf("WeShell: exit: %s: numeric argument required\n", command[1]);
 		g_exit_status = 2;
-		return (end_exit(envs, node));
+		return (end_exit(exec, node));
 	}
 	else if (ft_strslen(command) > 2)
 	{
@@ -82,6 +85,6 @@ int	ft_exit(t_envs *envs, char **command, t_node *node)
 	else
 	{
 		g_exit_status = ft_atoi(command[1]);
-		return (end_exit(envs, node));
+		return (end_exit(exec, node));
 	}
 }

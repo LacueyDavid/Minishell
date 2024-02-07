@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:17:50 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/25 12:56:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 13:03:59 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,10 @@ extern int	g_exit_status;
 
 static void	message_command_not_found(char *command)
 {
-	int	stdout_fd;
-
-	stdout_fd = dup(STDOUT_FILENO);
-	if (dup2(2, STDOUT_FILENO) < 0)
-	{
-		(perror(RED "Dup2 failed" WHITE));
-		return ;
-	}
-	printf(RED "%s: command not found\n" WHITE, command);
-	if (dup2(stdout_fd, STDOUT_FILENO) < 0)
-	{
-		(perror(RED "Dup2 failed" WHITE));
-		return ;
-	}
+	write (2, RED, ft_strlen(RED));
+	write (2, command, ft_strlen(command));
+	write (2, ": command not found\n", 20);
+	write (2, WHITE, ft_strlen(WHITE));
 	g_exit_status = 127;
 }
 

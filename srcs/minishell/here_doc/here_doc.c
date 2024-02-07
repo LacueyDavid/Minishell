@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:24:23 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/06 16:39:20 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 12:16:42 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	here_doc(t_node *node)
 	dup2(data.fd_stdin, STDIN_FILENO);
 	(free(data.line), free(data.heredoc_index), free(data.heredoc_name));
 	close(data.fd);
+	close(data.fd_stdin);
 }
 
 void	fill_heredocs(t_node *node, int fds[NUMBER_OF_FDS])

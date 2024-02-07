@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:33:18 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/26 16:22:58 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 14:18:03 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static bool	check_validity_of_dollar(char *value, t_counter *counter,
 	if (value[counter->index] == '$' && value[counter->index + 1] == '"')
 	{
 		counter->index += 1;
-		counter->size += 0;
+		counter->size += 1;
 		return (true);
 	}
 	else if (value[counter->index] == '$'

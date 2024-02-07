@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/06 16:52:27 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 12:56:38 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,59 +28,63 @@
 
 extern int	g_exit_status;
 
-void	exec_non_builtin_command(t_node *node, t_envs *envs)
+void	exec_non_builtin_command(t_node *node, t_exec *exec)
 {
 	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
 	wildcards(&(node->vector_strs.values));
-	wildcards_fail_protection(node, envs);
-	if (!expand_env_variables(&(node->vector_strs), envs))
-		expand_fail_protection(node, envs);
+	wildcards_fail_protection(node, exec);
+	if (!expand_env_variables(&(node->vector_strs), exec->envs))
+		expand_fail_protection(node, exec);
 	if (!node->vector_strs.values)
-		vector_null_protection(node, envs);
+		vector_null_protection(node, exec);
 	// if (is_a_builtin(node->vector_strs.values[0]))
 	// 	do_builtins(node, envs);
 	// else
-	do_execve(node, envs);
+	do_execve(node, exec);
 }
 
-void	exec_builtin_command(t_node *node, t_envs *envs)
+void	exec_builtin_command(t_node *node, t_exec *exec)
 {
 	if (!node || !node->vector_strs.values)
 		return ;
 	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
 	wildcards(&(node->vector_strs.values));
 	wildcards_fail_protection(node, NULL);
-	if (!expand_env_variables(&(node->vector_strs), envs))
+	if (!expand_env_variables(&(node->vector_strs), exec->envs))
 		expand_fail_protection(node, NULL);
 	if (!node->vector_strs.values)
 		vector_null_protection(node, NULL);
-	do_builtins(node, envs);
+	do_builtins(node, exec);
 }
 
-void	do_builtins(t_node *node, t_envs *envs)
+void	do_builtins(t_node *node, t_exec *exec)
 {
-	g_exit_status = exec_builtin(node->vector_strs.values, envs, node);
+	g_exit_status = exec_builtin(node->vector_strs.values, exec, node);
 	if (g_exit_status == -1)
 		perror(RED "Exec builtins failed" WHITE);
 }
 
-void	do_execve(t_node *node, t_envs *envs)
+void	do_execve(t_node *node, t_exec *exec)
 {
 	char	*command;
 	char	**paths;
 
-	paths = find_paths(envs->env);
+	paths = find_paths(exec->envs->env);
 	command = get_command(node->vector_strs.values[0], paths);
 	free_strs(paths);
 	if (!command)
 	{
 		(clear_tree(node->head));
-		free_envs(envs);
+		free_envs(exec->envs);
+		reset_standard_streams(exec->fds);
+		close_fds(exec->fds);
 		exit(g_exit_status);
 	}
-	execve(command, node->vector_strs.values, envs->env);
+	execve(command, node->vector_strs.values, exec->envs->env);
 	g_exit_status = -1;
-	(free(command), free_envs(envs), clear_tree(node->head));
+	(free(command), free_envs(exec->envs), clear_tree(node->head));
 	perror(RED "Execve failed" WHITE);
+	reset_standard_streams(exec->fds);
+	close_fds(exec->fds);
 	exit(g_exit_status);
 }

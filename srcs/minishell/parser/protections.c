@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:18:08 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 15:19:39 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 12:31:24 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ static bool	protect_pipe_and_here_doc(t_token_list *token_list, size_t i)
 	if (token_list->tokens[i].type == PIPE)
 	{
 		if (i + 1 >= token_list->size || i == 0)
+		{
+			printf("wesh: syntax error near unexpected token `|'\n");
+			return (false);
+		}
+		else if (token_list->tokens[i + 1].type == PIPE)
 		{
 			printf("wesh: syntax error near unexpected token `|'\n");
 			return (false);

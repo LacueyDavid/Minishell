@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 22:03:39 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/06 16:52:27 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 12:57:37 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ typedef struct s_count_size
 	bool		double_quote;
 }				t_counter;
 
-void	do_execve(t_node *node, t_envs *envs);
-void	do_builtins(t_node *node, t_envs *envs);
+void	do_execve(t_node *node, t_exec *exec);
+void	do_builtins(t_node *node, t_exec *exec);
 void	exec_full_command(t_node *node, t_exec *exec);
-void	exec_simple_command(t_node *value, t_envs *envs);
+void	exec_simple_command(t_node *value, t_exec *exec);
 void	exec_pipes(t_node *node, t_exec *exec);
 void	execution(t_node *node, t_envs *envs);
 bool	redirection_output(t_node *node);
@@ -67,18 +67,18 @@ bool	fill_final_value(char *final_value, char *value, t_envs *envs);
 ssize_t	count_final_value_size(char *value, t_envs *envs);
 char	*get_command(char *command, char **paths);
 void	wait_all_pids(pid_t *pids, int number_of_pipes);
-void	expand_fail_protection(t_node *node, t_envs *envs);
-void	wildcards_fail_protection(t_node *node, t_envs *envs);
+void	expand_fail_protection(t_node *node, t_exec *exec);
+void	wildcards_fail_protection(t_node *node, t_exec *exec);
 void	path_fail_protection(t_node *node);
-void	vector_null_protection(t_node *node, t_envs *envs);
+void	vector_null_protection(t_node *node, t_exec *exec);
 void	remove_quotes(char **values);
 size_t	count_result_of_variable(size_t *index, size_t *index2,
 			char **dup_value, t_envs *envs);
 ssize_t	count_actual_variable_size(char *value, t_envs *envs);
 bool	fill_variables(char *final_value, char *value, t_envs *envs,
 			t_counter *counter);
-bool	protect_redirection(t_node *node, t_envs *envs);
-void	exec_non_builtin_command(t_node *node, t_envs *envs);
-void	exec_builtin_command(t_node *node, t_envs *envs);
+bool	protect_redirection(t_node *node, t_exec *exec);
+void	exec_non_builtin_command(t_node *node, t_exec *exec);
+void	exec_builtin_command(t_node *node, t_exec *exec);
 
 #endif

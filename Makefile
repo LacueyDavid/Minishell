@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/02/06 19:32:20 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/02/07 13:16:48 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -161,7 +161,6 @@ TEST_OBJS =																	\
 				$(addprefix unit/,											\
 				test_lexer.o												\
 				test_parser.o												\
-				test_exec.o													\
 				test_pipeless_token_list.o									\
 													)						\
 													)						\

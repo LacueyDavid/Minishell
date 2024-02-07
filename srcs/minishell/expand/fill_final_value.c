@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:34:01 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/26 16:22:36 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 14:20:11 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,11 @@ static void	init_counter(t_counter *counter)
 static bool	check_validity_of_dollar(char *value, char *final_value,
 				t_counter *counter, t_envs *envs)
 {
-	if (value[counter->index] == '$' && value[counter->index + 1] == '\"')
+	if (value[counter->index] == '$' && value[counter->index + 1] == '"')
 	{
+		final_value[counter->size] = value[counter->index];
 		counter->index++;
+		counter->size++;
 		return (true);
 	}
 	else if (value[counter->index] == '$'

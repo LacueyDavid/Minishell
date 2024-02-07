@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:36:12 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/31 21:47:17 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/07 13:53:55 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,12 @@ static void	exec_pipe_except_last(t_node **node, t_exec *exec,
 		}
 		if (pipe_utils->pids[*index] == 0)
 		{
-			free(pipe_utils->pids);
-			dup2(pipe_utils->fds[1], STDOUT_FILENO);
+			(free(pipe_utils->pids), dup2(pipe_utils->fds[1], STDOUT_FILENO));
 			(close(pipe_utils->fds[0]), close(pipe_utils->fds[1]));
 			(exec_full_command((*node)->left, exec), clear_tree((*node)->head));
-			(free_envs(exec->envs), exit(g_exit_status));
+			(free_envs(exec->envs));
+			(reset_standard_streams(exec->fds), close_fds(exec->fds));
+			exit(g_exit_status);
 		}
 		update_here_doc_index(node);
 		dup2(pipe_utils->fds[0], STDIN_FILENO);
@@ -63,7 +64,7 @@ static void	exec_pipe_except_last(t_node **node, t_exec *exec,
 }
 
 static void	exec_last_pipe(t_node *node, t_exec *exec,
-							t_pipe *pipe_utils, int index)
+						   t_pipe *pipe_utils, int index)
 {
 	pipe_utils->pids[index] = fork();
 	if (pipe_utils->pids[index] < 0)
@@ -76,7 +77,10 @@ static void	exec_last_pipe(t_node *node, t_exec *exec,
 	{
 		free(pipe_utils->pids);
 		exec_full_command(node, exec);
-		(clear_tree(node->head), free_envs(exec->envs), exit(g_exit_status));
+		(clear_tree(node->head), free_envs(exec->envs));
+		reset_standard_streams(exec->fds);
+		close_fds(exec->fds);
+		exit(g_exit_status);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:34:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/06 16:49:48 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 12:50:21 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@
 
 extern int	g_exit_status;
 
-bool	protect_redirection(t_node *node, t_envs *envs)
+bool	protect_redirection(t_node *node, t_exec *exec)
 {
-	if (!expand_env_variables(&(node->vector_strs), envs))
+	if (!expand_env_variables(&(node->vector_strs), exec->envs))
 		return (false);
 	if (node->vector_strs.values)
 		if (!node->vector_strs.values[0])
@@ -38,30 +38,36 @@ bool	protect_redirection(t_node *node, t_envs *envs)
 	return (true);
 }
 
-void	expand_fail_protection(t_node *node, t_envs *envs)
+void	expand_fail_protection(t_node *node, t_exec *exec)
 {
 	if (!node->vector_strs.values)
 	{
 		g_exit_status = 1;
 		perror(RED "Expand env variables failed" WHITE);
-		(clear_tree(node->head), free_envs(envs), exit(g_exit_status));
+		reset_standard_streams(exec->fds);
+		close_fds(exec->fds);
+		(clear_tree(node->head), free_envs(exec->envs), exit(g_exit_status));
 	}
 }
 
-void	wildcards_fail_protection(t_node *node, t_envs *envs)
+void	wildcards_fail_protection(t_node *node, t_exec *exec)
 {
 	if (!node->vector_strs.values)
 	{
 		g_exit_status = 134;
 		perror(RED "Wildcards failed"WHITE);
-		(clear_tree(node->head), free_envs(envs), exit(g_exit_status));
+		reset_standard_streams(exec->fds);
+		close_fds(exec->fds);
+		(clear_tree(node->head), free_envs(exec->envs), exit(g_exit_status));
 	}
 }
 
-void	vector_null_protection(t_node *node, t_envs *envs)
+void	vector_null_protection(t_node *node, t_exec *exec)
 {
 	(g_exit_status = 0);
 	clear_tree(node->head);
-	free_envs(envs);
+	free_envs(exec->envs);
+	reset_standard_streams(exec->fds);
+	close_fds(exec->fds);
 	exit(g_exit_status);
 }
