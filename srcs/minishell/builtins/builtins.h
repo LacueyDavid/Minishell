@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:13:15 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/07 12:24:45 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:40:02 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <unistd.h>
 # include "environnement.h"
 # include "parser.h"
-#include "execution.h"
+# include "execution.h"
 
 int		ft_echo(char **str);
 int		ft_pwd(t_envs *envs);
@@ -43,5 +43,6 @@ int		add_var_exp(char ***envs, char **input);
 int		print_empty_export(t_envs *envs);
 void	change_pwd_in_env(char *path, t_envs *envs);
 bool	is_alpha_name(char *name);
+bool	between_max_min(char *nbr);
 
 #endif

@@ -101,6 +101,5 @@ int	ft_cd(t_envs *envs, char *command)
 			return (EXIT_FAILURE);
 		g_exit_status = change_pwds(pwd, envs, new_path, pwd_exist);
 	}
-	// redo_envs(envs);
 	return (g_exit_status);
 }

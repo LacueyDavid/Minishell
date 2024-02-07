@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:36:12 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/07 13:53:55 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:37:31 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	exec_pipe_except_last(t_node **node, t_exec *exec,
 }
 
 static void	exec_last_pipe(t_node *node, t_exec *exec,
-						   t_pipe *pipe_utils, int index)
+							t_pipe *pipe_utils, int index)
 {
 	pipe_utils->pids[index] = fork();
 	if (pipe_utils->pids[index] < 0)

@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/02/07 13:16:48 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/02/07 17:59:23 by jdenis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,10 +89,12 @@ OBJS =																		\
 				ft_echo.o													\
 				ft_env.o													\
 				ft_exit.o													\
+				ft_exit_utils.o												\
 				ft_export.o													\
 				ft_pwd.o													\
 				exec_builtin.o												\
 				ft_export_utils.o											\
+				ft_export_utils_2.o											\
 				ft_unset.o						)							\
 																			\
 				$(addprefix expand/,										\

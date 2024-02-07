@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:37:17 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:19:59 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 16:36:01 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	print_str(char *str);
 void	*ft_realloc(void *ptr, size_t new_size, size_t old_size);
 char	*ft_strsjoin(char **strs, char *sep);
 bool	ft_strbstr(char *str, char *bstr, size_t len_bstr);
+long	ft_atol(const char *nptr);
+char	*ft_ltoa(long n);
 // STRTOK
 typedef struct s_count
 {

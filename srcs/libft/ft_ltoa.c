@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_ltoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/12 18:20:07 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/07 16:33:23 by jdenis           ###   ########.fr       */
+/*   Created: 2024/02/07 16:28:30 by jdenis            #+#    #+#             */
+/*   Updated: 2024/02/07 16:34:01 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	size_of_n(long n)
+static size_t	size_of_n(long long n)
 {
 	size_t	size;
 
@@ -27,7 +27,7 @@ static size_t	size_of_n(long n)
 	return (size);
 }
 
-static void	str_filler(int sign, size_t size, char *str, long long_n)
+static void	str_filler(int sign, size_t size, char *str, long long long_n)
 {
 	if (sign < 0)
 	{
@@ -50,7 +50,7 @@ static void	str_filler(int sign, size_t size, char *str, long long_n)
 	}
 }
 
-char	*ft_itoa(int n)
+char	*ft_ltoa(long n)
 {
 	char	*str;
 	size_t	size;
@@ -60,7 +60,7 @@ char	*ft_itoa(int n)
 	str = NULL;
 	size = 0;
 	sign = 1;
-	long_n = (long)n;
+	long_n = (long long)n;
 	if (long_n < 0)
 	{
 		size++;

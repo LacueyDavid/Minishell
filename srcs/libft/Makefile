@@ -56,6 +56,8 @@ OBJS = 			ft_isdigit.o				\
 				ft_strsjoin.o				\
 				ft_strbstr.o				\
 				ft_add_char.o				\
+				ft_atol.o					\
+				ft_ltoa.o					\
 
 OBJS_BONUS =	ft_lstnew.o					\
 				ft_lstsize.o				\

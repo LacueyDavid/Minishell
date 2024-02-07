@@ -19,6 +19,7 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 extern int	g_exit_status;
 
@@ -44,6 +45,8 @@ int	is_number(char *str)
 	int	index;
 
 	index = 0;
+	if (str[index] == '-' || str[index] == '+')
+		index++;
 	while (str[index])
 	{
 		if (str[index] < '0' || str[index] > '9')
@@ -66,11 +69,12 @@ int	end_exit(t_exec *exec, t_node *node)
 int	ft_exit(t_exec *exec, char **command, t_node *node)
 {
 	printf("exit WeShell\n");
-	if (!command[1] || (ft_atoi(command[1]) == 0 && is_number(command[1]) == 0))
+	if (!command[1] || (ft_atol(command[1]) == 0 && is_number(command[1]) == 0))
 	{
+		printf("emprty exit\n");
 		return (end_exit(exec, node));
 	}
-	else if (is_number(command[1]) == -1)
+	else if (is_number(command[1]) == -1 || between_max_min(command[1]) == 1)
 	{
 		printf("WeShell: exit: %s: numeric argument required\n", command[1]);
 		g_exit_status = 2;

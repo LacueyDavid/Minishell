@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:40:33 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/07 12:56:38 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:35:23 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ void	exec_non_builtin_command(t_node *node, t_exec *exec)
 		expand_fail_protection(node, exec);
 	if (!node->vector_strs.values)
 		vector_null_protection(node, exec);
-	// if (is_a_builtin(node->vector_strs.values[0]))
-	// 	do_builtins(node, envs);
-	// else
 	do_execve(node, exec);
 }
 

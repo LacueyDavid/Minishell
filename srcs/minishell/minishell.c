@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:51:11 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/07 13:23:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 16:03:07 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	envs_handler(t_envs	*envs)
 		return ;
 	shlvl = ft_atoi(shlvl_str);
 	free(shlvl_str);
-	// update_envs(envs);
 	shlvl_str = ft_getenv("SHLVL", envs);
 	if (!shlvl_str)
 		return ;
@@ -115,8 +114,6 @@ void	minishell(void)
 {
 	t_envs			*envs;
 
-	// if (redo_history() == EXIT_FAILURE)
-	// 	return ;
 	envs = copy_env_and_export();
 	if (!envs)
 		return ;

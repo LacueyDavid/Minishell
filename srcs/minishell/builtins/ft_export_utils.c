@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:14:13 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/06 17:00:21 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:58:37 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,35 +29,13 @@ int	print_empty_export(t_envs *envs)
 int	add_var_exp(char ***envs, char **input)
 {
 	size_t	index;
-	size_t	index2;
 
 	index = ft_strslen(*envs);
 	*envs = ft_realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
 				+ ft_strslen(input)), sizeof(char *) * ft_strslen(*envs));
 	if (!*envs)
 		return (EXIT_FAILURE);
-	index2 = 1;
-	while (input[index2])
-	{
-		if (input[index2][0] == '=' || !is_alpha_name(input[index2]))
-		{
-			printf("minishell: export: `%s': not a valid identifier\n",
-				input[index2]);
-			index2++;
-			continue ;
-		}
-		(*envs)[index] = ft_strdup_with_quotes(input[index2]);
-		if (!(*envs)[index])
-		{
-			free_strs(*envs);
-			return (EXIT_FAILURE);
-		}
-		index++;
-		index2++;
-	}
-	(*envs)[index] = NULL;
-	sort(*envs);
-	return (EXIT_SUCCESS);
+	return (redo_export(input, index, envs));
 }
 
 char	*ft_get_name(char *input)
@@ -84,35 +62,13 @@ char	*ft_get_name(char *input)
 int	add_var_env(char ***envs, char **input)
 {
 	size_t	index;
-	size_t	index2;
 
 	index = ft_strslen(*envs);
 	*envs = ft_realloc(*envs, sizeof(char *) * (ft_strslen(*envs)
 				+ ft_strslen(input)), sizeof(char *) * ft_strslen(*envs));
 	if (!*envs)
 		return (EXIT_FAILURE);
-	index2 = 1;
-	while (input[index2])
-	{
-		if (input[index2][0] == '=' || !is_alpha_name(input[index2]))
-		{
-			index2++;
-			continue ;
-		}
-		if (ft_strchr(input[index2], '='))
-		{
-			(*envs)[index] = ft_strdup(input[index2]);
-			if (!(*envs)[index])
-			{
-				free_strs(*envs);
-				return (EXIT_FAILURE);
-			}
-			index++;
-		}
-		index2++;
-	}
-	(*envs)[index] = NULL;
-	return (EXIT_SUCCESS);
+	return (redo_env(input, index, envs));
 }
 
 bool	ft_is_in_env(char *name, char **envs)

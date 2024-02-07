@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/06 16:59:40 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 16:02:53 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// extern char **environ;
 
 int	add_variables(t_envs *envs, char **input)
 {
@@ -60,22 +58,9 @@ bool	is_alpha_name(char *name)
 
 int	ft_export(t_envs *envs, char **input)
 {
-	// char	*name;
 	if (!input[1])
 	{
 		return (print_empty_export(envs));
 	}
-	// else
-	// {
-	// 	name = ft_get_name(input[1]);
-	// 	if (input[1][0] == '=' || !is_alpha_name(name))
-	// 	{
-	// 		printf("minishell: export: `%s': not a valid identifier\n",
-	// 			input[1]);
-	// 		free(name);
-	// 		return (EXIT_FAILURE);
-	// 	}
-	// 	free(name);
-	// }
 	return (add_variables(envs, input));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtok_utils_4.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 10:48:24 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/07 13:23:13 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:36:36 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	**init_tokens(char *str_to_tokenize, char *separators)
 	if (tokens_counted == -1)
 	{
 		write(2, RED, ft_strlen(RED));
-		write(2,"Error: unclosed quote\n", 22);
+		write(2, "Error: unclosed quote\n", 22);
 		write(2, WHITE, ft_strlen(WHITE));
 		g_exit_status = 2;
 		return (NULL);

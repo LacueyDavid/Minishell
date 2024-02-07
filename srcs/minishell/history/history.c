@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 05:49:25 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/02 13:52:19 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/05 18:13:19 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ char	*history_path(void)
 
 	path = getenv("HOME");
 	if (!path)
-	{
-		// printf(RED "Cannot open display \"default display\"\n" WHITE);
 		return (NULL);
-	}
 	path = ft_strjoin(path, "/.minishell_history");
 	return (path);
 }
