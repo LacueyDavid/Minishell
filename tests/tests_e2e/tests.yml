@@ -134,3 +134,77 @@ stdin: |
   echo toto | wc -c | wc -l
 stdout: |
   1
+---
+name: 17 Exec echo "cat lol.c | cat > lol.c"
+cmd: ./minishell
+stdin: |
+  echo "cat lol.c | cat > lol.c"
+stdout: |
+  cat lol.c | cat > lol.c
+---
+name: 18 Exec echo "echo ok bro mdr              | echo toto  "
+cmd: ./minishell
+stdin: |
+  echo "echo ok bro mdr              | echo toto  "
+stdout: |
+  echo ok bro mdr              | echo toto  
+---
+name: 19 Exec echo '$USER'
+cmd: ./minishell
+stdin: |
+  echo '$USER'
+stdout: |
+  $USER
+---
+name: 20 Exec echo '$USER | wc -c'
+cmd: ./minishell
+stdin: |
+  echo '$USER | wc -c'
+stdout: |
+  $USER | wc -c
+---
+name: 21 Exec echo $a when a = b
+cmd: ./minishell
+stdin: |
+  export a=b
+  echo $a
+stdout: |
+  b
+---
+name: 22 Exec echo "$"
+cmd: ./minishell
+stdin: |
+  echo "$"
+stdout: |
+  $
+---
+name: 23 Exec echo $
+cmd: ./minishell
+stdin: |
+  echo $
+stdout: |
+  $
+---
+name: 24 Exec echo $oui quand oui = "lol mdr"
+cmd: ./minishell
+stdin: |
+  export oui="lol mdr"
+  echo $oui
+stdout: |
+  lol mdr
+---
+name: 25 Exec echo $USER after change USER
+cmd: ./minishell
+stdin: |
+  export USER=miche
+  echo "$USER"
+stdout: |
+  miche
+---
+name: 26 Exec echo '$USER' after change USER
+cmd: ./minishell
+stdin: |
+  export USER="JHON SENA"
+  echo '$USER'
+stdout: |
+  $USER
