@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 14:10:10 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/01/24 12:20:56 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/08 07:02:51 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static ssize_t	dup_the_value_with_equal_at_end(char **dup_value,
 					char *value, size_t *index2)
 {
 	*dup_value = ft_strdup(value);
-	if (!dup_value)
+	if (!*dup_value)
 		return (-1);
 	while (value[*index2] && ft_isalnum(value[*index2]))
 		(*index2)++;

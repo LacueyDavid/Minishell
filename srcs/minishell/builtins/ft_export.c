@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/07 16:02:53 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 07:09:34 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ bool	is_alpha_name(char *name)
 	char	*tmp;
 
 	tmp = ft_get_name(name);
+	if (!tmp)
+		return (false);
 	index = 0;
 	while (tmp[index])
 	{
