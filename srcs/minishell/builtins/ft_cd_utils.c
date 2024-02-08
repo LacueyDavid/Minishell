@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:45:13 by jdenis            #+#    #+#             */
-/*   Updated: 2024/01/31 14:01:44 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 07:35:17 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*ft_getenv(char *name, t_envs *envs)
 
 	index = 0;
 	length = ft_strlen(name);
+	if (envs->env == NULL)
+		return (NULL);
 	while (envs->env[index])
 	{
 		if (!ft_strncmp(envs->env[index], name, length))

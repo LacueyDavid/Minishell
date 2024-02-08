@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 11:06:07 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/07 17:58:57 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 07:12:47 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void		close_and_free(int fd, char *str);
 void		inutile_return(char *path);
 int			redo_env(char **input, size_t index, char ***env);
 int			redo_export(char **input, size_t index, char ***env);
+size_t		copy_underscore_var_env(char **new, size_t index);
 
 #endif

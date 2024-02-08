@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environnement_utils_5.c                            :+:      :+:    :+:   */
+/*   environnement_utils_2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:44:22 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/02 14:25:35 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 07:13:44 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,15 @@ char	*ft_strdup_with_quotes(char *str)
 	}
 	put_last_quotes(new, index2, equal);
 	return (new);
+}
+
+size_t	copy_underscore_var_env(char **new, size_t index)
+{
+	new[index] = ft_strdup("_=/usr/bin/env");
+	if (!new[index])
+	{
+		free_strs(new);
+		exit(EXIT_FAILURE);
+	}
+	return (index + 1);
 }

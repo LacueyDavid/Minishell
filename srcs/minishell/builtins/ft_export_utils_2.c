@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:49:21 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/07 17:59:54 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 07:34:37 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	redo_env(char **input, size_t index, char ***env)
 			if (!(*env)[index])
 			{
 				free_strs(*env);
+				*env = NULL;
 				return (EXIT_FAILURE);
 			}
 			index++;
