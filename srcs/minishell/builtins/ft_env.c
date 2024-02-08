@@ -23,6 +23,8 @@ int	ft_env(t_envs *envs, char **command)
 {
 	int	i;
 
+	if (!envs->env)
+		return (EXIT_FAILURE);
 	i = 0;
 	if (command[1])
 	{

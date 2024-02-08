@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:13:15 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/07 17:40:02 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 08:48:43 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ int		print_empty_export(t_envs *envs);
 void	change_pwd_in_env(char *path, t_envs *envs);
 bool	is_alpha_name(char *name);
 bool	between_max_min(char *nbr);
+void	cd_point(bool pwd_exist, t_envs *envs, char *pwd);
 
 #endif

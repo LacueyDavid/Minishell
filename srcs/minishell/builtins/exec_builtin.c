@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 08:07:24 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/07 12:20:15 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/08 08:31:34 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	exec_builtin(char **command, t_exec *exec, t_node *node)
 	g_exit_status = EXIT_FAILURE;
 	string_command = NULL;
 	string_command = ft_compact_strs(command);
+	if (!string_command)
+		return (EXIT_FAILURE);
 	if (!ft_strcmp(command[0], "cd"))
 		g_exit_status = ft_cd(exec->envs, string_command);
 	free(string_command);

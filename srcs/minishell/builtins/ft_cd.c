@@ -83,6 +83,8 @@ int	ft_cd(t_envs *envs, char *command)
 	char	*new_path;
 	bool	pwd_exist;
 
+	if (!envs->env)
+		return (EXIT_FAILURE);
 	g_exit_status = EXIT_SUCCESS;
 	pwd = ft_getenv("PWD", envs);
 	pwd_exist = remove_oldpwd(envs, pwd);
@@ -90,9 +92,7 @@ int	ft_cd(t_envs *envs, char *command)
 		pwd = getcwd(NULL, 0);
 	if (ft_strncmp(command, "cd .", 5) == 0)
 	{
-		if (pwd_exist)
-			ft_setenv("OLDPWD", pwd, envs);
-		free(pwd);
+		cd_point(pwd_exist, envs, pwd);
 	}
 	else
 	{

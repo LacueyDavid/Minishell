@@ -6,11 +6,18 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:45:13 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/08 07:35:17 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 08:48:11 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+void	cd_point(bool pwd_exist, t_envs *envs, char *pwd)
+{
+	if (pwd_exist)
+		ft_setenv("OLDPWD", pwd, envs);
+	free(pwd);
+}
 
 char	*ft_strcat(char *dest, char *src)
 {

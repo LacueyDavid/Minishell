@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:41:00 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/08 07:09:34 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/08 08:40:05 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ bool	is_alpha_name(char *name)
 
 int	ft_export(t_envs *envs, char **input)
 {
+	if (!envs->env || !envs->exports)
+		return (EXIT_FAILURE);
 	if (!input[1])
 	{
 		return (print_empty_export(envs));
