@@ -6,7 +6,7 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/02/07 17:59:23 by jdenis           ###   ########.fr        #
+#    Updated: 2024/02/08 06:26:11 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,7 +117,6 @@ OBJS =																		\
 				execution.o													\
 				ft_get_command.o											\
 				redirections.o												\
-				exec_builtin_and_non_builtin.o								\
 				exec_protections.o											\
 				init_exec.o													\
 				wait_pids.o						)))							\

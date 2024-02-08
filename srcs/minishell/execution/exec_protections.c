@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:34:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/07 12:50:21 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/08 06:33:34 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,11 @@ void	vector_null_protection(t_node *node, t_exec *exec)
 {
 	(g_exit_status = 0);
 	clear_tree(node->head);
-	free_envs(exec->envs);
-	reset_standard_streams(exec->fds);
-	close_fds(exec->fds);
+	if (exec)
+	{
+		free_envs(exec->envs);
+		reset_standard_streams(exec->fds);
+		close_fds(exec->fds);
+	}
 	exit(g_exit_status);
 }
