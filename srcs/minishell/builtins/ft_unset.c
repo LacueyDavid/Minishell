@@ -6,7 +6,7 @@
 /*   By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:20:49 by jdenis            #+#    #+#             */
-/*   Updated: 2024/02/08 08:23:22 by jdenis           ###   ########.fr       */
+/*   Updated: 2024/02/08 09:00:38 by jdenis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ft_unset(t_envs *envs, char **input)
 	size_t	index;
 
 	index = 1;
-	if (!envs)
+	if (!envs || envs->env == NULL || envs->exports == NULL)
 		return (EXIT_FAILURE);
 	while (input[index])
 	{
