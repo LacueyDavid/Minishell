@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:08:37 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/08 07:04:55 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/08 07:47:19 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static ssize_t	dup_the_value_with_equal_at_end(char **dup_value,
 static bool	set_index_to_good_value(size_t *index, t_envs *envs,
 					char *dup_value)
 {
+	if (!envs->env)
+		return (false);
 	while (envs->env[*index] && !ft_strbstr(envs->env[*index], dup_value,
 			ft_strlen(envs->env[*index])))
 		(*index)++;

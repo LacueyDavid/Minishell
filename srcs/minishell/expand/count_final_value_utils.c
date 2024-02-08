@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 14:10:10 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/08 07:02:51 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/08 07:46:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static ssize_t	dup_the_value_with_equal_at_end(char **dup_value,
 size_t	count_result_of_variable(size_t *index, size_t *index2,
 			char **dup_value, t_envs *envs)
 {
+	if (!envs->env)
+		return (0);
 	while (envs->env[*index] && !ft_strbstr(envs->env[*index], *dup_value,
 			ft_strlen(envs->env[*index])))
 		(*index)++;
