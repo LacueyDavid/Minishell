@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 04:34:03 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/08 06:33:34 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/08 06:57:29 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,14 @@ void	expand_fail_protection(t_node *node, t_exec *exec)
 	{
 		g_exit_status = 1;
 		perror(RED "Expand env variables failed" WHITE);
-		reset_standard_streams(exec->fds);
-		close_fds(exec->fds);
-		(clear_tree(node->head), free_envs(exec->envs), exit(g_exit_status));
+		clear_tree(node->head);
+		if (exec)
+		{
+			free_envs(exec->envs);
+			reset_standard_streams(exec->fds);
+			close_fds(exec->fds);
+		}
+		exit(g_exit_status);
 	}
 }
 
@@ -56,9 +61,14 @@ void	wildcards_fail_protection(t_node *node, t_exec *exec)
 	{
 		g_exit_status = 134;
 		perror(RED "Wildcards failed"WHITE);
-		reset_standard_streams(exec->fds);
-		close_fds(exec->fds);
-		(clear_tree(node->head), free_envs(exec->envs), exit(g_exit_status));
+		clear_tree(node->head);
+		if (exec)
+		{
+			free_envs(exec->envs);
+			reset_standard_streams(exec->fds);
+			close_fds(exec->fds);
+		}
+		exit(g_exit_status);
 	}
 }
 
