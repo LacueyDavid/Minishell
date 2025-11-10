@@ -9,6 +9,9 @@ Un mini-shell écrit en C — projet pédagogique visant à réimplémenter les 
 - Bibliothèques : libreadline (utilisée pour l'historique et l'édition de ligne)
 - But : comprendre et implémenter le comportement d'un shell simple (tokenisation, parsing, exécution, redirections, pipes, builtins)
 
+## Aperçu visuel
+![Screenshot](readme/screenshot.png)
+
 ## Fonctionnalités implémentées
 
 - Tokenizer / lexer
