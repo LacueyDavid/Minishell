@@ -1,0 +1,210 @@
+name: 1 do nothing if stdin is empty
+cmd: ./minishell
+---
+name: 2 exec /usr/bin/echo toto
+cmd: ./minishell
+stdin: |
+  /usr/bin/echo toto
+stdout: |
+  toto
+---
+name: 3 exec echo toto
+cmd: ./minishell
+stdin: |
+  echo toto
+stdout: |
+  toto
+---
+name: 4 Exec echo toto > output.txt
+cmd: ./minishell
+stdin: |
+  echo fichierbienremplis > output.txt
+  cat output.txt
+  rm output.txt
+stdout: |
+  fichierbienremplis
+---
+name: 5 Exec > output.txt echo toto
+cmd: ./minishell
+stdin: |
+  > output.txt echo fichierbienremplis
+  cat output.txt
+  rm output.txt
+stdout: |
+  fichierbienremplis
+---
+name: 6 Exec echo toto > output.txt tata
+cmd: ./minishell
+stdin: |
+  echo toto > output.txt tata
+  cat output.txt
+  rm output.txt
+stdout: |
+  toto tata
+---
+name: 7 Exec echo toto > file1.txt > file2.txt tata
+cmd: ./minishell
+stdin: |
+  echo toto > file1.txt > file2.txt tata
+  cat file2.txt
+  rm file2.txt
+  rm file1.txt
+stdout: |
+  toto tata
+---
+name: 8 Exec echo toto > file1.txt < file1.txt tata
+cmd: ./minishell
+stdin: |
+  echo toto > file1.txt < file1.txt tata
+  cat file1.txt
+  rm file1.txt
+stdout: |
+  toto tata
+---
+name: 9 Exec echo toto > file1.txt puis wc -c < file1.txt
+cmd: ./minishell
+stdin: |
+  echo toto > file1.txt
+  wc -c < file1.txt
+  rm file1.txt
+stdout: |
+  5
+---
+name: 10 Exec > tonton < titi > bibi echo toto < tata > bobo tete non < tyty oui < tutu
+cmd: ./minishell
+stdin: |
+  touch titi tata tyty tutu
+  > tonton < titi > bibi echo toto < tata > bobo tete non < tyty oui < tutu
+  cat bobo
+  rm tonton titi bibi tata tyty tutu
+stdout: |
+  toto tete non oui
+---
+name: 11 Exec > tonton < titi > bibi wc -c < tata < tyty < tutu < bobo
+cmd: ./minishell
+stdin: |
+  touch titi tata tyty tutu
+  > tonton < titi > bibi wc -c < tata < tyty < tutu < bobo
+  cat bibi
+  rm tonton titi bibi tata tyty tutu bobo
+stdout: |
+  18
+---
+name: 12 Exec echo toto > toto.txt suivi de echo tata >> toto.txt
+cmd: ./minishell
+stdin: |
+  echo toto > toto.txt
+  echo tata >> toto.txt
+  cat toto.txt
+  rm toto.txt
+stdout: |
+  toto
+  tata
+---
+name: 13 Exec echo *.txt
+cmd: ./minishell
+stdin: |
+  touch toto.txt titi.txt tata.txt tutu.txt
+  echo *.txt
+  rm toto.txt titi.txt tata.txt tutu.txt
+stdout: |
+  toto.txt tutu.txt titi.txt tata.txt
+---
+name: 14 Exec ls to*
+cmd: ./minishell
+stdin: |
+  touch toto.txt tito.txt toti.txt
+  ls to*
+  rm toto.txt tito.txt toti.txt
+stdout: |
+  toti.txt
+  toto.txt
+---
+name: 15 Exec echo *zefgzegt
+cmd: ./minishell
+stdin: |
+  echo *zefgzegt
+stdout: |
+  *zefgzegt
+
+---
+name: 16 Exec echo toto | wc -c | wc -l
+cmd: ./minishell
+stdin: |
+  echo toto | wc -c | wc -l
+stdout: |
+  1
+---
+name: 17 Exec echo "cat lol.c | cat > lol.c"
+cmd: ./minishell
+stdin: |
+  echo "cat lol.c | cat > lol.c"
+stdout: |
+  cat lol.c | cat > lol.c
+---
+name: 18 Exec echo "echo ok bro mdr              | echo toto  "
+cmd: ./minishell
+stdin: |
+  echo "echo ok bro mdr              | echo toto  "
+stdout: |
+  echo ok bro mdr              | echo toto  
+---
+name: 19 Exec echo '$USER'
+cmd: ./minishell
+stdin: |
+  echo '$USER'
+stdout: |
+  $USER
+---
+name: 20 Exec echo '$USER | wc -c'
+cmd: ./minishell
+stdin: |
+  echo '$USER | wc -c'
+stdout: |
+  $USER | wc -c
+---
+name: 21 Exec echo $a when a = b
+cmd: ./minishell
+stdin: |
+  export a=b
+  echo $a
+stdout: |
+  b
+---
+name: 22 Exec echo "$"
+cmd: ./minishell
+stdin: |
+  echo "$"
+stdout: |
+  $
+---
+name: 23 Exec echo $
+cmd: ./minishell
+stdin: |
+  echo $
+stdout: |
+  $
+---
+name: 24 Exec echo $oui quand oui = "lol mdr"
+cmd: ./minishell
+stdin: |
+  export oui="lol mdr"
+  echo $oui
+stdout: |
+  lol mdr
+---
+name: 25 Exec echo $USER after change USER
+cmd: ./minishell
+stdin: |
+  export USER=miche
+  echo "$USER"
+stdout: |
+  miche
+---
+name: 26 Exec echo '$USER' after change USER
+cmd: ./minishell
+stdin: |
+  export USER="JHON SENA"
+  echo '$USER'
+stdout: |
+  $USER

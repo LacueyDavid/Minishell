@@ -1,0 +1,6 @@
+*.o
+.vscode
+.nfs*
+.minishell_history
+*.txt
+*.a
