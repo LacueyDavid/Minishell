@@ -1,1 +1,1 @@
-![Image](https://raw.githubusercontent.com/LacueyDavid/Minishell/tree/main/readme/screenshot.png)
+![Image](/readme/screenshot.png "minishell")
