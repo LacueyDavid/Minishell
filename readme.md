@@ -72,38 +72,6 @@ Pour quitter : `exit` ou Ctrl-D
 
 Pour une vue détaillée, consultez l'arborescence du projet.
 
-## Tests
-
-Des tests unitaires et des tests end-to-end sont présents dans `tests/`. Il n'y a pas (à ce stade) de target `check` automatique définie dans le `Makefile` pour lancer l'ensemble des tests.
-
-Pour exécuter manuellement les tests unitaires :
-
-1. Compiler le projet avec `make`.
-2. Utiliser l'exécutable de test présent dans `tests/unit/` si fourni, ou lancer les fichiers de test via votre runner préféré.
-
-## Contribution
-
-Contributions bienvenues :
-
-- Ouvrir une issue pour décrire le bug ou la fonctionnalité.
-- Faire une branche dédiée et un pull request clair et limité.
-
-Style & conventions : suivez les règles de style C du projet (twist 42-style si applicable) et gardez les commits atomiques.
-
-## Licence
-
-Aucune licence explicite n'a été fournie dans ce dépôt. Si vous êtes l'auteur et souhaitez publier ce projet, ajoutez un fichier `LICENSE` avec la licence souhaitée (MIT, BSD, etc.).
-
 ## Auteur
 
-D. Lacuey (organisation du dépôt et contributions principales).
-
-Pour toute question ou suggestion, ouvrez une issue ou contactez l'auteur via le canal habituel.
-
----
-
-Remarques : j'ai rédigé une version claire et lisible du README. Si vous voulez, je peux :
-
-- ajouter des instructions plus précises pour les tests (après examen du dossier `tests/`),
-- ajouter une capture d'écran/diagramme dans `readme/` et la référencer proprement,
-- ajouter un fichier `LICENSE` (MIT) et un `CONTRIBUTING.md` minimal.
+David Lacuey
